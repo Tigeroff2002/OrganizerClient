@@ -57,11 +57,6 @@ class EventEditingPageState extends State<EventEditingPageWidget> {
 
   Future<void> getExistedEvent(BuildContext context) async
   {
-    String caption = eventCaptionController.text;
-    String description = eventDescriptionController.text;
-    String eventType = selectedEventType.toString();
-    String eventStatus = selectedEventStatus.toString();
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
@@ -102,6 +97,16 @@ class EventEditingPageState extends State<EventEditingPageWidget> {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
           print(userRequestedInfo);
+
+          // TODO: необходимо провести десериализацию json-строки о пользователе
+
+          setState(() {
+            existedCaption = 'Старое название';
+            existedDescription = 'Старое описание';
+
+            eventCaptionController.text = existedCaption;
+            eventDescriptionController.text = existedDescription;
+          });
         }
       }
       catch (e) {
@@ -176,6 +181,7 @@ class EventEditingPageState extends State<EventEditingPageWidget> {
         + ':' + minutes.toString().padLeft(2, '0')
         + ':' + seconds.toString().padLeft(2, '0');
 
+    // TODO: реализовать корректное добавление пользователей
     var guestIds = [2];
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -600,4 +606,7 @@ class EventEditingPageState extends State<EventEditingPageWidget> {
 
   String outputBeginDateTime = '';
   String outputEndDateTime = '';
+
+  String existedCaption = '';
+  String existedDescription = '';
 }

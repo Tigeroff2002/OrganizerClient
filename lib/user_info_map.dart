@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/events_list_page.dart';
 import 'package:todo_calendar_client/groups_list_page.dart';
+import 'package:todo_calendar_client/issues_list_page.dart';
 import 'package:todo_calendar_client/snapshots_list_page.dart';
 import 'package:todo_calendar_client/tasks_list_page.dart';
 
@@ -35,7 +36,8 @@ class _HomeState extends State<HomeMap> {
     EventsListPageWidget(),
     GroupsListPageWidget(),
     TasksListPageWidget(),
-    SnapshotsListPageWidget()
+    SnapshotsListPageWidget(),
+    IssuesListPageWidget()
   ];
 
   void onTabTapped(int index) {
@@ -72,6 +74,10 @@ class _HomeState extends State<HomeMap> {
           BottomNavigationBarItem(
             icon: Icon(Icons.comment_rounded),
             label: 'Мои снапшоты',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.call_outlined),
+            label: 'Мои запросы',
           ),
         ],
       ),
