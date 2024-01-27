@@ -5,6 +5,7 @@ import 'package:todo_calendar_client/models/enums/GroupType.dart';
 import 'package:todo_calendar_client/models/enums/ReportType.dart';
 import 'package:todo_calendar_client/models/enums/TaskCurrentStatus.dart';
 import 'package:todo_calendar_client/models/enums/TaskType.dart';
+import 'package:todo_calendar_client/models/enums/UserRole.dart';
 
 import 'models/enums/IssueType.dart';
 
@@ -131,6 +132,17 @@ final class EnumAliaser{
         return 'По нарушениям пользователей';
       }
     }
+    else if (enumValue is UserRole){
+      if (enumValue == UserRole.None){
+        return 'Без статуса';
+      }
+      else if (enumValue == UserRole.User){
+        return 'Пользователь системы';
+      }
+      else if (enumValue == UserRole.Admin){
+        return 'Администрация системы';
+      }
+    }
 
     return 'Без статуса';
   }
@@ -246,5 +258,15 @@ final class EnumAliaser{
       return IssueType.ViolationIssue;
     }
     else return IssueType.None;
+  }
+
+  UserRole getUserRoleEnumValue(String naming){
+    if (naming == 'User'){
+      return UserRole.User;
+    }
+    else if (naming == 'Admin'){
+      return UserRole.Admin;
+    }
+    else return UserRole.None;
   }
 }
