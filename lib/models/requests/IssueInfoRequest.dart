@@ -8,8 +8,7 @@ class IssueInfoRequest extends RequestWithToken{
     required int userId,
     required String token,
     required this.issueId
-  })
-      : super(userId: userId, token: token);
+  }) : super(userId: userId, token: token);
 
   Map<String, dynamic> toJson() {
     return {

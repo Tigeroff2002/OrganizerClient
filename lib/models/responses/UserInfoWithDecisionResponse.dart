@@ -11,6 +11,7 @@ class UserInfoWithDecisionResponse extends ShortUserInfoResponse{
     required int userId,
     required String userName,
     required String userEmail,
+    required String userRole,
     required String phoneNumber,
     required this.decisionType
   })
@@ -18,6 +19,7 @@ class UserInfoWithDecisionResponse extends ShortUserInfoResponse{
       userId: userId,
       userName: userName,
       userEmail: userEmail,
+      userRole: userRole,
       phoneNumber: phoneNumber
     );
 
@@ -26,6 +28,7 @@ class UserInfoWithDecisionResponse extends ShortUserInfoResponse{
         userId: json['user_id'],
         userName: json['user_name'],
         userEmail: json['user_email'],
+        userRole: json['user_role'],
         phoneNumber: json['phone_number'],
         decisionType: json['decision_type']
     );

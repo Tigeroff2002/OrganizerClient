@@ -9,8 +9,10 @@ class UserInfoResponse {
 
   final String userName;
   final String userEmail;
+  final String userRole;
   final String password;
   final String phoneNumber;
+  final String accountCreationTime;
   final List<dynamic> userGroups;
   final List<dynamic> userEvents;
   final List<dynamic> userTasks;
@@ -20,8 +22,10 @@ class UserInfoResponse {
   UserInfoResponse({
     required this.userName,
     required this.userEmail,
+    required this.userRole,
     required this.password,
     required this.phoneNumber,
+    required this.accountCreationTime,
     required this.userGroups,
     required this.userEvents,
     required this.userTasks,
@@ -34,7 +38,9 @@ class UserInfoResponse {
       'user_name': userName,
       'password': password,
       'user_email': userEmail,
+      'user_role': userRole,
       'phone_number': phoneNumber,
+      'account_creation': accountCreationTime,
       'user_groups': userGroups,
       'user_tasks': userTasks,
       'user_events': userEvents,
@@ -48,7 +54,9 @@ class UserInfoResponse {
         userName: json['user_name'],
         password: json['password'],
         userEmail: json['user_email'],
+        userRole: json['user_role'],
         phoneNumber: json['phone_number'],
+        accountCreationTime: json['account_creation'],
         userGroups: json['user_groups'],
         userTasks: json['user_tasks'],
         userEvents: json['user_events'],
