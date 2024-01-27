@@ -3,19 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:todo_calendar_client/models/requests/AddNewReportModel.dart';
+import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import '../GlobalEndpoints.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
 import '../shared_pref_cached_data.dart';
 
-class ReportPlaceholderWidget extends StatefulWidget{
+class SnapshotPlaceholderWidget extends StatefulWidget{
 
   final Color color;
   final String text;
   final int index;
 
-  ReportPlaceholderWidget(
+  SnapshotPlaceholderWidget(
       {
         required this.color,
         required this.text,
@@ -23,12 +23,12 @@ class ReportPlaceholderWidget extends StatefulWidget{
       });
 
   @override
-  ReportPlaceholderState createState(){
-    return new ReportPlaceholderState(color: color, text: text, index: index, isPageJustLoaded: true);
+  SnapshotPlaceholderState createState(){
+    return new SnapshotPlaceholderState(color: color, text: text, index: index, isPageJustLoaded: true);
   }
 }
 
-class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
+class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
 
   final Color color;
   final String text;
@@ -39,12 +39,12 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
   bool isBeginTimeChanged = false;
   bool isEndTimeChanged = false;
 
-  bool isReportEndTimeGreaterThanBeginTime = true;
-  bool isReportDurationValidated = true;
+  bool isSnapshotEndTimeGreaterThanBeginTime = true;
+  bool isSnapshotDurationValidated = true;
 
-  final TextEditingController reportTypeController = TextEditingController();
+  final TextEditingController snapshotTypeController = TextEditingController();
 
-  ReportPlaceholderState(
+  SnapshotPlaceholderState(
       {
         required this.color,
         required this.text,
@@ -52,9 +52,9 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
         required this.isPageJustLoaded
       });
 
-  Future<void> addNewReport(BuildContext context) async
+  Future<void> addNewSnapshot(BuildContext context) async
   {
-    String reportType = selectedReportType;
+    String snapshotType = selectedSnapshotType;
     String beginMoment = selectedBeginDateTime.toString();
     String endMoment = selectedEndDateTime.toString();
 
@@ -69,10 +69,10 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var model = new AddNewReportModel(
+      var model = new AddNewSnapshotModel(
           userId: (userId),
           token: token,
-          reportType: reportType,
+          snapshotType: snapshotType,
           beginMoment: beginMoment,
           endMoment: endMoment
       );
@@ -85,7 +85,7 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/reports/perform_new';
+      var requestString = '/snapshots/perform_new';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -111,7 +111,7 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
           }
         }
 
-        reportTypeController.clear();
+        snapshotTypeController.clear();
       }
       catch (e) {
         if (e is SocketException) {
@@ -145,7 +145,7 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Ошибка!'),
-          content: Text('Создание нового отчета не произошло!'),
+          content: Text('Создание нового снапшота не произошло!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -162,7 +162,7 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
   @override
   Widget build(BuildContext context) {
 
-    var reportTypes = ['None', 'EventsReport', 'TasksReport'];
+    var snapshotTypes = ['None', 'EventsSnapshot', 'TasksSnapshot', 'ReportsSnapshot', 'IssuesSnapshot'];
 
     var showingBeginHours = selectedBeginDateTime.hour.toString().padLeft(2, '0');
     var showingBeginMinutes = selectedBeginDateTime.minute.toString().padLeft(2, '0');
@@ -265,25 +265,25 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
             SizedBox(height: 30.0),
               SizedBox(height: 16.0),
               Text(
-                'Тип отчета',
+                'Тип снапшота',
                 style: TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
               SizedBox(height: 4.0),
               DropdownButton(
-                  value: selectedReportType,
-                  items: reportTypes.map((String type){
+                  value: selectedSnapshotType,
+                  items: snapshotTypes.map((String type){
                     return DropdownMenuItem(
                         value: type,
                         child: Text(type));
                   }).toList(),
                   onChanged: (String? newType){
                     setState(() {
-                      selectedReportType = newType.toString();
+                      selectedSnapshotType = newType.toString();
                     });
                   }),
               SizedBox(height: 16.0),
               Text(
-                'Время начала отчета',
+                'Время для начала снапшота',
                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 12.0),
@@ -309,11 +309,11 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
                         ' ${selectedBeginDateTime.hour}'
                         ':${selectedBeginDateTime.minute}';
 
-                    isReportEndTimeGreaterThanBeginTime =
+                    isSnapshotEndTimeGreaterThanBeginTime =
                         selectedEndDateTime.millisecondsSinceEpoch
                             > selectedBeginDateTime.millisecondsSinceEpoch;
 
-                    isReportDurationValidated =
+                    isSnapshotDurationValidated =
                         (selectedEndDateTime.difference(selectedBeginDateTime)
                             .inMilliseconds) < (3600 * 24 * 1000 * 30);
                   });
@@ -321,14 +321,14 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
               ),
               SizedBox(height: 20.0),
               Text(
-                'Время окончания отчета',
+                'Время для окончания снапшота',
                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 12.0),
               TextButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                  isReportDurationValidated && isReportEndTimeGreaterThanBeginTime
+                  isSnapshotDurationValidated && isSnapshotEndTimeGreaterThanBeginTime
                       ? Colors.green
                       : Colors.red,
                   foregroundColor : Colors.white,
@@ -339,13 +339,13 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
                   minimumSize: Size(250, 100),
                 ),
                 child:
-                isReportDurationValidated && isReportEndTimeGreaterThanBeginTime
+                isSnapshotDurationValidated && isSnapshotEndTimeGreaterThanBeginTime
                     ? Text(outputEndDateTime)
-                    : !isReportEndTimeGreaterThanBeginTime
-                    ? Text('Время окончания ' + outputEndDateTime
-                    + ' должно быть больше времени начала')
-                    : Text('Время окончания ' + outputEndDateTime
-                    + ' должно быть не позже месяца после начала'),
+                    : !isSnapshotEndTimeGreaterThanBeginTime
+                    ? Text('Время для окончания ' + outputEndDateTime
+                    + ' должно быть больше времени для начала')
+                    : Text('Время для окончания ' + outputEndDateTime
+                    + ' должно быть не позже месяца после начала снапшота'),
                 onPressed: () async {
                   await pickEndDateTime();
                   setState(() {
@@ -357,11 +357,11 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
                         ' ${selectedEndDateTime.hour}'
                         ':${selectedEndDateTime.minute}';
 
-                    isReportEndTimeGreaterThanBeginTime =
+                    isSnapshotEndTimeGreaterThanBeginTime =
                         selectedEndDateTime.millisecondsSinceEpoch
                             > selectedBeginDateTime.millisecondsSinceEpoch;
 
-                    isReportDurationValidated =
+                    isSnapshotDurationValidated =
                         (selectedEndDateTime.difference(selectedBeginDateTime)
                             .inMilliseconds) < (3600 * 24 * 1000 * 30);
                   });
@@ -379,22 +379,22 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
                     minimumSize: Size(150, 50)),
                 onPressed: () async {
                   setState(() {
-                    isReportEndTimeGreaterThanBeginTime =
+                    isSnapshotEndTimeGreaterThanBeginTime =
                         selectedEndDateTime.millisecondsSinceEpoch
                             > selectedBeginDateTime.millisecondsSinceEpoch;
 
-                    isReportDurationValidated =
+                    isSnapshotDurationValidated =
                         (selectedEndDateTime.difference(selectedBeginDateTime).inMilliseconds)
                             < (3600 * 24 * 1000 * 30);
 
-                    if (isReportDurationValidated
-                        && isReportEndTimeGreaterThanBeginTime){
-                      realReportType = selectedReportType;
-                      addNewReport(context);
+                    if (isSnapshotDurationValidated
+                        && isSnapshotEndTimeGreaterThanBeginTime){
+                      realSnapshotType = selectedSnapshotType;
+                      addNewSnapshot(context);
                     }
                   });
                 },
-                child: Text('Создать новый отчет'),
+                child: Text('Сделать новый снапшот'),
               ),
           ]
       ),
@@ -402,12 +402,12 @@ class ReportPlaceholderState extends State<ReportPlaceholderWidget> {
     );
   }
 
-  String selectedReportType = 'None';
+  String selectedSnapshotType = 'None';
 
   DateTime selectedBeginDateTime = DateTime.now();
   DateTime selectedEndDateTime = DateTime.now();
 
-  String realReportType = 'None';
+  String realSnapshotType = 'None';
 
   String outputBeginDateTime = '';
   String outputEndDateTime = '';

@@ -70,15 +70,21 @@ final class EnumAliaser{
         return 'Рабочая';
       }
     }
-    else if (enumValue is ReportType){
-      if (enumValue == ReportType.None){
+    else if (enumValue is SnapshotType){
+      if (enumValue == SnapshotType.None){
         return 'Без статуса';
       }
-      else if (enumValue == ReportType.TasksReport){
+      else if (enumValue == SnapshotType.TasksSnapshot){
         return 'По задачам пользователя';
       }
-      else if (enumValue == ReportType.EventsReport){
+      else if (enumValue == SnapshotType.EventsSnapshot){
         return 'По мероприятиям пользователя';
+      }
+      else if (enumValue == SnapshotType.ReportsSnapshot){
+        return 'По отчетам пользователя';
+      }
+      else if (enumValue == SnapshotType.IssuesSnapshot){
+        return 'По вопросам пользователя';
       }
     }
     else if (enumValue is TaskCurrentStatus){
@@ -190,14 +196,20 @@ final class EnumAliaser{
     else return TaskCurrentStatus.None;
   }
 
-  ReportType getReportTypeEnumValue(String naming){
-    if (naming == 'EventsReport'){
-      return ReportType.EventsReport;
+  SnapshotType getSnapshotTypeEnumValue(String naming){
+    if (naming == 'EventsSnapshot'){
+      return SnapshotType.EventsSnapshot;
     }
-    else if (naming == 'TasksReport'){
-      return ReportType.TasksReport;
+    else if (naming == 'TasksSnapshot'){
+      return SnapshotType.TasksSnapshot;
     }
-    else return ReportType.None;
+    else if (naming == 'ReportsSnapshot'){
+      return SnapshotType.ReportsSnapshot;
+    }
+    else if (naming == 'IssuesSnapshot'){
+      return SnapshotType.IssuesSnapshot;
+    }
+    else return SnapshotType.None;
   }
 
   DecisionType getDecisionTypeEnumValue(String naming){

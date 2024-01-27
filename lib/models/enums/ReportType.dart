@@ -1,8 +1,12 @@
-enum ReportType
+enum SnapshotType
 {
   None,
 
-  EventsReport,
+  EventsSnapshot,
 
-  TasksReport
+  TasksSnapshot,
+
+  IssuesSnapshot,
+
+  ReportsSnapshot
 }
