@@ -5,40 +5,44 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
+import 'package:todo_calendar_client/models/requests/EditExistingIssueModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/tasks_list_page.dart';
 import '../GlobalEndpoints.dart';
+import '../models/requests/IssueInfoRequest.dart';
 import '../models/responses/additional_responces/GetResponse.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
 import '../shared_pref_cached_data.dart';
 
-class TaskEditingPageWidget extends StatefulWidget{
+class IssueEditingPageWidget extends StatefulWidget{
 
-  final int taskId;
+  final int issueId;
 
-  TaskEditingPageWidget({required this.taskId});
+  IssueEditingPageWidget({ required this.issueId });
 
   @override
-  TaskEditingPageState createState(){
-    return new TaskEditingPageState(taskId: taskId);
+  IssueEditingPageState createState(){
+    return new IssueEditingPageState(issueId: issueId);
   }
 }
 
-class TaskEditingPageState extends State<TaskEditingPageWidget> {
+class IssueEditingPageState extends State<IssueEditingPageWidget> {
 
-  final int taskId;
+  final int issueId;
 
-  TaskEditingPageState({required this.taskId});
+  IssueEditingPageState({ required this.issueId });
 
-  final TextEditingController taskCaptionController = TextEditingController();
-  final TextEditingController taskDescriptionController = TextEditingController();
+  final TextEditingController issueTitleController = TextEditingController();
+  final TextEditingController issueDescriptionController = TextEditingController();
+  final TextEditingController issueLinkController = TextEditingController();
 
-  bool isCaptionValidated = true;
+  bool isTitleValidated = true;
   bool isDescriptionValidated = true;
+  bool isLinkValidated = true;
 
-  Future<void> getExistedTask(BuildContext context) async
+  Future<void> getExistedIssue(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -51,7 +55,7 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var model = new TaskInfoRequest(userId: userId, token: token, taskId: taskId);
+      var model = new IssueInfoRequest(userId: userId, token: token, issueId: issueId);
 
       var requestMap = model.toJson();
 
@@ -61,7 +65,7 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/tasks/get_task_info';
+      var requestString = '/issues/get_issue_info';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -77,19 +81,21 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
         var responseContent = GetResponse.fromJson(jsonData);
 
         if (responseContent.result) {
-            var userRequestedInfo = responseContent.requestedInfo.toString();
+          var userRequestedInfo = responseContent.requestedInfo.toString();
+          // TODO: необходимо провести десериализацию json-строки о пользователе
 
-            print(userRequestedInfo);
+          print(userRequestedInfo);
 
-            // TODO: необходимо провести десериализацию json-строки о пользователе
+          setState(() {
+            existedTitle = 'Старый заголовок';
+            existedDescription = 'Старое описание';
+            existedLink = 'Старая ссылка';
 
-            setState(() {
-              existedCaption = 'Старое название';
-              existedDescription = 'Старое описание';
-              taskCaptionController.text = existedCaption;
-              taskDescriptionController.text = existedDescription;
-            });
-          }
+            issueTitleController.text = existedTitle;
+            issueDescriptionController.text = existedDescription;
+            issueLinkController.text = existedLink;
+          });
+        }
       }
       catch (e) {
         if (e is SocketException) {
@@ -123,7 +129,7 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Ошибка!'),
-          content: Text('Получение инфы о задаче не удалось!'),
+          content: Text('Получение информации о текущем запросе не удалось!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -138,12 +144,12 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
   }
 
 
-  Future<void> editCurrentTask(BuildContext context) async
+  Future<void> editCurrentIssue(BuildContext context) async
   {
-    String caption = taskCaptionController.text;
-    String description = taskDescriptionController.text;
-    String taskType = selectedTaskType.toString();
-    String taskStatus = selectedTaskStatus.toString();
+    String title = issueTitleController.text;
+    String description = issueDescriptionController.text;
+    String imgLink = issueLinkController.text;
+    String issueType = selectedIssueType.toString();
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -156,17 +162,14 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var implementerId = 3;
-
-      var model = new EditExistingTaskModel(
+      var model = new EditExistingIssueModel(
           userId: userId,
           token: token,
-          caption: caption,
+          issueType: issueType,
+          title: title,
           description: description,
-          taskType: taskType,
-          taskStatus: taskStatus,
-          implementerId: implementerId,
-          taskId: taskId);
+          imgLink: imgLink,
+          issueId: issueId);
 
       var requestMap = model.toJson();
 
@@ -176,7 +179,7 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/tasks/update_task_params';
+      var requestString = '/issues/update_issue_params';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -202,8 +205,9 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
           }
         }
 
-        taskCaptionController.clear();
-        taskDescriptionController.clear();
+        issueTitleController.clear();
+        issueDescriptionController.clear();
+        issueLinkController.clear();
       }
       catch (e) {
         if (e is SocketException) {
@@ -237,7 +241,7 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Ошибка!'),
-          content: Text('Изменение существующей задачи не удалось!'),
+          content: Text('Изменение существующего запроса не удалось!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -255,25 +259,24 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
   Widget build(BuildContext context) {
 
     setState(() {
-      getExistedTask(context);
+      getExistedIssue(context);
     });
 
-    var taskTypes = ['None', 'AbstractGoal', 'MeetingPresense', 'JobComplete'];
-    var taskStatuses = ['None', 'ToDo', 'InProgress', 'Review', 'Done'];
+    var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Страничка редактирования задачи'),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TasksListPageWidget()),);
-            },
-          ),
+      appBar: AppBar(
+        title: Text('Страничка редактирования запроса для администрации'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TasksListPageWidget()),);
+          },
         ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -282,75 +285,62 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Изменение существующей задачи',
+                'Изменение существующего запроса',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30.0),
               SizedBox(height: 16.0),
               TextField(
-                controller: taskCaptionController,
+                controller: issueTitleController,
                 decoration: InputDecoration(
-                    labelText: 'Наименование задачи: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.deepPurple
-                    ),
-                    errorText: !isCaptionValidated
-                        ? 'Название задачи не может быть пустым'
+                    labelText: 'Заголовок запроса: ',
+                    labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    errorText: !isTitleValidated
+                        ? 'Заголовок запроса не может быть пустым'
                         : null
                 ),
               ),
-              SizedBox(height: 12.0),
-              TextFormField(
-                controller: taskDescriptionController,
-                maxLines: null,
-                decoration: InputDecoration(
-                    labelText: 'Описание задачи: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.deepPurple
-                    ),
-                    errorText: !isDescriptionValidated
-                        ? 'Описание мероприятия не может быть пустым'
-                        : null
-                ),
-              ),
-              SizedBox(height: 12.0),
               Text(
-                'Тип задачи',
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                'Тип запроса',
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
               SizedBox(height: 4.0),
               DropdownButton(
-                  value: selectedTaskType,
-                  items: taskTypes.map((String type){
+                  value: selectedIssueType,
+                  items: issueTypes.map((String type){
                     return DropdownMenuItem(
                         value: type,
                         child: Text(type));
                   }).toList(),
                   onChanged: (String? newType){
                     setState(() {
-                      selectedTaskType = newType.toString();
+                      selectedIssueType = newType.toString();
                     });
                   }),
               SizedBox(height: 12.0),
-              Text(
-                'Статус задачи',
-                style: TextStyle(fontSize: 16, color : Colors.deepPurple),
+              TextFormField(
+                controller: issueDescriptionController,
+                maxLines: null,
+                decoration: InputDecoration(
+                    labelText: 'Описание запроса: ',
+                    labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    errorText: !isDescriptionValidated
+                        ? 'Описание запроса не может быть пустым'
+                        : null
+                ),
               ),
-              SizedBox(height: 4.0),
-              DropdownButton(
-                  value: selectedTaskStatus,
-                  items: taskStatuses.map((String status){
-                    return DropdownMenuItem(
-                        value: status,
-                        child: Text(status));
-                  }).toList(),
-                  onChanged: (String? newStatus){
-                    setState(() {
-                      selectedTaskStatus = newStatus.toString();
-                    });
-                  }),
+              SizedBox(height: 16.0),
+              TextFormField(
+                controller: issueLinkController,
+                maxLines: null,
+                decoration: InputDecoration(
+                    labelText: 'Ссылка на скриншот (или страницу): ',
+                    labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    errorText: !isLinkValidated
+                        ? 'Ссылка не может быть пустой'
+                        : null
+                ),
+              ),
               SizedBox(height: 30.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -364,15 +354,16 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
                 ),
                 onPressed: () async {
                   setState(() {
-                    isCaptionValidated = !taskCaptionController.text.isEmpty;
-                    isDescriptionValidated = !taskDescriptionController.text.isEmpty;
+                    isTitleValidated = !issueTitleController.text.isEmpty;
+                    isDescriptionValidated = !issueDescriptionController.text.isEmpty;
+                    isLinkValidated = !issueLinkController.text.isEmpty;
 
-                    if (isCaptionValidated && isDescriptionValidated){
-                      editCurrentTask(context);
+                    if (isTitleValidated && isDescriptionValidated && isLinkValidated){
+                      editCurrentIssue(context);
                     }
                   });
                 },
-                child: Text('Изменить текущую задачу'),
+                child: Text('Изменить текущий запрос'),
               ),
             ],
           ),
@@ -381,11 +372,10 @@ class TaskEditingPageState extends State<TaskEditingPageWidget> {
     );
   }
 
-  String selectedTaskType = 'None';
-  String selectedTaskStatus = 'None';
+  String selectedIssueType = 'None';
 
-  String existedCaption = '';
+  String existedTitle = '';
   String existedDescription = '';
-  String existedTaskType = 'None';
-  String existedTaskStatus = 'None';
+  String existedLink = '';
+  String existedIssueType = 'None';
 }
