@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/add_widgets/EventPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/IssuePlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/TaskPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
 import 'package:todo_calendar_client/personal_account.dart';
@@ -57,7 +58,12 @@ class _HomeState extends State<Home> {
     SnapshotPlaceholderWidget(
         color: Colors.deepPurpleAccent,
         text: 'Страница создания нового снапшота',
-        index: 4)
+        index: 4),
+
+    IssuePlaceholderWidget(
+        color: Colors.deepOrange,
+        text: 'Страница создания нового запроса',
+        index: 5)
   ];
 
   void onTabTapped(int index) {
@@ -100,6 +106,10 @@ class _HomeState extends State<Home> {
             BottomNavigationBarItem(
               icon: Icon(Icons.add_comment_rounded),
               label: 'Новый снапшот',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_ic_call_outlined),
+              label: 'Новый запрос для администрации',
             ),
           ],
         ),
