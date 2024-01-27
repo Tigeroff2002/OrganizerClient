@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/add_widgets/EventPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/TaskPlaceholderWidget.dart';
-import 'package:todo_calendar_client/add_widgets/ReportPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
 import 'package:todo_calendar_client/personal_account.dart';
 
 class UserPage extends StatelessWidget {
@@ -54,9 +54,9 @@ class _HomeState extends State<Home> {
         text: 'Страница создания новой задачи',
         index: 3),
 
-    ReportPlaceholderWidget(
+    SnapshotPlaceholderWidget(
         color: Colors.deepPurpleAccent,
-        text: 'Страница создания нового отчета',
+        text: 'Страница создания нового снапшота',
         index: 4)
   ];
 
@@ -99,7 +99,7 @@ class _HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.add_comment_rounded),
-              label: 'Новый отчет',
+              label: 'Новый снапшот',
             ),
           ],
         ),

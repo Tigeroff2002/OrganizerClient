@@ -9,19 +9,19 @@ import 'package:todo_calendar_client/models/responses/additional_responces/GetRe
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/user_page.dart';
 import 'GlobalEndpoints.dart';
-import 'add_widgets/ReportPlaceholderWidget.dart';
-import 'models/responses/ReportInfoResponse.dart';
+import 'add_widgets/SnapshotPlaceholderWidget.dart';
+import 'models/responses/SnapshotInfoResponse.dart';
 import 'models/responses/additional_responces/ResponseWithToken.dart';
 
-class ReportsListPageWidget extends StatefulWidget {
-  const ReportsListPageWidget({super.key});
+class SnapshotsListPageWidget extends StatefulWidget {
+  const SnapshotsListPageWidget({super.key});
 
 
   @override
-  ReportsListPageState createState() => ReportsListPageState();
+  SnapshotsListPageState createState() => SnapshotsListPageState();
 }
 
-class ReportsListPageState extends State<ReportsListPageWidget> {
+class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
   @override
   void initState() {
@@ -34,9 +34,9 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  List<ReportInfoResponse> reportsList = [
-    ReportInfoResponse(
-      reportType: 'd',
+  List<SnapshotInfoResponse> snapshotsList = [
+    SnapshotInfoResponse(
+        snapshotType: 'd',
       beginMoment: 'e',
       endMoment: 'df',
       content: 'd',
@@ -84,15 +84,15 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
           var data = jsonDecode(userRequestedInfo);
-          var userReports = data['user_reports'];
+          var userSnapshots = data['user_snapshots'];
 
-          var fetchedReports =
-          List<ReportInfoResponse>
-              .from(userReports.map(
-                  (data) => ReportInfoResponse.fromJson(data)));
+          var fetchedSnapshots =
+          List<SnapshotInfoResponse>
+              .from(userSnapshots.map(
+                  (data) => SnapshotInfoResponse.fromJson(data)));
 
           setState(() {
-            reportsList = fetchedReports;
+            snapshotsList = fetchedSnapshots;
           });
         }
       }
@@ -153,7 +153,7 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных отчетов'),
+          title: Text('Список созданных снапшотов'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -164,12 +164,12 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
             },
           ),
         ),
-        body: reportsList.length == 0
+        body: snapshotsList.length == 0
         ? Column(
           children: [
             SizedBox(height: 16.0),
             Text(
-              'Вы пока не составили ни одного отчета',
+              'Вы пока не составили ни одного снапшота',
               style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
@@ -177,7 +177,7 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
-                child: Text('Составить новый отчет'),
+                child: Text('Сделать новый снапшот'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   foregroundColor : Colors.white,
@@ -191,18 +191,18 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context)
-                      => ReportPlaceholderWidget(
+                      => SnapshotPlaceholderWidget(
                           color: Colors.greenAccent,
-                          text: 'Составление нового отчета',
+                          text: 'Создание нового снапшота',
                           index: 4))
                   );
                 })
           ],
         )
         : ListView.builder(
-          itemCount: reportsList.length,
+          itemCount: snapshotsList.length,
           itemBuilder: (context, index) {
-            final data = reportsList[index];
+            final data = snapshotsList[index];
             return Card(
               color: isColor ? Colors.cyan : Colors.greenAccent,
               elevation: 15,
@@ -218,21 +218,21 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Тип отчета: ',
+                        'Тип снапшота: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getReportTypeEnumValue(data.reportType)),
+                            aliaser.getSnapshotTypeEnumValue(data.snapshotType)),
                         style: TextStyle(
                           color: Colors.white,
                         )
                       ),
                         SizedBox(height: 8.0),
                         Text(
-                          'Время создания отчета: ',
+                          'Время создания снапшота: ',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -246,7 +246,7 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
                         ),
                         SizedBox(height: 8.0),
                       Text(
-                        'Время, взятое для начала отчета: ',
+                        'Время, взятое для начала снапшота: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -260,7 +260,7 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
                       ),
                       SizedBox(height: 8.0),
                       Text(
-                        'Время, взятое для окончания отчета: ',
+                        'Время, взятое для окончания снапшота: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -274,7 +274,7 @@ class ReportsListPageState extends State<ReportsListPageWidget> {
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        'Информация отчета: ',
+                        'Информация, полученная в снапшоте: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
