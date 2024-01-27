@@ -6,6 +6,8 @@ import 'package:todo_calendar_client/models/enums/ReportType.dart';
 import 'package:todo_calendar_client/models/enums/TaskCurrentStatus.dart';
 import 'package:todo_calendar_client/models/enums/TaskType.dart';
 
+import 'models/enums/IssueType.dart';
+
 final class EnumAliaser{
   String GetAlias(Object enumValue){
     if (enumValue is DecisionType){
@@ -118,6 +120,17 @@ final class EnumAliaser{
         return 'Цель в выполнении работы';
       }
     }
+    else if (enumValue is IssueType){
+      if (enumValue == IssueType.None){
+        return 'Без статуса';
+      }
+      else if (enumValue == IssueType.BagIssue){
+        return 'По багам пользователей';
+      }
+      else if (enumValue == IssueType.ViolationIssue){
+        return 'По нарушениям пользователей';
+      }
+    }
 
     return 'Без статуса';
   }
@@ -223,5 +236,15 @@ final class EnumAliaser{
       return DecisionType.Deny;
     }
     else return DecisionType.None;
+  }
+
+  IssueType getIssueTypeEnumValue(String naming){
+    if (naming == 'BagIssue'){
+      return IssueType.BagIssue;
+    }
+    else if (naming == 'ViolationIssue'){
+      return IssueType.ViolationIssue;
+    }
+    else return IssueType.None;
   }
 }

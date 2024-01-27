@@ -15,6 +15,7 @@ class UserInfoResponse {
   final List<dynamic> userEvents;
   final List<dynamic> userTasks;
   final List<dynamic> userSnapshots;
+  final List<dynamic> userIssues;
 
   UserInfoResponse({
     required this.userName,
@@ -24,7 +25,8 @@ class UserInfoResponse {
     required this.userGroups,
     required this.userEvents,
     required this.userTasks,
-    required this.userSnapshots
+    required this.userSnapshots,
+    required this.userIssues
   });
 
   Map<String, dynamic> toJson() {
@@ -36,7 +38,8 @@ class UserInfoResponse {
       'user_groups': userGroups,
       'user_tasks': userTasks,
       'user_events': userEvents,
-      'user_snapshots': userSnapshots
+      'user_snapshots': userSnapshots,
+      'user_issues': userIssues
     };
   }
 
@@ -49,7 +52,8 @@ class UserInfoResponse {
         userGroups: json['user_groups'],
         userTasks: json['user_tasks'],
         userEvents: json['user_events'],
-        userSnapshots: json['user_snapshots']
+        userSnapshots: json['user_snapshots'],
+        userIssues: json['user_issues']
     );
   }
 }
