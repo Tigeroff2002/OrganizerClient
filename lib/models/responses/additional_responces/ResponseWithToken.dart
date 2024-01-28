@@ -6,12 +6,14 @@ class ResponseWithToken extends Response{
 
   final int userId;
   final String? token;
+  final String? firebaseToken;
 
   ResponseWithToken({
     required bool result,
     String? outInfo,
     required this.userId,
-    this.token
+    this.token,
+    this.firebaseToken
   }) :super(result: result, outInfo: outInfo);
 
   factory ResponseWithToken.fromJson(Map <String, dynamic> json) {
@@ -19,7 +21,8 @@ class ResponseWithToken extends Response{
         result: json['result'],
         outInfo: json['out_info'],
         userId: json['user_id'],
-        token: json['token']
+        token: json['token'],
+        firebaseToken: json['firebase_token']
     );
   }
 }

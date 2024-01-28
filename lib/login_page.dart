@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -38,7 +39,17 @@ class LoginPageState extends State<LoginPage> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    var model = new UserLoginModel(email: email, password: password);
+    String firebaseToken = "";
+
+    FirebaseMessaging.instance.getToken().then(
+            (value) => {
+          firebaseToken = value.toString()
+        });
+
+    var model = new UserLoginModel(
+        email: email,
+        password: password,
+        firebaseToken: firebaseToken);
 
     var requestMap = model.toJson();
 
@@ -70,7 +81,9 @@ class LoginPageState extends State<LoginPage> {
         await mySharedPreferences.clearData();
 
         print(response.body);
+
         await mySharedPreferences.saveDataWithExpiration(response.body, const Duration(days: 7));
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context)
