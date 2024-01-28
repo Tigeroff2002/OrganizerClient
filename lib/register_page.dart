@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -48,11 +49,19 @@ class RegisterPageState extends State<RegisterPage> {
     String email = emailController.text;
     String phoneNumber = phoneNumberController.text;
 
+    String firebaseToken = "";
+
+    FirebaseMessaging.instance.getToken().then(
+            (value) => {
+              firebaseToken = value.toString()
+            });
+
     var model = new UserRegisterModel(
         email: email,
         name: name,
         password: password,
-        phoneNumber: phoneNumber);
+        phoneNumber: phoneNumber,
+        firebaseToken: firebaseToken);
 
     var requestMap = model.toJson();
 

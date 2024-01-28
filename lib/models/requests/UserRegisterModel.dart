@@ -6,12 +6,14 @@ class UserRegisterModel {
   final String name;
   final String password;
   final String phoneNumber;
+  final String firebaseToken;
 
   UserRegisterModel({
     required this.email,
     required this.name,
     required this.password,
-    required this.phoneNumber
+    required this.phoneNumber,
+    required this.firebaseToken
   });
 
   Map<String, dynamic> toJson() {
@@ -19,7 +21,8 @@ class UserRegisterModel {
       'email': email,
       'name': name,
       'password': password,
-      'phone_number': phoneNumber
+      'phone_number': phoneNumber,
+      'firebase_token': firebaseToken
     };
   }
 
