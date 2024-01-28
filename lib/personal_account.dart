@@ -1,11 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_calendar_client/models/requests/UserLogoutModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/user_info_map.dart';
 
+import 'GlobalEndpoints.dart';
+import 'models/responses/additional_responces/GetResponse.dart';
+import 'models/responses/additional_responces/ResponseWithToken.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
 
@@ -127,13 +135,10 @@ class PersonalAccountState extends State<PersonalAccount> {
                         elevation: 3,
                         minimumSize: Size(200, 60),
                       ),
-                      onPressed: () {
-                        MySharedPreferences mySharedPreferences = new MySharedPreferences();
-                        mySharedPreferences.clearData();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomePage()),);
+                      onPressed: () async {
+                        setState(() {
+                          logout(context);
+                        });
                       },
                       child: Text('Выйти из аккаунта'),
                     ),
@@ -144,6 +149,108 @@ class PersonalAccountState extends State<PersonalAccount> {
         )
       )
     );
+  }
+
+  Future<void> logout(BuildContext context) async {
+
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null) {
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+      var firebaseToken = cacheContent.firebaseToken.toString();
+
+      var model = new UserLogoutModel(
+          userId: userId,
+          token: token,
+          firebaseToken: firebaseToken);
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/users/logout';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        var jsonData = jsonDecode(response.body);
+        var responseContent = GetResponse.fromJson(jsonData);
+
+        if (responseContent.result) {
+          await mySharedPreferences.clearData();
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage()),);
+        }
+      }
+      catch (e) {
+        if (e is SocketException) {
+          //treat SocketException
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+        else if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else
+          print("Unhandled exception: ${e.toString()}");
+      }
+    }
+    else {
+      setState(() {
+        showDialog(
+          context: context,
+          builder: (context) =>
+              AlertDialog(
+                title: Text('Ошибка!'),
+                content:
+                Text(
+                    'Произошла ошибка при получении'
+                        ' полной информации о пользователе!'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+        );
+      });
+    }
   }
   
   String currentUserName = "None user";

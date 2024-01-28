@@ -81,7 +81,9 @@ class LoginPageState extends State<LoginPage> {
         await mySharedPreferences.clearData();
 
         print(response.body);
+
         await mySharedPreferences.saveDataWithExpiration(response.body, const Duration(days: 7));
+
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context)
