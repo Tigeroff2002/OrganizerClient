@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "715256445207",
+    "project_id": "todocalendar-411917",
+    "storage_bucket": "todocalendar-411917.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715256445207:android:3e76c820f3192f75045f52",
+        "android_client_info": {
+          "package_name": "com.todocalendar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwpDtJyT2X9t-6gUpomwK37PPacHM6tFY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
