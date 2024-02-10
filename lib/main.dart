@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/profile_page.dart';
 import 'package:todo_calendar_client/user_info_map.dart';
@@ -8,15 +7,7 @@ import 'package:todo_calendar_client/login_page.dart';
 import 'package:todo_calendar_client/register_page.dart';
 import 'package:todo_calendar_client/user_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: FirebaseOptions(
-        apiKey: "AIzaSyAwpDtJyT2X9t-6gUpomwK37PPacHM6tFY",
-        appId: "1:715256445207:android:3e76c820f3192f75045f52",
-        messagingSenderId: "715256445207",
-        projectId: "todocalendar-411917",)
-  );
+void main() {
   runApp(MyApp());
 }
 

@@ -3,9 +3,9 @@ class GlobalEndpoints{
 
   final String mobileUri = "http://10.0.2.2";
 
-  final String currentWebPort = ":5201";
+  final String currentMobilePort = ":4040";
 
-  final String currentMobilePort = ":3500";
+  final String currentWebPort = ":5201";
 
   // flutter run -d chrome --web-renderer html
 }

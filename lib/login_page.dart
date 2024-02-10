@@ -39,12 +39,17 @@ class LoginPageState extends State<LoginPage> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    String? token = await FirebaseMessaging.instance.getToken();
+    String firebaseToken = "";
+
+    FirebaseMessaging.instance.getToken().then(
+            (value) => {
+          firebaseToken = value.toString()
+        });
 
     var model = new UserLoginModel(
         email: email,
         password: password,
-        firebaseToken: token.toString());
+        firebaseToken: firebaseToken);
 
     var requestMap = model.toJson();
 
@@ -110,7 +115,7 @@ class LoginPageState extends State<LoginPage> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content: Text('Произошла ошибка на сервере'),
+            content: Text('Проблема с соединением к серверу!'),
             actions: [
               TextButton(
                 onPressed: () {
