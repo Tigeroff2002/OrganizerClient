@@ -49,12 +49,14 @@ class RegisterPageState extends State<RegisterPage> {
     String email = emailController.text;
     String phoneNumber = phoneNumberController.text;
 
-    String firebaseToken = "";
+    String firebaseToken = "1234567890";
 
+    /*
     FirebaseMessaging.instance.getToken().then(
             (value) => {
               firebaseToken = value.toString()
             });
+     */
 
     var model = new UserRegisterModel(
         email: email,

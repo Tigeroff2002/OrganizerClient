@@ -39,12 +39,14 @@ class LoginPageState extends State<LoginPage> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    String firebaseToken = "";
+    String firebaseToken = "1234567890";
 
+    /*
     FirebaseMessaging.instance.getToken().then(
             (value) => {
           firebaseToken = value.toString()
         });
+        */
 
     var model = new UserLoginModel(
         email: email,
