@@ -13,9 +13,9 @@ import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/EventInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
-import 'package:todo_calendar_client/user_page.dart';
-import 'models/responses/ShortUserInfoResponse.dart';
-import 'models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
+import 'package:todo_calendar_client/models/responses/ShortUserInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 import 'package:intl/intl.dart';
 

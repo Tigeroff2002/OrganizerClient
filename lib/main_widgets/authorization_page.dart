@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_calendar_client/home_page.dart';
-import 'package:todo_calendar_client/login_page.dart';
-import 'package:todo_calendar_client/register_page.dart';
+import 'package:todo_calendar_client/main_widgets/home_page.dart';
+import 'package:todo_calendar_client/main_widgets/login_page.dart';
+import 'package:todo_calendar_client/main_widgets/register_page.dart';
 
 class AuthorizationPage extends StatelessWidget {
   @override

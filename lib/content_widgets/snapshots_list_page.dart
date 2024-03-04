@@ -7,11 +7,11 @@ import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
-import 'package:todo_calendar_client/user_page.dart';
-import 'GlobalEndpoints.dart';
-import 'add_widgets/SnapshotPlaceholderWidget.dart';
-import 'models/responses/SnapshotInfoResponse.dart';
-import 'models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
+import 'package:todo_calendar_client/GlobalEndpoints.dart';
+import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class SnapshotsListPageWidget extends StatefulWidget {
   const SnapshotsListPageWidget({super.key});

@@ -8,7 +8,7 @@ import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
-import 'package:todo_calendar_client/tasks_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
 import '../GlobalEndpoints.dart';
 import '../models/responses/additional_responces/GetResponse.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';

@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/models/requests/UserLogoutModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
-import 'package:todo_calendar_client/user_info_map.dart';
+import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
 
-import 'GlobalEndpoints.dart';
-import 'models/responses/additional_responces/GetResponse.dart';
-import 'models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/GlobalEndpoints.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 import 'profile_page.dart';
 import 'home_page.dart';
 

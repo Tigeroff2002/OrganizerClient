@@ -11,12 +11,12 @@ import 'dart:async';
 
 import 'package:http/http.dart' as http;
 
-import 'package:todo_calendar_client/user_page.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 
-import 'GlobalEndpoints.dart';
-import 'models/requests/UserInfoRequestModel.dart';
-import 'models/responses/additional_responces/GetResponse.dart';
-import 'models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/GlobalEndpoints.dart';
+import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class AdditionalPageWidget extends StatefulWidget {
 

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
-import 'package:todo_calendar_client/events_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/models/requests/GroupDeleteParticipantRequest.dart';
 import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
@@ -12,13 +12,13 @@ import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/ShortUserInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GroupRequestedInfo.dart';
-import 'package:todo_calendar_client/participant_calendar_page.dart';
+import 'package:todo_calendar_client/content_widgets/participant_calendar_page.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
-import 'package:todo_calendar_client/user_page.dart';
-import 'GlobalEndpoints.dart';
-import 'models/responses/additional_responces/GroupGetResponse.dart';
-import 'models/responses/additional_responces/Response.dart';
-import 'models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
+import 'package:todo_calendar_client/GlobalEndpoints.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/GroupGetResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class UsersFromGroupListPageWidget extends StatefulWidget {
 

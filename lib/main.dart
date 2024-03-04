@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_calendar_client/profile_page.dart';
-import 'package:todo_calendar_client/user_info_map.dart';
-import 'package:todo_calendar_client/home_page.dart';
-import 'package:todo_calendar_client/api_requests.dart';
-import 'package:todo_calendar_client/login_page.dart';
-import 'package:todo_calendar_client/register_page.dart';
-import 'package:todo_calendar_client/user_page.dart';
+import 'package:todo_calendar_client/main_widgets/profile_page.dart';
+import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
+import 'package:todo_calendar_client/main_widgets/home_page.dart';
+import 'package:todo_calendar_client/main_widgets/login_page.dart';
+import 'package:todo_calendar_client/main_widgets/register_page.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

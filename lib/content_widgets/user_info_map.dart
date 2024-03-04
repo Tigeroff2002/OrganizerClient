@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo_calendar_client/events_list_page.dart';
-import 'package:todo_calendar_client/groups_list_page.dart';
-import 'package:todo_calendar_client/issues_list_page.dart';
-import 'package:todo_calendar_client/snapshots_list_page.dart';
-import 'package:todo_calendar_client/tasks_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/groups_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/issues_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/snapshots_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
 
 class UserInfoMapPage extends StatelessWidget {
 

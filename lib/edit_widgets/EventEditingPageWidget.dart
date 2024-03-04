@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:todo_calendar_client/events_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingEventModel.dart';
 import 'package:todo_calendar_client/models/requests/EventInfoRequest.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
