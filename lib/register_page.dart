@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -49,19 +51,16 @@ class RegisterPageState extends State<RegisterPage> {
     String email = emailController.text;
     String phoneNumber = phoneNumberController.text;
 
-    String firebaseToken = "";
-
-    FirebaseMessaging.instance.getToken().then(
-            (value) => {
-              firebaseToken = value.toString()
-            });
+    final randomNumber = Random().nextDouble();
+    final randomBytes = utf8.encode(randomNumber.toString());
+    final token = md5.convert(randomBytes).toString();
 
     var model = new UserRegisterModel(
         email: email,
         name: name,
         password: password,
         phoneNumber: phoneNumber,
-        firebaseToken: firebaseToken);
+        firebaseToken: token);
 
     var requestMap = model.toJson();
 

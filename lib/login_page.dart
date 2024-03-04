@@ -12,6 +12,8 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Respo
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/user_page.dart';
 import 'dart:convert';
+import 'dart:math';
+import 'package:crypto/crypto.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -39,12 +41,16 @@ class LoginPageState extends State<LoginPage> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    String? token = await FirebaseMessaging.instance.getToken();
+    //String? token = await FirebaseMessaging.instance.getToken();
+
+    final randomNumber = Random().nextDouble();
+    final randomBytes = utf8.encode(randomNumber.toString());
+    final token = md5.convert(randomBytes).toString();
 
     var model = new UserLoginModel(
         email: email,
         password: password,
-        firebaseToken: token.toString());
+        firebaseToken: token);
 
     var requestMap = model.toJson();
 
