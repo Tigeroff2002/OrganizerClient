@@ -1,11 +1,11 @@
 import 'package:todo_calendar_client/models/requests/RequestWithToken.dart';
 
-class AddFirstChatMessage extends RequestWithToken{
+class AddFirstChatMessageModel extends RequestWithToken{
 
   final String text;
   final int receiverId;
 
-  AddFirstChatMessage({
+  AddFirstChatMessageModel({
     required int userId,
     required String token,
     required this.text,
