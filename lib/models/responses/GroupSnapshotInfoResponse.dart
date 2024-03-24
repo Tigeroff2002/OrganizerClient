@@ -10,7 +10,7 @@ class GroupSnapshotInfoResponse {
   final String createMoment;
   final int groupId;
   final List<dynamic> participantsKPIS;
-  final Float averageKPI;
+  final double averageKPI;
   final String content;
 
   GroupSnapshotInfoResponse({

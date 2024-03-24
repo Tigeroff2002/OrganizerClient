@@ -36,9 +36,10 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
   List<SnapshotInfoResponse> snapshotsList = [
     SnapshotInfoResponse(
-        snapshotType: 'd',
+      snapshotType: 'd',
       beginMoment: 'e',
       endMoment: 'df',
+      KPI: 1.0,
       content: 'd',
       creationTime: 'd'
     )
@@ -267,6 +268,20 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                       ),
                       Text(
                         utf8.decode(data.endMoment.codeUnits),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 12.0),
+                      Text(
+                        'Коэффициент KPI по результатам отчета: ',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        utf8.decode(utf8.encode(data.KPI.toString())),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

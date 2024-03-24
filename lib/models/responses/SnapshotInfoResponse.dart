@@ -6,7 +6,7 @@ class SnapshotInfoResponse {
   final String beginMoment;
   final String endMoment;
   final String snapshotType;
-  final Float KPI;
+  final double KPI;
   final String content;
 
   SnapshotInfoResponse({
