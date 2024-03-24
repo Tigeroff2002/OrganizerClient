@@ -150,6 +150,7 @@ class IssueEditingPageState extends State<IssueEditingPageWidget> {
     String description = issueDescriptionController.text;
     String imgLink = issueLinkController.text;
     String issueType = selectedIssueType.toString();
+    String issueStatus = selectedIssueStatus.toString();
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -169,7 +170,8 @@ class IssueEditingPageState extends State<IssueEditingPageWidget> {
           title: title,
           description: description,
           imgLink: imgLink,
-          issueId: issueId);
+          issueId: issueId,
+          issueStatus: issueStatus);
 
       var requestMap = model.toJson();
 
@@ -263,6 +265,7 @@ class IssueEditingPageState extends State<IssueEditingPageWidget> {
     });
 
     var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
+    var issueStatuses = ['None', 'Reported', 'InProgress', 'Closed'];
 
     return Scaffold(
       appBar: AppBar(
@@ -315,6 +318,24 @@ class IssueEditingPageState extends State<IssueEditingPageWidget> {
                   onChanged: (String? newType){
                     setState(() {
                       selectedIssueType = newType.toString();
+                    });
+                  }),
+              SizedBox(height: 12.0),
+              Text(
+                'Статус запроса',
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+              ),
+              SizedBox(height: 4.0),
+              DropdownButton(
+                  value: selectedIssueStatus,
+                  items: issueStatuses.map((String status){
+                    return DropdownMenuItem(
+                        value: status,
+                        child: Text(status));
+                  }).toList(),
+                  onChanged: (String? newStatus){
+                    setState(() {
+                      selectedIssueStatus = newStatus.toString();
                     });
                   }),
               SizedBox(height: 12.0),
@@ -372,10 +393,13 @@ class IssueEditingPageState extends State<IssueEditingPageWidget> {
     );
   }
 
-  String selectedIssueType = 'None';
-
   String existedTitle = '';
   String existedDescription = '';
   String existedLink = '';
+
+  String selectedIssueType = 'None';
   String existedIssueType = 'None';
+
+  String selectedIssueStatus = 'None';
+  String existedIssueStatus = 'None';
 }

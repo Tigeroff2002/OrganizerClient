@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/edit_widgets/TaskEditingPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/MessageInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/ShortChatInfoResponse.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
@@ -15,20 +16,19 @@ import 'package:todo_calendar_client/add_widgets/TaskPlaceholderWidget.dart';
 import 'package:todo_calendar_client/models/responses/TaskInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class ChatsListPageWidget extends StatefulWidget {
-  const ChatsListPageWidget({super.key});
-
+class ChatMessagesListPageWidget extends StatefulWidget {
+  const ChatMessagesListPageWidget({super.key});
 
   @override
-  ChatsListPageState createState() => ChatsListPageState();
+  ChatMessagesListPageState createState() => ChatMessagesListPageState();
 }
 
-class ChatsListPageState extends State<ChatsListPageWidget> {
+class ChatMessagesListPageState extends State<ChatMessagesListPageWidget> {
 
   @override
   void initState() {
     super.initState();
-    getChatsInfo();
+    getChatMessagesInfo();
   }
 
   final headers = {'Content-Type': 'application/json'};
@@ -36,14 +36,14 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  var emptyChat = ShortChatInfoResponse(
+  var emptyMessage = MessageInfoResponse(
     chatId: 1,
     caption: 'some_chat',
     receiverId: 1,
     receiverName: 'receiver'
   );
 
-  List<ShortChatInfoResponse> chatsList = [
+  List<MessageInfoResponse> messagesList = [
     ShortChatInfoResponse(
       chatId: 1,
       caption: 'some_chat',
@@ -52,7 +52,7 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
   )];
 
 
-  Future<void> getChatsInfo() async {
+  Future<void> getChatMessagesInfo() async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
@@ -73,7 +73,7 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/chatting/get_user_chats';
+      var requestString = '/chatting/get_chat_info';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -92,15 +92,15 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
 
           print(userRequestedInfo);
           var data = jsonDecode(userRequestedInfo);
-          var userChats = data['chats'];
+          var userMessages = data['messages'];
 
-          var fetchedChats =
-          List<ShortChatInfoResponse>
-              .from(userChats.map(
-                  (data) => ShortChatInfoResponse.fromJson(data)));
+          var fetchedMessages =
+          List<MessageInfoResponse>
+              .from(userMessages.map(
+                  (data) => MessageInfoResponse.fromJson(data)));
 
           setState(() {
-            chatsList = fetchedChats;
+            messagesList = fetchedMessages;
           });
         }
       }
@@ -162,7 +162,7 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список ваших чатов'),
+          title: Text('Сообщения чата: '),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -173,12 +173,12 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
             },
           ),
         ),
-        body: chatsList.length == 0
+        body: messagesList.length == 0
         ? Column(
           children: [
             SizedBox(height: 16.0),
             Text(
-              'У вас пока нет чатов',
+              'Сообщений пока нет? Но вы можете отправить первое!',
               style: TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
@@ -187,9 +187,9 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
           ],
         )
         : ListView.builder(
-          itemCount: chatsList.length,
+          itemCount: messagesList.length,
           itemBuilder: (context, index) {
-            final data = chatsList[index];
+            final data = messagesList[index];
             return Card(
               color: isColor ? Colors.cyan : Colors.greenAccent,
               elevation: 15,
