@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/edit_widgets/TaskEditingPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/ChatMessagesResponse.dart';
 import 'package:todo_calendar_client/models/responses/MessageInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/ShortChatInfoResponse.dart';
 import 'dart:convert';
@@ -17,42 +18,40 @@ import 'package:todo_calendar_client/models/responses/TaskInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class ChatMessagesListPageWidget extends StatefulWidget {
-  const ChatMessagesListPageWidget({super.key});
+
+  final int chatId;
+
+  ChatMessagesListPageWidget({required this.chatId});
 
   @override
-  ChatMessagesListPageState createState() => ChatMessagesListPageState();
+  ChatMessagesListPageState createState() => ChatMessagesListPageState(chatId: chatId);
 }
 
 class ChatMessagesListPageState extends State<ChatMessagesListPageWidget> {
-
-  @override
-  void initState() {
-    super.initState();
-    getChatMessagesInfo();
-  }
 
   final headers = {'Content-Type': 'application/json'};
   bool isColor = false;
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  var emptyMessage = MessageInfoResponse(
-    chatId: 1,
-    caption: 'some_chat',
-    receiverId: 1,
-    receiverName: 'receiver'
-  );
+  final int chatId;
+  String chatName = 'Пустой чат';
+
+  ChatMessagesListPageState({required this.chatId});
 
   List<MessageInfoResponse> messagesList = [
-    ShortChatInfoResponse(
-      chatId: 1,
-      caption: 'some_chat',
-      receiverId: 1,
-      receiverName: 'receiver'
+    MessageInfoResponse(
+    messageId: 1,
+    text: 'Пустой текст',
+    sendTime: DateTime.now().toLocal().toString(),
+    isEdited: false,
+    writerId: 1,
+    writerName: 'Tigeroff'
   )];
 
 
   Future<void> getChatMessagesInfo() async {
+
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
@@ -92,6 +91,13 @@ class ChatMessagesListPageState extends State<ChatMessagesListPageWidget> {
 
           print(userRequestedInfo);
           var data = jsonDecode(userRequestedInfo);
+
+          var chatInfo = ChatMessagesResponse.fromJson(data);
+
+         setState(() {
+          chatName = chatInfo.caption;
+         });
+
           var userMessages = data['messages'];
 
           var fetchedMessages =
@@ -141,7 +147,7 @@ class ChatMessagesListPageState extends State<ChatMessagesListPageWidget> {
                     content:
                     Text(
                         'Произошла ошибка при получении'
-                            ' полной информации о пользователе!'),
+                            ' полной информациио чате!'),
                     actions: [
                       TextButton(
                         onPressed: () {
@@ -162,7 +168,7 @@ class ChatMessagesListPageState extends State<ChatMessagesListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Сообщения чата: '),
+          title: Text('Сообщения чата ' + chatName + ': '),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

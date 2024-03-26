@@ -112,4 +112,196 @@ class EmptyChatPageState extends State<EmptyChatPage>{
       ),
     );
   }
+
+    Future<void> addFirstChatMessage(BuildContext context) async {
+
+      String snapshotType = selectedSnapshotType;
+      String beginMoment = selectedBeginDateTime.toString();
+      String endMoment = selectedEndDateTime.toString();
+
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null) {
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+
+      var model = new AddNewSnapshotModel(
+          userId: (userId),
+          token: token,
+          snapshotType: snapshotType,
+          beginMoment: beginMoment,
+          endMoment: endMoment
+      );
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/snapshots/perform_new';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = Response.fromJson(jsonData);
+
+          if (responseContent.outInfo != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(responseContent.outInfo.toString())
+                )
+            );
+          }
+        }
+
+        snapshotTypeController.clear();
+      }
+      catch (e) {
+        if (e is SocketException) {
+          //treat SocketException
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+        else if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else
+          print("Unhandled exception: ${e.toString()}");
+      }
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Создание нового снапшота не произошло!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+} var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/chatting/get_possible_direct_chat';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = ChatMessagesResponse.fromJson(jsonData);
+
+          var chatId = responseContent.chatId;
+
+          Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => 
+                      ChatMessagesListPageWidget(chatId: chatId)),);
+
+          return true;
+        }
+
+        return false;
+      }
+      catch (e) {
+        if (e is SocketException) {
+          //treat SocketException
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+        else if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else
+          print("Unhandled exception: ${e.toString()}");
+      }
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Создание нового снапшота не произошло!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+
+      return false;
+    }
+
+    return false;
+  }
 }
