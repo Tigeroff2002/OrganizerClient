@@ -2,6 +2,7 @@ class IssueInfoResponse {
 
   final int issueId;
   final String issueType;
+  final String issueStatus;
   final String title;
   final String description;
   final String imgLink;
@@ -10,6 +11,7 @@ class IssueInfoResponse {
   IssueInfoResponse({
     required this.issueId,
     required this.issueType,
+    required this.issueStatus,
     required this.title,
     required this.description,
     required this.imgLink,
@@ -20,6 +22,7 @@ class IssueInfoResponse {
     return IssueInfoResponse(
       issueId: json['issue_id'],
       issueType: json['issue_type'],
+      issueStatus: json['issue_status'],
       title: json['title'],
       description: json['description'],
       imgLink: json['img_link'],

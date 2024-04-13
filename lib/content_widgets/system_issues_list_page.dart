@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/FullIssueInfoResponse.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
@@ -14,20 +15,20 @@ import 'package:todo_calendar_client/models/responses/IssueInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class IssuesListPageWidget extends StatefulWidget {
-  const IssuesListPageWidget({super.key});
+class SystemIssuesListPageWidget extends StatefulWidget {
+  const SystemIssuesListPageWidget({super.key});
 
 
   @override
-  IssuesListPageState createState() => IssuesListPageState();
+  SystemIssuesListPageState createState() => SystemIssuesListPageState();
 }
 
-class IssuesListPageState extends State<IssuesListPageWidget> {
+class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
 
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+    getSystemIssues();
   }
 
   final headers = {'Content-Type': 'application/json'};
@@ -35,19 +36,20 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  List<IssueInfoResponse> issuesList = [
-    IssueInfoResponse(
+  List<FullIssueInfoResponse> systemIssuesList = [
+    FullIssueInfoResponse(
         issueId: 1,
         issueType: 'd',
         issueStatus: 'a',
         title: 'd',
         description: 'd',
         imgLink: 'd',
-        createMoment: 'd'
+        createMoment: 'd',
+        userName: 'kirill'
     )
   ];
 
-  Future<void> getUserInfo() async {
+  Future<void> getSystemIssues() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -69,7 +71,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/users/get_info';
+      var requestString = '/issues/get_all_issues';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -87,15 +89,15 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
           var data = jsonDecode(userRequestedInfo);
-          var userIssues = data['user_issues'];
+          var userIssues = data['issues'];
 
           var fetchedIssues =
-          List<IssueInfoResponse>
+          List<FullIssueInfoResponse>
               .from(userIssues.map(
-                  (data) => IssueInfoResponse.fromJson(data)));
+                  (data) => FullIssueInfoResponse.fromJson(data)));
 
           setState(() {
-            issuesList = fetchedIssues;
+            systemIssuesList = fetchedIssues;
           });
         }
       }
@@ -156,7 +158,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных для администрации запросов'),
+          title: Text('Список всех открытх проблемных запросов'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -167,45 +169,24 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
             },
           ),
         ),
-        body: issuesList.length == 0
+        body: systemIssuesList.length == 0
             ? Column(
           children: [
             SizedBox(height: 16.0),
             Text(
-                'Вы пока не отправили администрации ни одного запроса',
+                'Нет ни одного открытого запроса',
                 style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 26),
                 textAlign: TextAlign.center),
             SizedBox(height: 16.0),
-            ElevatedButton(
-                child: Text('Сделать новый запрос'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context)
-                      => SnapshotPlaceholderWidget(
-                          color: Colors.greenAccent,
-                          text: 'Создание нового запроса',
-                          index: 4))
-                  );
-                })
           ],
         )
             : ListView.builder(
-          itemCount: issuesList.length,
+          itemCount: systemIssuesList.length,
           itemBuilder: (context, index) {
-            final data = issuesList[index];
+            final data = systemIssuesList[index];
             return Card(
               color: isColor ? Colors.cyan : Colors.greenAccent,
               elevation: 15,
@@ -220,6 +201,20 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        'Пользователь, создавший запрос: ',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        utf8.decode(utf8.encode(data.userName)),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
                       Text(
                         'Заголовок запроса: ',
                         style: TextStyle(

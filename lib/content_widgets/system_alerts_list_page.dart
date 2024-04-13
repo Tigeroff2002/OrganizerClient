@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/AlertInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/FullIssueInfoResponse.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
@@ -14,20 +16,20 @@ import 'package:todo_calendar_client/models/responses/IssueInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class IssuesListPageWidget extends StatefulWidget {
-  const IssuesListPageWidget({super.key});
+class SystemAlertsListPageWidget extends StatefulWidget {
+  const SystemAlertsListPageWidget({super.key});
 
 
   @override
-  IssuesListPageState createState() => IssuesListPageState();
+  SystemAlertsListPageState createState() => SystemAlertsListPageState();
 }
 
-class IssuesListPageState extends State<IssuesListPageWidget> {
+class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
 
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+    getSystemAlerts();
   }
 
   final headers = {'Content-Type': 'application/json'};
@@ -35,19 +37,17 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  List<IssueInfoResponse> issuesList = [
-    IssueInfoResponse(
-        issueId: 1,
-        issueType: 'd',
-        issueStatus: 'a',
+  List<AlertInfoResponse> systemAlertsList = [
+    AlertInfoResponse(
+        alertId: 1,
         title: 'd',
         description: 'd',
-        imgLink: 'd',
-        createMoment: 'd'
+        moment: 'd',
+        isAlerted: false
     )
   ];
 
-  Future<void> getUserInfo() async {
+  Future<void> getSystemAlerts() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -69,7 +69,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/users/get_info';
+      var requestString = '/alerts/get_all_alerts';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -87,15 +87,15 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
           var data = jsonDecode(userRequestedInfo);
-          var userIssues = data['user_issues'];
+          var userAlerts = data['alerts'];
 
-          var fetchedIssues =
-          List<IssueInfoResponse>
-              .from(userIssues.map(
-                  (data) => IssueInfoResponse.fromJson(data)));
+          var fetchedAlerts =
+          List<AlertInfoResponse>
+              .from(userAlerts.map(
+                  (data) => AlertInfoResponse.fromJson(data)));
 
           setState(() {
-            issuesList = fetchedIssues;
+            systemAlertsList = fetchedAlerts;
           });
         }
       }
@@ -156,7 +156,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных для администрации запросов'),
+          title: Text('Список всех алертов системы'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -167,45 +167,24 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
             },
           ),
         ),
-        body: issuesList.length == 0
+        body: systemAlertsList.length == 0
             ? Column(
           children: [
             SizedBox(height: 16.0),
             Text(
-                'Вы пока не отправили администрации ни одного запроса',
+                'Нет ни одного системного алерта',
                 style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 26),
                 textAlign: TextAlign.center),
             SizedBox(height: 16.0),
-            ElevatedButton(
-                child: Text('Сделать новый запрос'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context)
-                      => SnapshotPlaceholderWidget(
-                          color: Colors.greenAccent,
-                          text: 'Создание нового запроса',
-                          index: 4))
-                  );
-                })
           ],
         )
             : ListView.builder(
-          itemCount: issuesList.length,
+          itemCount: systemAlertsList.length,
           itemBuilder: (context, index) {
-            final data = issuesList[index];
+            final data = systemAlertsList[index];
             return Card(
               color: isColor ? Colors.cyan : Colors.greenAccent,
               elevation: 15,
@@ -221,7 +200,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Заголовок запроса: ',
+                        'Заголовок алерта: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -235,35 +214,21 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                       ),
                       SizedBox(width: 8.0),
                       Text(
-                        'Тип запроса: ',
+                        'Алерт был просмотрен: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                          aliaser.GetAlias(
-                              aliaser.getIssueTypeEnumValue(data.issueType)),
-                          style: TextStyle(
-                            color: Colors.white,
-                          )
-                      ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        'Статус запроса: ',
+                        utf8.decode(utf8.encode(data.isAlerted.toString())),
                         style: TextStyle(
                           color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      Text(
-                          aliaser.GetAlias(
-                              aliaser.getIssueStatusEnumValue(data.issueStatus)),
-                          style: TextStyle(
-                            color: Colors.white,
-                          )
                       ),
                       SizedBox(height: 8.0),
                       Text(
-                        'Описание запроса: ',
+                        'Описание ошибки в алерте: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -275,17 +240,15 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(width: 8.0),
-                      Image.network(utf8.decode(utf8.encode(data.imgLink)), scale: 0.01),
                       SizedBox(height: 12.0),
                       Text(
-                        'Время создания запроса: ',
+                        'Время алерта: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        utf8.decode(data.createMoment.codeUnits),
+                        utf8.decode(data.moment.codeUnits),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

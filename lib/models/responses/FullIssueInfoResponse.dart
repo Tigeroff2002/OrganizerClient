@@ -9,6 +9,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
   FullIssueInfoResponse({
     required int issueId,
     required String issueType,
+    required String issueStatus,
     required String title,
     required String description,
     required String imgLink,
@@ -17,6 +18,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
   }) : super(
       issueId: issueId,
       issueType: issueType,
+      issueStatus: issueStatus,
       title: title,
       description: description,
       imgLink: imgLink,
@@ -26,6 +28,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
     return FullIssueInfoResponse(
       issueId: json['issue_id'],
       issueType: json['issue_type'],
+      issueStatus: json['issue_status'],
       title: json['title'],
       description: json['description'],
       imgLink: json['img_link'],
