@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/EventInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/TaskInfoResponse.dart';
-import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 
 class UserInfoResponse {
 

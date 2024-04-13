@@ -13,7 +13,7 @@ import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
 import 'package:todo_calendar_client/models/responses/IssueInfoResponse.dart';
-import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class SystemAlertsListPageWidget extends StatefulWidget {

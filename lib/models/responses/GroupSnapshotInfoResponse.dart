@@ -1,30 +1,29 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:todo_calendar_client/models/responses/CommonSnapshotInfoResponse.dart';
 
-class GroupSnapshotInfoResponse {
+class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
 
-  final String snapshotType;
-  final String auditType;
-  final String beginMoment;
-  final String endMoment;
-  final String createMoment;
   final int groupId;
   final List<dynamic> participantsKPIS;
   final double averageKPI;
-  final String content;
 
   GroupSnapshotInfoResponse({
-    required this.snapshotType,
-    required this.auditType,
-    required this.beginMoment,
-    required this.endMoment,
-    required this.createMoment,
+    required String snapshotType,
+    required String auditType,
+    required String beginMoment,
+    required String endMoment,
+    required String createMoment,
     required this.groupId,
     required this.participantsKPIS,
     required this.averageKPI,
-    required this.content
-  });
+    required String content
+  }) : super(
+      snapshotType: snapshotType,
+      auditType: auditType,
+      creationTime: createMoment,
+      beginMoment: beginMoment,
+      endMoment: endMoment,
+      content: content);
 
     factory GroupSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return GroupSnapshotInfoResponse(

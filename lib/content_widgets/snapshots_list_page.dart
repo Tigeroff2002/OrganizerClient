@@ -10,7 +10,7 @@ import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
-import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class SnapshotsListPageWidget extends StatefulWidget {
@@ -34,8 +34,8 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  List<SnapshotInfoResponse> snapshotsList = [
-    SnapshotInfoResponse(
+  List<PersonalSnapshotInfoResponse> snapshotsList = [
+    PersonalSnapshotInfoResponse(
       snapshotType: 'd',
       auditType: '1',
       beginMoment: 'e',
@@ -89,9 +89,9 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
           var userSnapshots = data['user_snapshots'];
 
           var fetchedSnapshots =
-          List<SnapshotInfoResponse>
+          List<PersonalSnapshotInfoResponse>
               .from(userSnapshots.map(
-                  (data) => SnapshotInfoResponse.fromJson(data)));
+                  (data) => PersonalSnapshotInfoResponse.fromJson(data)));
 
           setState(() {
             snapshotsList = fetchedSnapshots;
