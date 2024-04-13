@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class SnapshotInfoResponse {
 
   final String creationTime;
