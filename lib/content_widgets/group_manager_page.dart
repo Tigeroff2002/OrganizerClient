@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/add_widgets/AddGroupSnapshotWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
+import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
@@ -13,40 +15,49 @@ import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart'
 import 'package:todo_calendar_client/models/responses/SnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class SnapshotsListPageWidget extends StatefulWidget {
-  const SnapshotsListPageWidget({super.key});
+class GroupManagerPageWidget extends StatefulWidget {
 
+  final int groupId;
+
+  GroupManagerPageWidget({required this.groupId});
 
   @override
-  SnapshotsListPageState createState() => SnapshotsListPageState();
+  GroupManagerPageState createState() => GroupManagerPageState(groupId: groupId);
 }
 
-class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
+class GroupManagerPageState extends State<GroupManagerPageWidget> {
+
+  final int groupId;
 
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+    getGroupSnapshotsInfo();
   }
 
+  GroupManagerPageState({required this.groupId});
+
   final headers = {'Content-Type': 'application/json'};
+
   bool isColor = false;
 
   final EnumAliaser aliaser = new EnumAliaser();
 
-  List<SnapshotInfoResponse> snapshotsList = [
-    SnapshotInfoResponse(
+  List<GroupSnapshotInfoResponse> groupSnapshotsList = [
+    GroupSnapshotInfoResponse(
       snapshotType: 'd',
       auditType: '1',
       beginMoment: 'e',
       endMoment: 'df',
-      KPI: 1.0,
       content: 'd',
-      creationTime: 'd'
+      groupId: 1,
+      participantsKPIS: List.empty(),
+      averageKPI: 1.0,
+      createMoment: "1"
     )
   ];
 
-  Future<void> getUserInfo() async {
+  Future<void> getGroupSnapshotsInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -68,7 +79,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/users/get_info';
+      var requestString = '/snapshots/get_group_snapshots';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
@@ -86,15 +97,15 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
           var data = jsonDecode(userRequestedInfo);
-          var userSnapshots = data['user_snapshots'];
+          var groupSnapshots = data['group_snapshots'];
 
           var fetchedSnapshots =
-          List<SnapshotInfoResponse>
-              .from(userSnapshots.map(
-                  (data) => SnapshotInfoResponse.fromJson(data)));
+          List<GroupSnapshotInfoResponse>
+              .from(groupSnapshots.map(
+                  (data) => GroupSnapshotInfoResponse.fromJson(data)));
 
           setState(() {
-            snapshotsList = fetchedSnapshots;
+            groupSnapshotsList = fetchedSnapshots;
           });
         }
       }
@@ -155,7 +166,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных снапшотов'),
+          title: Text('Список созданных снапшотов группы: '),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -166,7 +177,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
             },
           ),
         ),
-        body: snapshotsList.length == 0
+        body: groupSnapshotsList.length == 0
         ? Column(
           children: [
             SizedBox(height: 16.0),
@@ -193,18 +204,15 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context)
-                      => SnapshotPlaceholderWidget(
-                          color: Colors.greenAccent,
-                          text: 'Создание нового снапшота',
-                          index: 4))
+                      => AddGroupSnapshotWidget(groupId: groupId))
                   );
                 })
           ],
         )
         : ListView.builder(
-          itemCount: snapshotsList.length,
+          itemCount: groupSnapshotsList.length,
           itemBuilder: (context, index) {
-            final data = snapshotsList[index];
+            final data = groupSnapshotsList[index];
             return Card(
               color: isColor ? Colors.cyan : Colors.greenAccent,
               elevation: 15,
@@ -254,7 +262,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                           ),
                         ),
                         Text(
-                          utf8.decode(data.creationTime.codeUnits),
+                          utf8.decode(data.createMoment.codeUnits),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -290,13 +298,13 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        'Коэффициент KPI по результатам отчета: ',
+                        'Средний оэффициент KPI по результатам отчета: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(data.KPI.toString())),
+                        utf8.decode(utf8.encode(data.averageKPI.toString())),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

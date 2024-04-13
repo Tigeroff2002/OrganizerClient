@@ -10,7 +10,7 @@ import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
-import 'package:todo_calendar_client/content_widgets/users_from_group_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/group_info_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
@@ -242,12 +242,12 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                       ),
                       SizedBox(height: 8),
                       ElevatedButton(
-                        child: Text('Список пользователей'),
+                        child: Text('Страница группы:'),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context)
-                            => UsersFromGroupListPageWidget(groupId: data.groupId)),
+                            => GroupInfoPageWidget(groupId: data.groupId)),
                           );
                         },
                       ),

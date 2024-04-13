@@ -243,7 +243,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
                       child: Text('Функционал администратора'),
                     )
                     : Text(
-                      'Вам недоступен функционал администратора: ',
+                      'Вам недоступен функционал администратора',
                       style: TextStyle(
                           color: Colors.blue,
                           fontSize: 16.0,
