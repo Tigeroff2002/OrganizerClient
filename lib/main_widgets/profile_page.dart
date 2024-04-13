@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/main_widgets/system_admin_page.dart';
 import 'package:todo_calendar_client/models/requests/UserUpdateRoleRequest.dart';
 import 'package:todo_calendar_client/models/responses/ShortUserInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
@@ -18,15 +19,15 @@ import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class AdditionalPageWidget extends StatefulWidget {
+class ProfilePageWidget extends StatefulWidget {
 
   @override
-  _AdditionalPageState createState() => _AdditionalPageState();
+  ProfilePageState createState() => ProfilePageState();
 }
 
 final headers = {'Content-Type': 'application/json'};
 
-class _AdditionalPageState extends State<AdditionalPageWidget> {
+class ProfilePageState extends State<ProfilePageWidget> {
   String pictureUrl = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg";
 
   String accountCreationTime = '';
@@ -98,7 +99,7 @@ class _AdditionalPageState extends State<AdditionalPageWidget> {
             userName = data['user_name'].toString();
             userRole = data['user_role'].toString();
             isUserRole = userRole == 'User';
-            //accountCreationTime = data['account_creation'].toString();
+            accountCreationTime = data['account_creation'].toString();
             email = data['user_email'].toString();
             phoneNumber = data['phone_number'].toString();
             password = data['password'].toString();
@@ -224,6 +225,32 @@ class _AdditionalPageState extends State<AdditionalPageWidget> {
                         )
                     ),
                     SizedBox(height: 12.0),
+                    !isUserRole
+                      ? ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor : Colors.white,
+                        shadowColor: Colors.greenAccent,
+                        elevation: 3,
+                        minimumSize: Size(200, 60),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SystemAdminPageWidget(userName: userName)),);
+                      },
+                      child: Text('Функционал администратора'),
+                    )
+                    : Text(
+                      'Вам недоступен функционал администратора: ',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
                     Image.network(pictureUrl, scale: 0.01),
                     SizedBox(height: 12.0),
                     Text(

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         '/register': (context) => RegisterPage(),
         '/session/user_page': (context) => UserPage(),
         '/session/events_page': (context) => UserInfoMapPage(),
-        '/session/additional_page': (context) => AdditionalPageWidget()
+        '/session/profile_page': (context) => ProfilePageWidget()
       },
     );
   }

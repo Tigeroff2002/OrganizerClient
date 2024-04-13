@@ -122,7 +122,7 @@ class PersonalAccountState extends State<PersonalAccount> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AdditionalPageWidget()),);
+                              builder: (context) => ProfilePageWidget()),);
                       },
                       child: Text('Профиль пользователя'),
                     ),
