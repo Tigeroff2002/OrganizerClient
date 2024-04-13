@@ -271,8 +271,10 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
                         ),
                       ),
                       SizedBox(width: 8.0),
+                      /*
                       Image.network(utf8.decode(utf8.encode(data.imgLink)), scale: 0.01),
                       SizedBox(height: 12.0),
+                      */
                       Text(
                         'Время создания запроса: ',
                         style: TextStyle(
