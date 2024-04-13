@@ -37,6 +37,7 @@ class SnapshotsListPageState extends State<IssuesListPageWidget> {
 
   List<IssueInfoResponse> issuesList = [
     IssueInfoResponse(
+        issueId: 1,
         issueType: 'd',
         title: 'd',
         description: 'd',

@@ -1,8 +1,9 @@
+import 'package:todo_calendar_client/models/enums/AuditType.dart';
 import 'package:todo_calendar_client/models/enums/DecisionType.dart';
 import 'package:todo_calendar_client/models/enums/EventType.dart';
 import 'package:todo_calendar_client/models/enums/EventStatus.dart';
 import 'package:todo_calendar_client/models/enums/GroupType.dart';
-import 'package:todo_calendar_client/models/enums/ReportType.dart';
+import 'package:todo_calendar_client/models/enums/SnapshotType.dart';
 import 'package:todo_calendar_client/models/enums/TaskCurrentStatus.dart';
 import 'package:todo_calendar_client/models/enums/TaskType.dart';
 import 'package:todo_calendar_client/models/enums/UserRole.dart';
@@ -83,11 +84,16 @@ final class EnumAliaser{
       else if (enumValue == SnapshotType.EventsSnapshot){
         return 'По мероприятиям пользователя';
       }
-      else if (enumValue == SnapshotType.ReportsSnapshot){
-        return 'По отчетам пользователя';
-      }
       else if (enumValue == SnapshotType.IssuesSnapshot){
         return 'По вопросам пользователя';
+      }
+    }
+    else if (enumValue is AuditType){
+      if (enumValue == AuditType.Personal){
+        return 'Личный пользовательский';
+      }
+      else if (enumValue == AuditType.Group){
+        return 'Групповой';
       }
     }
     else if (enumValue is TaskCurrentStatus){
@@ -227,9 +233,6 @@ final class EnumAliaser{
     }
     else if (naming == 'TasksSnapshot'){
       return SnapshotType.TasksSnapshot;
-    }
-    else if (naming == 'ReportsSnapshot'){
-      return SnapshotType.ReportsSnapshot;
     }
     else if (naming == 'IssuesSnapshot'){
       return SnapshotType.IssuesSnapshot;

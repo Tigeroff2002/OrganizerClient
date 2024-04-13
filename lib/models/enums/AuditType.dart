@@ -1,0 +1,6 @@
+enum AuditType{
+
+  Personal,
+  
+  Group
+}

@@ -4,11 +4,13 @@ class SnapshotInfoResponse {
   final String beginMoment;
   final String endMoment;
   final String snapshotType;
+  final String auditType;
   final double KPI;
   final String content;
 
   SnapshotInfoResponse({
     required this.snapshotType,
+    required this.auditType,
     required this.creationTime,
     required this.beginMoment,
     required this.endMoment,
@@ -22,6 +24,7 @@ class SnapshotInfoResponse {
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],
         snapshotType: json['snapshot_type'],
+        auditType: json['audit_type'],
         KPI: json['kpi'],
         content: json['content']
     );

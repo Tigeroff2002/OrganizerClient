@@ -69,10 +69,13 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var model = new AddNewSnapshotModel(
+      var auditType = "Personal";
+
+      var model = AddNewSnapshotModel(
           userId: (userId),
           token: token,
           snapshotType: snapshotType,
+          auditType: auditType,
           beginMoment: beginMoment,
           endMoment: endMoment
       );

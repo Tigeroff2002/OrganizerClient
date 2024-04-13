@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class GroupSnapshotInfoResponse {
 
   final String snapshotType;
+  final String auditType;
   final String beginMoment;
   final String endMoment;
   final String createMoment;
@@ -15,6 +16,7 @@ class GroupSnapshotInfoResponse {
 
   GroupSnapshotInfoResponse({
     required this.snapshotType,
+    required this.auditType,
     required this.beginMoment,
     required this.endMoment,
     required this.createMoment,
@@ -26,10 +28,11 @@ class GroupSnapshotInfoResponse {
 
     factory GroupSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return GroupSnapshotInfoResponse(
-        createMoment: json['create_moment'],
+        createMoment: json['creation_time'],
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],
         snapshotType: json['snapshot_type'],
+        auditType: json['audit_type'],
         groupId: json['group_id'],
         participantsKPIS: json['participants_kpis'],
         averageKPI: json['average_kpi'],

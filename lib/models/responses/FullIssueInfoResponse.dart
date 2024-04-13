@@ -7,6 +7,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
   final String userName;
 
   FullIssueInfoResponse({
+    required int issueId,
     required String issueType,
     required String title,
     required String description,
@@ -14,6 +15,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
     required String createMoment,
     required this.userName
   }) : super(
+      issueId: issueId,
       issueType: issueType,
       title: title,
       description: description,
@@ -22,6 +24,7 @@ class FullIssueInfoResponse extends IssueInfoResponse {
 
   factory FullIssueInfoResponse.fromJson(Map <String, dynamic> json) {
     return FullIssueInfoResponse(
+      issueId: json['issue_id'],
       issueType: json['issue_type'],
       title: json['title'],
       description: json['description'],

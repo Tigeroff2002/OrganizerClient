@@ -1,5 +1,6 @@
 class IssueInfoResponse {
 
+  final int issueId;
   final String issueType;
   final String title;
   final String description;
@@ -7,6 +8,7 @@ class IssueInfoResponse {
   final String createMoment;
 
   IssueInfoResponse({
+    required this.issueId,
     required this.issueType,
     required this.title,
     required this.description,
@@ -16,6 +18,7 @@ class IssueInfoResponse {
 
   factory IssueInfoResponse.fromJson(Map <String, dynamic> json) {
     return IssueInfoResponse(
+      issueId: json['issue_id'],
       issueType: json['issue_type'],
       title: json['title'],
       description: json['description'],
