@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/group_info_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewGroupModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import '../GlobalEndpoints.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
 import '../shared_pref_cached_data.dart';
@@ -38,6 +40,8 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         required this.text,
         required this.index
       });
+
+  int createGroupId = -1;
 
   Future<void> addNewGroup(BuildContext context) async
   {
@@ -88,12 +92,31 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         if (response.statusCode == 200) {
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createGroupId = responseContent.id;
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor : Colors.white,
+                        shadowColor: Colors.cyan,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        minimumSize: Size(150, 50)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => GroupInfoPageWidget(groupId: createGroupId)));
+                    },
+                    child: Text('Перейти на страницу новой группы с id = ' + createGroupId.toString()),
+                  ),
                 )
             );
           }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewEventModel.dart';
@@ -62,6 +63,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
         required this.index,
         required this.isPageJustLoaded
       });
+
+  int createEventId = -1;
 
   Future<void> addNewEvent(BuildContext context) async
   {
@@ -137,11 +140,31 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
         if (response.statusCode == 200){
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
-          if (responseContent.outInfo != null){
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createEventId = responseContent.id;
+          });
+
+         if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor : Colors.white,
+                        shadowColor: Colors.cyan,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        minimumSize: Size(150, 50)),
+                    onPressed: () async {
+                      setState(() {
+                        }
+                      );
+                    },
+                    child: Text('Перейти на страницу нового события с id = ' + createEventId.toString()),
+                  ),
                 )
             );
           }

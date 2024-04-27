@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
-import 'package:todo_calendar_client/edit_widgets/TaskEditingPageWidget.dart';
+import 'package:todo_calendar_client/single_content_widgets/SingleTaskPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/ShortChatInfoResponse.dart';
 import 'dart:convert';

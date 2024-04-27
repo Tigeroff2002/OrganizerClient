@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import '../GlobalEndpoints.dart';
 import '../models/requests/AddNewIssueModel.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
@@ -50,6 +51,8 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
         required this.text,
         required this.index
       });
+
+  int createIssueId = -1;
 
   Future<void> addNewIssue(BuildContext context) async
   {
@@ -101,12 +104,31 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
         if (response.statusCode == 200) {
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createIssueId = responseContent.id;
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor : Colors.white,
+                        shadowColor: Colors.cyan,
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        minimumSize: Size(150, 50)),
+                    onPressed: () async {
+                      setState(() {
+                        }
+                      );
+                    },
+                    child: Text('Перейти на страницу нового issue с id = ' + createIssueId.toString()),
+                  ),
                 )
             );
           }
