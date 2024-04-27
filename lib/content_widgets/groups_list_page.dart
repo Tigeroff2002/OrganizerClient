@@ -10,7 +10,7 @@ import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
-import 'package:todo_calendar_client/content_widgets/group_info_page.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
@@ -247,7 +247,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context)
-                            => GroupInfoPageWidget(groupId: data.groupId)),
+                            => SingleGroupPageWidget(groupId: data.groupId)),
                           );
                         },
                       ),

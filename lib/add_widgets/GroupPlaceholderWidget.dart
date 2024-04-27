@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:todo_calendar_client/content_widgets/group_info_page.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewGroupModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
@@ -113,7 +113,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GroupInfoPageWidget(groupId: createGroupId)));
+                        MaterialPageRoute(builder: (context) => SingleGroupPageWidget(groupId: createGroupId)));
                     },
                     child: Text('Перейти на страницу новой группы с id = ' + createGroupId.toString()),
                   ),

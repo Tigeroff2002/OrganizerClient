@@ -21,18 +21,18 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Group
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
-class GroupInfoPageWidget extends StatefulWidget {
+class SingleGroupPageWidget extends StatefulWidget {
 
   final int groupId;
 
-  GroupInfoPageWidget({required this.groupId});
+  SingleGroupPageWidget({required this.groupId});
 
   @override
-  GroupInfoPageState createState() =>
-      new GroupInfoPageState(groupId: groupId);
+  SingleGroupPageState createState() =>
+      new SingleGroupPageState(groupId: groupId);
 }
 
-class GroupInfoPageState extends State<GroupInfoPageWidget> {
+class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
   final int groupId;
   int userId = -1;
@@ -45,7 +45,7 @@ class GroupInfoPageState extends State<GroupInfoPageWidget> {
     getUsersFromGroupInfo();
   }
 
-  GroupInfoPageState({required this.groupId});
+  SingleGroupPageState({required this.groupId});
 
   final headers = {'Content-Type': 'application/json'};
   bool isColor = false;

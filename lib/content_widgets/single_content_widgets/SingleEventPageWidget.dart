@@ -9,27 +9,27 @@ import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewEventModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
-import '../GlobalEndpoints.dart';
-import '../models/responses/additional_responces/GetResponse.dart';
-import '../models/responses/additional_responces/ResponseWithToken.dart';
+import '../../GlobalEndpoints.dart';
+import '../../models/responses/additional_responces/GetResponse.dart';
+import '../../models/responses/additional_responces/ResponseWithToken.dart';
 
-class EventEditingPageWidget extends StatefulWidget{
+class SingleEventPageWidget extends StatefulWidget{
 
   final int eventId;
 
-  EventEditingPageWidget({required this.eventId});
+  SingleEventPageWidget({required this.eventId});
 
   @override
-  EventEditingPageState createState(){
-    return new EventEditingPageState(eventId: eventId, isPageJustLoaded: true);
+  SingleEventPageState createState(){
+    return new SingleEventPageState(eventId: eventId, isPageJustLoaded: true);
   }
 }
 
-class EventEditingPageState extends State<EventEditingPageWidget> {
+class SingleEventPageState extends State<SingleEventPageWidget> {
 
   final int eventId;
 
-  EventEditingPageState({required this.eventId, required this.isPageJustLoaded});
+  SingleEventPageState({required this.eventId, required this.isPageJustLoaded});
 
   bool isPageJustLoaded;
 
