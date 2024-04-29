@@ -33,6 +33,12 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
   SingleTaskPageState({required this.taskId});
 
+    @override
+    void initState() {
+      super.initState();
+      getExistedTask(context);
+  }
+
   final TextEditingController taskCaptionController = TextEditingController();
   final TextEditingController taskDescriptionController = TextEditingController();
 
@@ -263,10 +269,6 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    setState(() {
-      getExistedTask(context);
-    });
 
     var taskTypes = ['None', 'AbstractGoal', 'MeetingPresense', 'JobComplete'];
     var taskStatuses = ['None', 'ToDo', 'InProgress', 'Review', 'Done'];

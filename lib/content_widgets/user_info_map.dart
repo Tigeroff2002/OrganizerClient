@@ -37,8 +37,8 @@ class _HomeState extends State<HomeMap> {
     EventsListPageWidget(),
     GroupsListPageWidget(),
     TasksListPageWidget(),
+    IssuesListPageWidget(),
     SnapshotsListPageWidget(),
-    IssuesListPageWidget()
   ];
 
   void onTabTapped(int index) {
@@ -73,12 +73,12 @@ class _HomeState extends State<HomeMap> {
             label: 'Мои задачи',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.comment_rounded),
-            label: 'Мои снапшоты',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.call_outlined),
             label: 'Мои запросы',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.comment_rounded),
+            label: 'Мои снапшоты',
           ),
         ],
       ),

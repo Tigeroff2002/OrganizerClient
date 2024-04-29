@@ -33,6 +33,12 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
   SingleEventPageState({required this.eventId, required this.isPageJustLoaded});
 
+    @override
+    void initState() {
+      super.initState();
+      getCertainEventInfo(eventId);
+  }
+
   bool isPageJustLoaded;
 
   bool isBeginTimeChanged = false;
@@ -345,10 +351,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    setState(() {
-      getCertainEventInfo(eventId);
-    });
 
     var showingBeginHours = selectedBeginDateTime.hour.toString().padLeft(2, '0');
     var showingBeginMinutes = selectedBeginDateTime.minute.toString().padLeft(2, '0');

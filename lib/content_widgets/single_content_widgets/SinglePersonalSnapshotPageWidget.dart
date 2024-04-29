@@ -51,6 +51,12 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
   SinglePersonalSnapshotPageState({required this.snapshotId});
 
+    @override
+    void initState() {
+      super.initState();
+      getExistedSnapshot(context);
+  }
+
   Future<void> getExistedSnapshot(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -149,11 +155,6 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
   @override
   Widget build(BuildContext context) {
-
-    setState(() {
-      getExistedSnapshot(context);
-    });
-
     return Scaffold(
         appBar: AppBar(
           title: Text('Страничка персонального отчета под номером ' + snapshotId.toString()),

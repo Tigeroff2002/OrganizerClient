@@ -36,6 +36,12 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
   SingleIssuePageState({ required this.issueId });
 
+    @override
+    void initState() {
+      super.initState();
+      getExistedIssue(context);
+  }
+
   final TextEditingController issueTitleController = TextEditingController();
   final TextEditingController issueDescriptionController = TextEditingController();
   final TextEditingController issueLinkController = TextEditingController();
@@ -272,10 +278,6 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
   @override
   Widget build(BuildContext context) {
 
-    setState(() {
-      getExistedIssue(context);
-    });
-
     var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
     var issueStatuses = ['None', 'Reported', 'InProgress', 'Closed'];
 
@@ -374,6 +376,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                         : null
                 ),
               ),
+              SizedBox(height: 12.0),
+              Image.network(utf8.decode(utf8.encode(issueLinkController.text)), scale: 0.01),
               SizedBox(height: 30.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

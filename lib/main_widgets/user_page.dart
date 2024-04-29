@@ -56,15 +56,15 @@ class _HomeState extends State<Home> {
         text: 'Страница создания новой задачи',
         index: 3),
 
-    SnapshotPlaceholderWidget(
-        color: Colors.deepPurpleAccent,
-        text: 'Страница создания нового снапшота',
-        index: 4),
-
     IssuePlaceholderWidget(
         color: Colors.deepOrange,
         text: 'Страница создания нового запроса',
-        index: 5)
+        index: 4),
+
+    SnapshotPlaceholderWidget(
+        color: Colors.deepPurpleAccent,
+        text: 'Страница создания нового снапшота',
+        index: 5),
   ];
 
   void onTabTapped(int index) {
@@ -106,12 +106,12 @@ class _HomeState extends State<Home> {
               label: 'Новая задача',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.add_comment_rounded),
-              label: 'Новый снапшот',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.add_ic_call_outlined),
               label: 'Новый запрос для администрации',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_comment_rounded),
+              label: 'Новый снапшот',
             ),
           ],
         ),

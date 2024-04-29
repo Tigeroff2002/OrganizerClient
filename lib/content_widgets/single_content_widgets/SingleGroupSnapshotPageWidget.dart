@@ -53,6 +53,12 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
   SingleGroupSnapshotPageState({required this.snapshotId, required this.groupId});
 
+    @override
+    void initState() {
+      super.initState();
+      getExistedSnapshot(context);
+  }  
+
   Future<void> getExistedSnapshot(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -155,10 +161,6 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
   Widget build(BuildContext context) {
 
     var modeTypes = ['Text', 'Diagram'];
-
-    setState(() {
-      getExistedSnapshot(context);
-    });
 
     return Scaffold(
         appBar: AppBar(
