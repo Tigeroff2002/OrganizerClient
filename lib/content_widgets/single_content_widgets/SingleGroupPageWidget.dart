@@ -268,10 +268,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
     final groupTypes = ['None', 'Educational', 'Job'];
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: 
           Text(
@@ -407,7 +404,6 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
               ),
             ],
             ),              
-        )
         )
         )
         );
