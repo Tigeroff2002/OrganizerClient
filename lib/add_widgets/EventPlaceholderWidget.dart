@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleEventPageWidget.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
@@ -158,10 +159,10 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                         minimumSize: Size(150, 50)),
-                    onPressed: () async {
-                      setState(() {
-                        }
-                      );
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SingleEventPageWidget(eventId: createEventId)));
                     },
                     child: Text('Перейти на страницу нового события с id = ' + createEventId.toString()),
                   ),

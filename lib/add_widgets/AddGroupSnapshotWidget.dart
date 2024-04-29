@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupSnapshotPageWidget.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/AddNewGroupSnapshotModel.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
@@ -117,10 +120,11 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                         minimumSize: Size(150, 50)),
-                    onPressed: () async {
-                      setState(() {
-                        }
-                      );
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => 
+                          SingleGroupSnapshotPageWidget(snapshotId: createdGroupSnapshotId, groupId: groupId)));
                     },
                     child: Text(
                       'Перейти на страницу нового группового отчета с id = '

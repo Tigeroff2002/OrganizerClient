@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
@@ -124,10 +125,11 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                         minimumSize: Size(150, 50)),
-                    onPressed: () async {
-                      setState(() {
-                        }
-                      );
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => 
+                          SinglePersonalSnapshotPageWidget(snapshotId: createdSnapshotId)));                      
                     },
                     child: Text('Перейти на страницу нового отчета с id = ' + createdSnapshotId.toString()),
                   ),

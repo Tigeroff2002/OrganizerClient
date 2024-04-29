@@ -10,6 +10,7 @@ import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart'
 import 'package:todo_calendar_client/models/requests/SnapshotInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
 import 'package:todo_calendar_client/models/responses/CommonSnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
@@ -18,23 +19,25 @@ import '../../models/responses/additional_responces/GetResponse.dart';
 import '../../models/responses/additional_responces/ResponseWithToken.dart';
 import '../../shared_pref_cached_data.dart';
 
-class SingleSnapshotPageWidget extends StatefulWidget{
+class SingleGroupSnapshotPageWidget extends StatefulWidget{
 
   final int snapshotId;
+  final int groupId;
 
-  SingleSnapshotPageWidget({required this.snapshotId});
+  SingleGroupSnapshotPageWidget({required this.snapshotId, required this.groupId});
 
   @override
-  SingleSnapshotPageState createState(){
-    return new SingleSnapshotPageState(snapshotId: snapshotId);
+  SingleGroupSnapshotPageState createState(){
+    return new SingleGroupSnapshotPageState(snapshotId: snapshotId, groupId: groupId);
   }
 }
 
-class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
+class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> {
 
   final int snapshotId;
+  final int groupId;
 
-  SingleSnapshotPageState({required this.snapshotId});
+  SingleGroupSnapshotPageState({required this.snapshotId, required this.groupId});
 
   Future<void> getExistedSnapshot(BuildContext context) async
   {
@@ -137,27 +140,29 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
       getExistedSnapshot(context);
     });
 
-    CommonSnapshotInfoResponse snapshot = 
-      CommonSnapshotInfoResponse(
+    GroupSnapshotInfoResponse groupSnapshot = 
+      GroupSnapshotInfoResponse(
         snapshotType: 'd',
         auditType: '1',
         beginMoment: 'e',
         endMoment: 'df',
-        content: 'd',
-        creationTime: 'd');
+        creationTime: '1',
+        groupId: groupId,
+        participantsKPIS: [],
+        averageKPI: 1.0,
+        content: 'd',);   
 
     final double KPI = 1.0;
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Страничка редактирования задачи'),
+          title: Text(
+            'Страничка отчета под номером ' + snapshotId.toString()
+             + ' для группы ' + groupId.toString()),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TasksListPageWidget()),);
+              Navigator.pop(context);
             },
           ),
         ),
@@ -169,7 +174,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                       Text(
-                        'Изменение существующей задачи',
+                        'Информация о текущем снапшоте',
                         style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 30.0),
@@ -181,7 +186,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(snapshot.snapshotType)),
+                            aliaser.getSnapshotTypeEnumValue(groupSnapshot.snapshotType)),
                         style: TextStyle(
                           color: Colors.white,
                         )
@@ -195,7 +200,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(snapshot.auditType)),
+                            aliaser.getSnapshotTypeEnumValue(groupSnapshot.auditType)),
                         style: TextStyle(
                           color: Colors.white,
                         )
@@ -208,7 +213,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                           ),
                         ),
                         Text(
-                          utf8.decode(snapshot.creationTime.codeUnits),
+                          utf8.decode(groupSnapshot.creationTime.codeUnits),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -222,7 +227,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(snapshot.beginMoment.codeUnits),
+                        utf8.decode(groupSnapshot.beginMoment.codeUnits),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -236,7 +241,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(snapshot.endMoment.codeUnits),
+                        utf8.decode(groupSnapshot.endMoment.codeUnits),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -244,13 +249,13 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        'Коэффициент KPI по результатам отчета: ',
+                        'Cредний коэффициент KPI по результатам отчета: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(KPI.toString())),
+                        utf8.decode(utf8.encode(groupSnapshot.averageKPI.toString())),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -264,7 +269,7 @@ class SingleSnapshotPageState extends State<SingleSnapshotPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(snapshot.content)),
+                        utf8.decode(utf8.encode(groupSnapshot.content)),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

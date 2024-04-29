@@ -12,7 +12,7 @@ class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
     required String auditType,
     required String beginMoment,
     required String endMoment,
-    required String createMoment,
+    required String creationTime,
     required this.groupId,
     required this.participantsKPIS,
     required this.averageKPI,
@@ -20,14 +20,14 @@ class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
   }) : super(
       snapshotType: snapshotType,
       auditType: auditType,
-      creationTime: createMoment,
+      creationTime: creationTime,
       beginMoment: beginMoment,
       endMoment: endMoment,
       content: content);
 
     factory GroupSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return GroupSnapshotInfoResponse(
-        createMoment: json['creation_time'],
+        creationTime: json['creation_time'],
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],
         snapshotType: json['snapshot_type'],

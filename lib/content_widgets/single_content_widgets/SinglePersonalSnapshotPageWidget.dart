@@ -1,76 +1,57 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
-import 'package:todo_calendar_client/add_widgets/AddGroupSnapshotWidget.dart';
-import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
-import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'dart:convert';
-import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
-import 'package:todo_calendar_client/shared_pref_cached_data.dart';
-import 'package:todo_calendar_client/main_widgets/user_page.dart';
-import 'package:todo_calendar_client/GlobalEndpoints.dart';
-import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
+import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
+import 'package:todo_calendar_client/models/requests/SnapshotInfoRequest.dart';
+import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
+import 'package:todo_calendar_client/models/responses/CommonSnapshotInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
-import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
+import '../../GlobalEndpoints.dart';
+import '../../models/responses/additional_responces/GetResponse.dart';
+import '../../models/responses/additional_responces/ResponseWithToken.dart';
+import '../../shared_pref_cached_data.dart';
 
-class GroupManagerPageWidget extends StatefulWidget {
+class SinglePersonalSnapshotPageWidget extends StatefulWidget{
 
-  final int groupId;
+  final int snapshotId;
 
-  GroupManagerPageWidget({required this.groupId});
+  SinglePersonalSnapshotPageWidget({required this.snapshotId});
 
   @override
-  GroupManagerPageState createState() => GroupManagerPageState(groupId: groupId);
+  SinglePersonalSnapshotPageState createState(){
+    return new SinglePersonalSnapshotPageState(snapshotId: snapshotId);
+  }
 }
 
-class GroupManagerPageState extends State<GroupManagerPageWidget> {
+class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWidget> {
 
-  final int groupId;
+  final int snapshotId;
 
-  @override
-  void initState() {
-    super.initState();
-    getGroupSnapshotsInfo();
-  }
+  SinglePersonalSnapshotPageState({required this.snapshotId});
 
-  GroupManagerPageState({required this.groupId});
-
-  final headers = {'Content-Type': 'application/json'};
-
-  bool isColor = false;
-
-  final EnumAliaser aliaser = new EnumAliaser();
-
-  List<GroupSnapshotInfoResponse> groupSnapshotsList = [
-    GroupSnapshotInfoResponse(
-      snapshotType: 'd',
-      auditType: '1',
-      beginMoment: 'e',
-      endMoment: 'df',
-      creationTime: '1',
-      content: 'd',
-      groupId: 1,
-      participantsKPIS: List.empty(),
-      averageKPI: 1.0
-    )
-  ];
-
-  Future<void> getGroupSnapshotsInfo() async {
-
+  Future<void> getExistedSnapshot(BuildContext context) async
+  {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var model = new UserInfoRequestModel(userId: userId, token: token);
+      var model = new SnapshotInfoRequest(userId: userId, token: token, snapshotId: snapshotId);
+
       var requestMap = model.toJson();
 
       var uris = GlobalEndpoints();
@@ -79,12 +60,13 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
       var currentUri = isMobile ? uris.mobileUri : uris.webUri;
 
-      var requestString = '/snapshots/get_group_snapshots';
+      var requestString = '/snapshots/get_snapshot_info';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
       final url = Uri.parse(currentUri + currentPort + requestString);
 
+      final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
 
       try {
@@ -94,20 +76,12 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
         var responseContent = GetResponse.fromJson(jsonData);
 
         if (responseContent.result) {
-          var userRequestedInfo = responseContent.requestedInfo.toString();
+            var userRequestedInfo = responseContent.requestedInfo.toString();
 
-          var data = jsonDecode(userRequestedInfo);
-          var groupSnapshots = data['group_snapshots'];
+            print(userRequestedInfo);
 
-          var fetchedSnapshots =
-          List<GroupSnapshotInfoResponse>
-              .from(groupSnapshots.map(
-                  (data) => GroupSnapshotInfoResponse.fromJson(data)));
-
-          setState(() {
-            groupSnapshotsList = fetchedSnapshots;
-          });
-        }
+            // TODO: необходимо провести десериализацию json-строки о пользователе
+          }
       }
       catch (e) {
         if (e is SocketException) {
@@ -137,36 +111,48 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       }
     }
     else {
-      setState(() {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-      });
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Получение инфы о задаче не удалось!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
+  final EnumAliaser aliaser = new EnumAliaser();
+
   @override
-  Widget build(BuildContext context){
-    return MaterialApp(
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
-      home: Scaffold(
+  Widget build(BuildContext context) {
+
+    setState(() {
+      getExistedSnapshot(context);
+    });
+
+    PersonalSnapshotInfoResponse snapshot = 
+      PersonalSnapshotInfoResponse(
+        snapshotType: 'd',
+        auditType: '1',
+        beginMoment: 'e',
+        endMoment: 'df',
+        content: 'd',
+        KPI: 1.0,
+        creationTime: 'd');
+
+    final double KPI = 1.0;
+
+    return Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных снапшотов группы: '),
+          title: Text('Страничка персонального отчета под номером ' + snapshotId.toString()),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -174,56 +160,18 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
             },
           ),
         ),
-        body: groupSnapshotsList.length == 0
-        ? Column(
-          children: [
-            SizedBox(height: 16.0),
-            Text(
-              'Вы пока не составили ни одного снапшота',
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26),
-              textAlign: TextAlign.center),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-                child: Text('Сделать новый снапшот'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context)
-                      => AddGroupSnapshotWidget(groupId: groupId))
-                  );
-                })
-          ],
-        )
-        : ListView.builder(
-          itemCount: groupSnapshotsList.length,
-          itemBuilder: (context, index) {
-            final data = groupSnapshotsList[index];
-            return Card(
-              color: isColor ? Colors.cyan : Colors.greenAccent,
-              elevation: 15,
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    isColor = !isColor;
-                  });
-                },
-                child: Padding(
-                  padding: EdgeInsets.all(25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                      Text(
+                        'Информация о текущем снапшоте',
+                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 30.0),
                       Text(
                         'Тип снапшота: ',
                         style: TextStyle(
@@ -232,7 +180,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(data.snapshotType)),
+                            aliaser.getSnapshotTypeEnumValue(snapshot.snapshotType)),
                         style: TextStyle(
                           color: Colors.white,
                         )
@@ -246,7 +194,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(data.auditType)),
+                            aliaser.getSnapshotTypeEnumValue(snapshot.auditType)),
                         style: TextStyle(
                           color: Colors.white,
                         )
@@ -259,7 +207,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                           ),
                         ),
                         Text(
-                          utf8.decode(data.creationTime.codeUnits),
+                          utf8.decode(snapshot.creationTime.codeUnits),
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -273,7 +221,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(data.beginMoment.codeUnits),
+                        utf8.decode(snapshot.beginMoment.codeUnits),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -287,7 +235,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(data.endMoment.codeUnits),
+                        utf8.decode(snapshot.endMoment.codeUnits),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -295,13 +243,13 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        'Средний коэффициент KPI по результатам отчета: ',
+                        'Коэффициент KPI по результатам отчета: ',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(data.averageKPI.toString())),
+                        utf8.decode(utf8.encode(KPI.toString())),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -315,20 +263,24 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(data.content)),
+                        utf8.decode(utf8.encode(snapshot.content)),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
+            ],
+          ),
         ),
       ),
     );
   }
+
+  String selectedTaskType = 'None';
+  String selectedTaskStatus = 'None';
+
+  String existedCaption = '';
+  String existedDescription = '';
+  String existedTaskType = 'None';
+  String existedTaskStatus = 'None';
 }

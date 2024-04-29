@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleTaskPageWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -116,11 +116,11 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                         minimumSize: Size(150, 50)),
-                    onPressed: () async {
-                      setState(() {
-
-                      });
-                    },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SingleTaskPageWidget(taskId: createdTaskId)));
+                    },                      
                     child: Text('Перейти на страницу новой задачи с id = ' + createdTaskId.toString()),
                   ),
                 )

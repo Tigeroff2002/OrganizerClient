@@ -276,10 +276,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+              Navigator.pop(context);
             },
           ),
         ),

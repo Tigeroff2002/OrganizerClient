@@ -393,10 +393,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
         title: Text('Страничка редактирования задачи'),
         leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EventsListPageWidget()),);
+            Navigator.pop(context);
             },
           ),
       ),

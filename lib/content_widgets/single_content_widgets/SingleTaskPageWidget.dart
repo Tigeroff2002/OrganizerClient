@@ -267,10 +267,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TasksListPageWidget()),);
+              Navigator.pop(context);
             },
           ),
         ),

@@ -162,10 +162,7 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+              Navigator.pop(context);
             },
           ),
         ),

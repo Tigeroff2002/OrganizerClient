@@ -273,10 +273,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TasksListPageWidget()),);
+            Navigator.pop(context);
           },
         ),
       ),
