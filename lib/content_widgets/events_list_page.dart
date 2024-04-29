@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/models/EventAppointment.dart';
 import 'package:todo_calendar_client/models/MeetingDataSource.dart';
 import 'package:todo_calendar_client/models/requests/EventInfoRequest.dart';
@@ -35,8 +36,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
     getUserInfo();
   }
 
-  final userInfoUri = 'http://127.0.0.1:5201/users/get_info';
-  final eventInfoUri = 'http://127.0.0.1:5201/events/get_event_info';
+  GlobalEndpoints endpoints = GlobalEndpoints();
 
   final headers = {'Content-Type': 'application/json'};
 
@@ -62,7 +62,18 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var model = new UserInfoRequestModel(userId: userId, token: token);
       var requestMap = model.toJson();
 
-      var url = Uri.parse(userInfoUri);
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/users/get_info';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
       final body = jsonEncode(requestMap);
 
       try {
@@ -154,7 +165,17 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
       var requestMap = model.toJson();
 
-      var url = Uri.parse(eventInfoUri);
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/events/get_event_info';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
       final body = jsonEncode(requestMap);
 
       try {
@@ -290,6 +311,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('Календарь мероприятий'),

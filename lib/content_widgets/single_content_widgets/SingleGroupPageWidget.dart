@@ -264,6 +264,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: 
@@ -276,7 +277,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
             },
           ),
         ),

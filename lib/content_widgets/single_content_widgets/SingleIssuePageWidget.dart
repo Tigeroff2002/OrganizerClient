@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/issues_list_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingIssueModel.dart';
@@ -43,7 +44,15 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
   bool isDescriptionValidated = true;
   bool isLinkValidated = true;
 
-  IssueInfoResponse issue = null!;
+  IssueInfoResponse issue = IssueInfoResponse(
+        issueId: 1,
+        issueType: 'd',
+        issueStatus: 'a',
+        title: 'd',
+        description: 'd',
+        imgLink: 'd',
+        createMoment: 'd'
+    );
 
   Future<void> getExistedIssue(BuildContext context) async
   {
@@ -86,20 +95,17 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
-          print(userRequestedInfo);
-
           var data = jsonDecode(userRequestedInfo);
 
           setState(() {
             issue = IssueInfoResponse.fromJson(data);
 
-            existedTitle = 'Старый заголовок';
-            existedDescription = 'Старое описание';
-            existedLink = 'Старая ссылка';
+            issueTitleController.text = issue.title;
+            issueDescriptionController.text = issue.description;
+            issueLinkController.text = issue.imgLink;
 
-            issueTitleController.text = existedTitle;
-            issueDescriptionController.text = existedDescription;
-            issueLinkController.text = existedLink;
+            selectedIssueStatus = issue.issueStatus;
+            selectedIssueType = issue.issueType;
           });
         }
       }
@@ -275,11 +281,14 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Страничка редактирования запроса для администрации'),
+        title: Text('Страничка просмотра запроса для администрации'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => IssuesListPageWidget()),);
           },
         ),
       ),

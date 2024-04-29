@@ -331,6 +331,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('Календарь мероприятий участника группы'),

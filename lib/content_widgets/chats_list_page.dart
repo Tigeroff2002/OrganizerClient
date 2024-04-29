@@ -163,6 +163,7 @@ class ChatsListPageState extends State<ChatsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
+          debugShowCheckedModeBanner: false,
           title: Text('Список ваших чатов'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

@@ -6,6 +6,7 @@ import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingEventModel.dart';
 import 'package:todo_calendar_client/models/requests/EventInfoRequest.dart';
 import 'package:todo_calendar_client/models/responses/EventInfoResponse.dart';
+import 'package:todo_calendar_client/models/responses/ShortUserInfoResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewEventModel.dart';
@@ -49,6 +50,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
   final TextEditingController eventCaptionController = TextEditingController();
   final TextEditingController eventDescriptionController = TextEditingController();
 
+  final headers = {'Content-Type': 'application/json'};
+
   @override
   void dispose() {
     eventCaptionController.dispose();
@@ -56,15 +59,23 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
     super.dispose();
   }
 
-  EventInfoResponse event = null!;
+  EventInfoResponse event = 
+    new EventInfoResponse(
+      eventId: 1, 
+      caption: '1', 
+      description: '2', 
+      start: '3', 
+      duration: '4', 
+      eventType: '5', 
+      eventStatus: '6');
 
-  Future<void> getExistedEvent(BuildContext context) async
-  {
+  Future<UsersListsContent?> getCertainEventInfo(int eventId) async {
+
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null) {
+    if (cachedData != null){
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -72,7 +83,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       var token = cacheContent.token.toString();
 
       var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
-
       var requestMap = model.toJson();
 
       var uris = GlobalEndpoints();
@@ -86,8 +96,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
       final url = Uri.parse(currentUri + currentPort + requestString);
-
-      final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
 
       try {
@@ -98,20 +106,57 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-
           print(userRequestedInfo);
 
           var data = jsonDecode(userRequestedInfo);
 
           setState(() {
-            event = EventInfoResponse.fromJson(data);
-
-            existedCaption = 'Старое название';
-            existedDescription = 'Старое описание';
-
-            eventCaptionController.text = existedCaption;
-            eventDescriptionController.text = existedDescription;
+            scheduledStart = EventInfoResponse.fromJson(data).start;
           });
+
+          var rawBeginIndex = userRequestedInfo.indexOf('"guests"');
+          var rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
+
+          var string = '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex) + '}';
+
+          var contentData = jsonDecode(string);
+
+          var eventParticipants = contentData['guests'];
+
+          var fetchedEventUsers =
+          List<ShortUserInfoResponse>
+              .from(eventParticipants.map(
+                  (data) => ShortUserInfoResponse.fromJson(data)));
+
+          rawBeginIndex = userRequestedInfo.indexOf('"participants"');
+          rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
+
+          string = '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex);
+
+          contentData = jsonDecode(string);
+
+          var groupUsers = contentData['participants'];
+
+          var fetchedGroupUsers =
+          List<ShortUserInfoResponse>
+              .from(groupUsers.map(
+                  (data) => ShortUserInfoResponse.fromJson(data)));
+
+          List<ShortUserInfoResponse> remainingGroupUsers = [];
+
+          fetchedGroupUsers.forEach((element) {
+            if (!fetchedEventUsers.any(
+                    (element1) =>
+                      element1.userId == element.userId)){
+              remainingGroupUsers.add(element);
+            }
+          });
+
+          var content = new UsersListsContent(
+              eventUsers: fetchedEventUsers,
+              remainingGroupUsers: remainingGroupUsers);
+
+          return content;
         }
       }
       catch (e) {
@@ -142,21 +187,26 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       }
     }
     else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Ошибка!'),
-          content: Text('Получение инфы о меоприятии не удалось!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+      setState(() {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content:
+            Text(
+                'Произошла ошибка при получении'
+                    ' полной информации о пользователе!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
     }
   }
 
@@ -297,7 +347,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
   Widget build(BuildContext context) {
 
     setState(() {
-      getExistedEvent(context);
+      getCertainEventInfo(eventId);
     });
 
     var showingBeginHours = selectedBeginDateTime.hour.toString().padLeft(2, '0');
@@ -395,10 +445,13 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Страничка редактирования задачи'),
+        title: Text('Страничка просмотра информации о событии'),
         leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EventsListPageWidget()),);
             },
           ),
       ),
@@ -410,7 +463,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Изменение существующего мероприятия',
+                  'Просмотр текущего события:',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 30.0),
@@ -573,6 +626,159 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                           borderRadius: BorderRadius.circular(20.0)),
                       minimumSize: Size(150, 50),
                     ),
+                    onPressed: () {
+      setState(() {
+        getCertainEventInfo(eventId).then((value) {
+          UsersListsContent content = value!;
+
+          var eventUsers = content.eventUsers;
+          var groupUsers = content.remainingGroupUsers;
+
+          var builder = StringBuffer();
+
+          eventUsers.forEach((element) {
+            builder.write(element.userName + ' (' + element.userEmail + ')\n');
+          });
+
+          certainEventUsersDescription = builder.toString();
+
+          builder.clear();
+
+          groupUsers.forEach((element) {
+            builder.write(element.userName + ' (' + element.userEmail + ')\n');
+          });
+
+          certainEventUsersFromGroupDescription = builder.toString();
+
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Container(child: new Text('Meet')),
+                  content: Container(
+                      height: 300,
+                      width: 500,
+                      child: Padding(
+                          padding: EdgeInsets.all(6.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Дата и время события:',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(''),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      scheduledStart,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text('All day',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400, fontSize: 18)),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(''),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                        'Список участников события: \n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18)),
+                                    SizedBox(height: 6.0)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      certainEventUsersDescription,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 14,
+                                          color: Colors.lightGreen
+                                      ))
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(''),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                        'Можно еще пригласить: \n',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18)),
+                                    SizedBox(height: 6.0)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                        certainEventUsersFromGroupDescription,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14,
+                                            color: Colors.indigo
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                      )
+                  ),
+                  actions: <Widget>[
+                    new ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: new Text('ОК'))
+                  ],
+                );
+              });
+        });
+      });
+                    },
+                    child: Text('Подробнее о мероприятии'),
+                  ),
+                  SizedBox(height: 30.0),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor : Colors.white,
+                      shadowColor: Colors.cyan,
+                      elevation: 3,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      minimumSize: Size(150, 50),
+                    ),
                     onPressed: () async {
                       setState(() {
                         isCaptionValidated = !eventCaptionController.text.isEmpty;
@@ -599,6 +805,11 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
         ))
     );
   }
+
+  String certainEventUsersDescription = '';
+  String certainEventUsersFromGroupDescription = '';
+
+  String scheduledStart = '1';
 
   String selectedEventType = "None";
   String selectedEventStatus = "None";

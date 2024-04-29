@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/content_widgets/snapshots_list_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
@@ -31,7 +32,12 @@ class SinglePersonalSnapshotPageWidget extends StatefulWidget{
   }
 }
 
-    PersonalSnapshotInfoResponse snapshot = 
+
+class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWidget> {
+
+  final int snapshotId;
+
+      PersonalSnapshotInfoResponse snapshot = 
       PersonalSnapshotInfoResponse(
         snapshotType: 'd',
         auditType: '1',
@@ -41,9 +47,7 @@ class SinglePersonalSnapshotPageWidget extends StatefulWidget{
         KPI: 1.0,
         creationTime: 'd');
 
-class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWidget> {
-
-  final int snapshotId;
+  bool isDiagramMode = false;
 
   SinglePersonalSnapshotPageState({required this.snapshotId});
 
@@ -87,8 +91,6 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
         if (responseContent.result) {
             var userRequestedInfo = responseContent.requestedInfo.toString();
-
-            print(userRequestedInfo);
 
             var data = jsonDecode(userRequestedInfo);
 
@@ -158,7 +160,10 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SnapshotsListPageWidget()),);
             },
           ),
         ),

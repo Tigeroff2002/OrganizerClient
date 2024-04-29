@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/main_widgets/system_admin_page.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/AlertInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/FullIssueInfoResponse.dart';
@@ -153,6 +154,7 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
@@ -160,7 +162,10 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SystemAdminPageWidget(userName: 'Kirill')),);
             },
           ),
         ),

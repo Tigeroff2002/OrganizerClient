@@ -159,6 +159,7 @@ class TasksListPageState extends State<TasksListPageWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
@@ -281,7 +282,7 @@ class TasksListPageState extends State<TasksListPageWidget> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        child: Text('Редактировать задачу'),
+                        child: Text('Просмотреть задачу'),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,

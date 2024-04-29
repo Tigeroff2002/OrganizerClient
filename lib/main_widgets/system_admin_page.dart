@@ -44,6 +44,7 @@ class SystemAdminPageState extends State<SystemAdminPageWidget> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
         home: Scaffold(
           appBar: AppBar(

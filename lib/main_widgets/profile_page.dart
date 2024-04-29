@@ -159,8 +159,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
         home: Scaffold(
           appBar: AppBar(

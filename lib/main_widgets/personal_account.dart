@@ -74,10 +74,11 @@ class PersonalAccountState extends State<PersonalAccount> {
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Главная страница календаря'),
+          title: Text('Главная страница приложения'),
             centerTitle: true
         ),
         body: Center(
@@ -107,7 +108,7 @@ class PersonalAccountState extends State<PersonalAccount> {
                           MaterialPageRoute(
                               builder: (context) => UserInfoMapPage()),);
                       },
-                      child: Text('Личный кабинет'),
+                      child: Text('Информация о вашей деятельности'),
                     ),
                     SizedBox(height: 30.0),
                     ElevatedButton(

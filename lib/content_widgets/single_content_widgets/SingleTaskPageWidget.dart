@@ -39,7 +39,12 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
   bool isCaptionValidated = true;
   bool isDescriptionValidated = true;
 
-  TaskInfoResponse task = null!;
+  TaskInfoResponse task = new TaskInfoResponse(
+        taskId: 1,
+        caption: 'caption',
+        description: 'description',
+        taskType: 'taskType',
+        taskStatus: 'taskStatus');
 
   Future<void> getExistedTask(BuildContext context) async
   {
@@ -82,17 +87,17 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
         if (responseContent.result) {
             var userRequestedInfo = responseContent.requestedInfo.toString();
 
-            print(userRequestedInfo);
-
             var data = jsonDecode(userRequestedInfo);
 
             setState(() {
               task = TaskInfoResponse.fromJson(data);
               
-              existedCaption = 'Старое название';
-              existedDescription = 'Старое описание';
+              existedCaption = task.caption;
+              existedDescription = task.description;
               taskCaptionController.text = existedCaption;
               taskDescriptionController.text = existedDescription;
+              selectedTaskStatus = task.taskStatus;
+              selectedTaskType = task.taskType;
             });
           }
       }
@@ -268,11 +273,14 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Страничка редактирования задачи'),
+          title: Text('Страничка просмотра задачи'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TasksListPageWidget()),);
             },
           ),
         ),
@@ -284,7 +292,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Изменение существующей задачи',
+                'Информация о задаче',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30.0),

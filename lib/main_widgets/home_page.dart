@@ -17,10 +17,11 @@ class HomePage extends StatelessWidget {
     var pictureUrl = pictureUrlPart1 + monthDayNumber + pictureUrlPart2;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-            title: Text('Календарь Tigeroff'),
+            title: Text('Мобильный органайзер'),
             backgroundColor: Colors.cyan,
             centerTitle: true
         ),
@@ -53,7 +54,7 @@ class HomePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => UserPage())));
                 },
-                child: Text('Запуск календаря'),
+                child: Text('Запуск приложения'),
               ),
               SizedBox(height: 40),
               GestureDetector(
