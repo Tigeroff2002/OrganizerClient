@@ -138,30 +138,27 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
         snapshotTypeController.clear();
       }
       catch (e) {
-        if (e is SocketException) {
-          //treat SocketException
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Ошибка!'),
-              content: Text('Проблема с соединением к серверу!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-        else if (e is TimeoutException) {
+        if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
         else
-          print("Unhandled exception: ${e.toString()}");
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
       }
     }
     else {

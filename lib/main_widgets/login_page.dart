@@ -132,8 +132,11 @@ class LoginPageState extends State<LoginPage> {
       passwordController.clear();
     }
     catch (e) {
-      if (e is SocketException) {
-        //treat SocketException
+    if (e is TimeoutException) {
+        //treat TimeoutException
+        print("Timeout exception: ${e.toString()}");
+      }
+      else
         showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
@@ -149,12 +152,6 @@ class LoginPageState extends State<LoginPage> {
             ],
           ),
         );
-      }
-      else if (e is TimeoutException) {
-        //treat TimeoutException
-        print("Timeout exception: ${e.toString()}");
-      }
-      else
         print("Unhandled exception: ${e.toString()}");
     }
   }

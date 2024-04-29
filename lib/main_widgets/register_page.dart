@@ -162,8 +162,11 @@ class RegisterPageState extends State<RegisterPage> {
       });
     }
     catch (e) {
-      if (e is SocketException) {
-        //treat SocketException
+      if (e is TimeoutException) {
+        //treat TimeoutException
+        print("Timeout exception: ${e.toString()}");
+      }
+      else {
         showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
@@ -179,13 +182,8 @@ class RegisterPageState extends State<RegisterPage> {
             ],
           ),
         );
-      }
-      else if (e is TimeoutException) {
-        //treat TimeoutException
-        print("Timeout exception: ${e.toString()}");
-      }
-      else
         print("Unhandled exception: ${e.toString()}");
+      }
     }
   }
 

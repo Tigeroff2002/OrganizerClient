@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
 
                   cachedData.then((value) =>
                   value == null
-                      ?   Navigator.push(
+                      ? Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => AuthorizationPage()),)
                       : Navigator.push(
