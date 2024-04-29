@@ -31,6 +31,16 @@ class SinglePersonalSnapshotPageWidget extends StatefulWidget{
   }
 }
 
+    PersonalSnapshotInfoResponse snapshot = 
+      PersonalSnapshotInfoResponse(
+        snapshotType: 'd',
+        auditType: '1',
+        beginMoment: 'e',
+        endMoment: 'df',
+        content: 'd',
+        KPI: 1.0,
+        creationTime: 'd');
+
 class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWidget> {
 
   final int snapshotId;
@@ -80,7 +90,11 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
             print(userRequestedInfo);
 
-            // TODO: необходимо провести десериализацию json-строки о пользователе
+            var data = jsonDecode(userRequestedInfo);
+
+            setState(() {
+              snapshot = PersonalSnapshotInfoResponse.fromJson(data);
+            });
           }
       }
       catch (e) {
@@ -137,18 +151,6 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
     setState(() {
       getExistedSnapshot(context);
     });
-
-    PersonalSnapshotInfoResponse snapshot = 
-      PersonalSnapshotInfoResponse(
-        snapshotType: 'd',
-        auditType: '1',
-        beginMoment: 'e',
-        endMoment: 'df',
-        content: 'd',
-        KPI: 1.0,
-        creationTime: 'd');
-
-    final double KPI = 1.0;
 
     return Scaffold(
         appBar: AppBar(
@@ -249,7 +251,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
                         ),
                       ),
                       Text(
-                        utf8.decode(utf8.encode(KPI.toString())),
+                        utf8.decode(utf8.encode(snapshot.KPI.toString())),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

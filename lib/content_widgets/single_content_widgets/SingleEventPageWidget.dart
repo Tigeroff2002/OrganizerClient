@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingEventModel.dart';
 import 'package:todo_calendar_client/models/requests/EventInfoRequest.dart';
+import 'package:todo_calendar_client/models/responses/EventInfoResponse.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewEventModel.dart';
@@ -55,6 +56,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
     super.dispose();
   }
 
+  EventInfoResponse event = null!;
+
   Future<void> getExistedEvent(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -98,9 +101,11 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
           print(userRequestedInfo);
 
-          // TODO: необходимо провести десериализацию json-строки о пользователе
+          var data = jsonDecode(userRequestedInfo);
 
           setState(() {
+            event = EventInfoResponse.fromJson(data);
+
             existedCaption = 'Старое название';
             existedDescription = 'Старое описание';
 

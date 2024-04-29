@@ -37,6 +37,18 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
   final int snapshotId;
   final int groupId;
 
+      GroupSnapshotInfoResponse groupSnapshot = 
+      new GroupSnapshotInfoResponse(
+        snapshotType: 'd',
+        auditType: '1',
+        beginMoment: 'e',
+        endMoment: 'df',
+        creationTime: '1',
+        groupId: 1,
+        participantsKPIS: [],
+        averageKPI: 1.0,
+        content: 'd',);   
+
   SingleGroupSnapshotPageState({required this.snapshotId, required this.groupId});
 
   Future<void> getExistedSnapshot(BuildContext context) async
@@ -82,7 +94,11 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
             print(userRequestedInfo);
 
-            // TODO: необходимо провести десериализацию json-строки о пользователе
+            var data = jsonDecode(userRequestedInfo);
+
+            setState(() {
+              groupSnapshot = GroupSnapshotInfoResponse.fromJson(data);
+            });
           }
       }
       catch (e) {
@@ -139,20 +155,6 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
     setState(() {
       getExistedSnapshot(context);
     });
-
-    GroupSnapshotInfoResponse groupSnapshot = 
-      GroupSnapshotInfoResponse(
-        snapshotType: 'd',
-        auditType: '1',
-        beginMoment: 'e',
-        endMoment: 'df',
-        creationTime: '1',
-        groupId: groupId,
-        participantsKPIS: [],
-        averageKPI: 1.0,
-        content: 'd',);   
-
-    final double KPI = 1.0;
 
     return Scaffold(
         appBar: AppBar(

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
+import 'package:todo_calendar_client/models/responses/TaskInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
 import '../../GlobalEndpoints.dart';
@@ -37,6 +38,8 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
   bool isCaptionValidated = true;
   bool isDescriptionValidated = true;
+
+  TaskInfoResponse task = null!;
 
   Future<void> getExistedTask(BuildContext context) async
   {
@@ -81,9 +84,11 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
             print(userRequestedInfo);
 
-            // TODO: необходимо провести десериализацию json-строки о пользователе
+            var data = jsonDecode(userRequestedInfo);
 
             setState(() {
+              task = TaskInfoResponse.fromJson(data);
+              
               existedCaption = 'Старое название';
               existedDescription = 'Старое описание';
               taskCaptionController.text = existedCaption;

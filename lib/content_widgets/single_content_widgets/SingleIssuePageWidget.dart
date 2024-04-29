@@ -8,6 +8,7 @@ import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingIssueModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/TaskInfoRequest.dart';
+import 'package:todo_calendar_client/models/responses/IssueInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
 import '../../GlobalEndpoints.dart';
@@ -41,6 +42,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
   bool isTitleValidated = true;
   bool isDescriptionValidated = true;
   bool isLinkValidated = true;
+
+  IssueInfoResponse issue = null!;
 
   Future<void> getExistedIssue(BuildContext context) async
   {
@@ -82,11 +85,14 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-          // TODO: необходимо провести десериализацию json-строки о пользователе
 
           print(userRequestedInfo);
 
+          var data = jsonDecode(userRequestedInfo);
+
           setState(() {
+            issue = IssueInfoResponse.fromJson(data);
+
             existedTitle = 'Старый заголовок';
             existedDescription = 'Старое описание';
             existedLink = 'Старая ссылка';
