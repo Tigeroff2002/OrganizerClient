@@ -186,8 +186,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
               text,
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 30.0),
-              SizedBox(height: 16.0),
+            SizedBox(height: 20.0),
               TextField(
                 controller: groupNameController,
                 decoration: InputDecoration(
@@ -219,7 +218,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                       selectedGroupType = newType.toString();
                     });
                   }),
-              SizedBox(height: 6.0),
+              SizedBox(height: 8.0),
               selectedGroupType == 'None'
                 ? Text(
                    'Данная группа будет открытой, доступной для всех пользователей',

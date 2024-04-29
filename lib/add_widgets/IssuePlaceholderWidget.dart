@@ -126,7 +126,8 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SingleIssuePageWidget(issueId: createIssueId)));                      
+                        MaterialPageRoute(builder: (context) => 
+                          SingleIssuePageWidget(issueId: createIssueId, isSelfUser: true,)));                      
                     },
                     child: Text('Перейти на страницу нового issue с id = ' + createIssueId.toString()),
                   ),

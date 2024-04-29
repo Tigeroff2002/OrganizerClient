@@ -336,17 +336,9 @@ class ProfilePageState extends State<ProfilePageWidget> {
                           fontWeight: FontWeight.bold
                       ),
                     ),
-                    SizedBox(width: 12.0),
-                    Text(
-                      'Запросить смену роли: ',
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold
-                      ),
-                    ),
                     SizedBox(height: 16.0),
-                    TextField(
+                    isUserRole
+                    ? TextField(
                       controller: rootPasswordController,
                       decoration: InputDecoration(
                           labelText: 'Рут пароль пользователя: ',
@@ -358,7 +350,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
                               ? 'Пароль рут пользователя не может быть пустым'
                               : null
                       ),
-                    ),
+                    )
+                    : SizedBox(height: 0.0),
                     SizedBox(height: 12.0),
                     ElevatedButton(
                         onPressed: () {

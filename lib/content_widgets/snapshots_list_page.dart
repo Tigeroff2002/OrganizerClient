@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
@@ -36,6 +37,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
   List<PersonalSnapshotInfoResponse> snapshotsList = [
     PersonalSnapshotInfoResponse(
+      snapshotId: 1,
       snapshotType: 'd',
       auditType: '1',
       beginMoment: 'e',
@@ -313,6 +315,17 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      SizedBox(height: 12),
+                      ElevatedButton(
+                        child: Text('Просмотреть снапшот'),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            => SinglePersonalSnapshotPageWidget(snapshotId: data.snapshotId,)),
+                          );
+                        },
                       ),
                     ],
                   ),

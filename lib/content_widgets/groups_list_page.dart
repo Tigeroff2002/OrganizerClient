@@ -39,7 +39,8 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
     GroupInfoResponse(
       groupId: 1,
       groupType: 'd',
-      groupName: 'f'
+      groupName: 'f',
+      managerId: 1
     )
   ];
 

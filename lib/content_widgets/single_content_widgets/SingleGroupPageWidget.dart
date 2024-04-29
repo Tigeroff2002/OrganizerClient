@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/group_manager_page.dart';
+import 'package:todo_calendar_client/content_widgets/group_participants_page_widget.dart';
+import 'package:todo_calendar_client/models/requests/EditExistingGroupModel.dart';
 import 'package:todo_calendar_client/models/requests/GroupDeleteParticipantRequest.dart';
 import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
@@ -37,15 +39,18 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
   final int groupId;
   int userId = -1;
 
-  final bool isUserManager = false;
+  bool isUserManager = false;
 
   @override
   void initState() {
     super.initState();
-    getUsersFromGroupInfo();
+    getExistedGroup();
   }
 
   SingleGroupPageState({required this.groupId});
+
+  GroupInfoResponse group = 
+    GroupInfoResponse(groupId: 1, groupName: '1', groupType: '2', managerId: 1);
 
   final headers = {'Content-Type': 'application/json'};
   bool isColor = false;
@@ -57,7 +62,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
   List<ShortUserInfoResponse> usersList = [];
 
-  Future<void> getUsersFromGroupInfo() async {
+  Future<void> getExistedGroup() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -95,19 +100,9 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-          
-          var rawBeginIndex = userRequestedInfo.indexOf('"participants"');
-          var rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
-
-          var string = '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex);
-          print(string);
-
-          var contentData = jsonDecode(string);
-          print(contentData);
-
-          var userParticipants = contentData['participants'];
 
           var data = jsonDecode(userRequestedInfo);
+          var userParticipants = data['participants'];
 
           var fetchedGroupUsers =
           List<ShortUserInfoResponse>
@@ -116,8 +111,15 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
           setState(() {
             usersList = fetchedGroupUsers;
-            groupName = data['group_name'].toString();
-            groupType = data['group_type'].toString();
+
+            group = GroupInfoResponse.fromJson(data);
+
+            groupName = group.groupName;
+            groupType = group.groupType;
+            isUserManager = userId == group.managerId;
+
+            groupNameController.text = groupName;
+            selectedGroupType = groupType;
           });
         }
       }
@@ -262,9 +264,13 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+
+    final groupTypes = ['None', 'Educational', 'Job'];
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
           title: 
@@ -284,37 +290,73 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
             },
           ),
         ),
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.all(6.0),
-            child: SingleChildScrollView(
-                padding: EdgeInsets.all(32),
-                child: Column(
-                  children: [
-                    Text(
-                      'Тип группы: ',
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+          padding: EdgeInsets.all(32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              isUserManager
+                ? TextField(
+                controller: groupNameController,
+                decoration: InputDecoration(
+                  labelText: 'Наименование группы:',
+                    labelStyle: TextStyle(
+                      fontSize: 16.0,
+                        color: Colors.deepPurple
+                    ),
+                    errorText: !isNameValidated
+                        ? 'Название группы не может быть пустым'
+                        : null
+                ),
+              )
+              : Text(
+                 'Наименование группы: ' + groupNameController.text,
                       style: TextStyle(
                         color: Colors.white,
                       ),
                     ),
-                    Text(aliaser.GetAlias(
-                      aliaser.getUserRoleEnumValue(groupType)),
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
-                        )
-                    ),
-                    SizedBox(height: 16.0),
+              SizedBox(height: 16.0),
+              isUserManager
+              ? Text(
+                'Тип группы:',
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+              )
+              : Text(
+                'Тип группы: ' + selectedGroupType,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+              ),
+              isUserManager
+              ? SizedBox(height: 8.0)
+              : SizedBox(height: 0.0),
+              isUserManager
+              ? DropdownButton(
+                  value: selectedGroupType,
+                  items: groupTypes.map((String type){
+                    return DropdownMenuItem(
+                        value: type,
+                        child: Text(type));
+                  }).toList(),
+                  onChanged: (String? newType){
+                    setState(() {
+                      selectedGroupType = newType.toString();
+                    });
+                  })
+              : SizedBox(height: 0.0),
+              isUserManager
+              ? SizedBox(height: 8.0)
+              : SizedBox(height: 0.0),
+              selectedGroupType == 'None'
+                ? Text(
+                   'Доступно ограничение видимости группы для пользователей',
+                    style: TextStyle(fontSize: 16, color: Colors.deepOrange))
+                : Text(
+                   'Данная группа будет открытой, доступной для всех пользователей',
+                   style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
+                  SizedBox(height: 16.0),
                     isUserManager
                       ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
@@ -329,84 +371,160 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold
                         ),
-                    ),
-                    ListView.builder(
-                      itemCount: usersList.length,
-                      itemBuilder: (context, index) {
-                      final data = usersList[index];
-                      return Card(
-                        color: userId != data.userId
-                          ? Colors.cyan
-                          : Colors.red,
-                        elevation: 15,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isColor = !isColor;
-                          });
+                    ),  
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                        child: Text('Просмотреть список пользователей'),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            => GroupParticipantsPageWidget(groupId: groupId)),
+                          );
                         },
-                        child: Padding(
-                          padding: EdgeInsets.all(25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Пользователь с именем: ',
-                                  style: TextStyle(
-                                    color: Colors.white,),),
-                                Text(
-                                  utf8.decode(utf8.encode(data.userName)),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,),),
-                                SizedBox(height: 12),
-                                Text(
-                                  'Электронная почта: ',
-                                  style: TextStyle(
-                                    color: Colors.white,),),
-                                Text(
-                                  utf8.decode(utf8.encode(data.userEmail)),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,),),
-                                SizedBox(height: 12),
-                                ElevatedButton(
-                                  child: Text('Посмотреть календарь пользователя'),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                        => userId != data.userId
-                                          ? ParticipantCalendarPageWidget(
-                                              groupId: groupId,
-                                              participantId: data.userId)
-                                          : EventsListPageWidget()),);
-                                        },),
-                                  SizedBox(height: 10),
-                                  ElevatedButton(
-                                    child: userId != data.userId
-                                      ? Text('Исключить пользователя')
-                                      : Text('Выйти из группы'),
-                                    onPressed: () {
-                                      setState(() {
-                                        deleteUserFromGroup(data.userId).then((value) => {
-                                          usersList.removeWhere((element) => element.userId == data.userId)
-                                        });
-                                    });
-                                  },),
-                                  SizedBox(height: 10)
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),            
-                  ],
-                ),              
-            ),
-          ),)
-      ),
-    );
+                      ),
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor : Colors.white,
+                  shadowColor: Colors.cyan,
+                  elevation: 3,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  minimumSize: Size(250, 100),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    isNameValidated = !groupNameController.text.isEmpty;
+
+                    if (isNameValidated){
+                      editCurrentGroup(context);
+                    }
+                  });
+                },
+                child: Text('Изменить параметры группы'),
+              ),
+            ],
+            ),              
+        )
+        )
+        )
+        );
   }
+
+  Future<void> editCurrentGroup(BuildContext context) async
+  {
+    String groupName = groupNameController.text;
+    String groupType = selectedGroupType.toString();
+
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null) {
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+
+      var model = new EditExistingGroupModel(
+          userId: userId,
+          token: token,
+          groupName: groupName,
+          groupType: groupType,
+          participants: [],
+          groupId: groupId);
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/groups/update_group_params';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = Response.fromJson(jsonData);
+
+          if (responseContent.outInfo != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(responseContent.outInfo.toString())
+                )
+            );
+          }
+        }
+
+        groupNameController.clear();
+
+        setState(() {
+          getExistedGroup();
+        });
+      }
+      catch (e) {
+        if (e is SocketException) {
+          //treat SocketException
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }
+        else if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else
+          print("Unhandled exception: ${e.toString()}");
+      }
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Изменение существующей задачи не удалось!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+    final TextEditingController groupNameController = TextEditingController();
+    bool isNameValidated = true;
+
+    String selectedGroupType = "None";
 }

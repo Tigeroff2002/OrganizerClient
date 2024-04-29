@@ -1,5 +1,5 @@
 class CommonSnapshotInfoResponse {
-
+  final int snapshotId;
   final String creationTime;
   final String beginMoment;
   final String endMoment;
@@ -8,6 +8,7 @@ class CommonSnapshotInfoResponse {
   final String content;
 
   CommonSnapshotInfoResponse({
+    required this.snapshotId,
     required this.snapshotType,
     required this.auditType,
     required this.creationTime,
@@ -18,6 +19,7 @@ class CommonSnapshotInfoResponse {
 
   factory CommonSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return CommonSnapshotInfoResponse(
+        snapshotId: json['snapshot_id'],
         creationTime: json['creation_time'],
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],

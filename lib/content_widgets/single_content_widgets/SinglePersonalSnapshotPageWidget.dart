@@ -39,6 +39,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
       PersonalSnapshotInfoResponse snapshot = 
       PersonalSnapshotInfoResponse(
+        snapshotId: 1,
         snapshotType: 'd',
         auditType: '1',
         beginMoment: 'e',
@@ -99,6 +100,8 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
             var userRequestedInfo = responseContent.requestedInfo.toString();
 
             var data = jsonDecode(userRequestedInfo);
+
+            print(userRequestedInfo);
 
             setState(() {
               snapshot = PersonalSnapshotInfoResponse.fromJson(data);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/AddGroupSnapshotWidget.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'dart:convert';
@@ -45,6 +46,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
   List<GroupSnapshotInfoResponse> groupSnapshotsList = [
     GroupSnapshotInfoResponse(
+      snapshotId: 1,
       snapshotType: 'd',
       auditType: '1',
       beginMoment: 'e',
@@ -321,6 +323,17 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      SizedBox(height: 12),
+                      ElevatedButton(
+                        child: Text('Просмотреть снапшот группы'),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            => SingleGroupSnapshotPageWidget(snapshotId: data.snapshotId, groupId: groupId,)),
+                          );
+                        },
                       ),
                     ],
                   ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/issues_list_page.dart';
+import 'package:todo_calendar_client/content_widgets/system_issues_list_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingIssueModel.dart';
@@ -21,20 +22,22 @@ import '../../shared_pref_cached_data.dart';
 class SingleIssuePageWidget extends StatefulWidget{
 
   final int issueId;
+  final bool isSelfUser;
 
-  SingleIssuePageWidget({ required this.issueId });
+  SingleIssuePageWidget({ required this.issueId, required this.isSelfUser });
 
   @override
   SingleIssuePageState createState(){
-    return new SingleIssuePageState(issueId: issueId);
+    return new SingleIssuePageState(issueId: issueId, isSelfUser: isSelfUser);
   }
 }
 
 class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
   final int issueId;
+  final bool isSelfUser;
 
-  SingleIssuePageState({ required this.issueId });
+  SingleIssuePageState({ required this.issueId, required this.isSelfUser });
 
     @override
     void initState() {
@@ -228,6 +231,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
         issueTitleController.clear();
         issueDescriptionController.clear();
         issueLinkController.clear();
+
+        setState(() {
+          getExistedIssue(context);
+        });
       }
       catch (e) {
         if (e is SocketException) {
@@ -287,10 +294,15 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-              Navigator.pushReplacement(
+            isSelfUser
+              ? Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => IssuesListPageWidget()),);
+                    builder: (context) => IssuesListPageWidget()))
+              : Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => SystemIssuesListPageWidget()));                    
           },
         ),
       ),
@@ -302,12 +314,12 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Изменение существующего запроса',
+                'Просмотр существующего запроса',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 30.0),
-              SizedBox(height: 16.0),
-              TextField(
+              isSelfUser
+              ? TextField(
                 controller: issueTitleController,
                 decoration: InputDecoration(
                     labelText: 'Заголовок запроса: ',
@@ -316,13 +328,25 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                         ? 'Заголовок запроса не может быть пустым'
                         : null
                 ),
-              ),
-              Text(
-                'Тип запроса',
+              )
+              : Text(
+                'Заголовок запроса: ' + issueTitleController.text,
                 style: TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
-              SizedBox(height: 4.0),
-              DropdownButton(
+              isSelfUser
+              ? Text(
+                'Тип запроса',
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+              )
+              : Text(
+                'Тип запроса: ' + selectedIssueType,
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+              ),
+              isSelfUser
+              ? SizedBox(height: 4.0)
+              : SizedBox(height: 0.0),
+              isSelfUser
+              ? DropdownButton(
                   value: selectedIssueType,
                   items: issueTypes.map((String type){
                     return DropdownMenuItem(
@@ -333,8 +357,11 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                     setState(() {
                       selectedIssueType = newType.toString();
                     });
-                  }),
-              SizedBox(height: 12.0),
+                  })
+              : SizedBox(height: 0.0),
+              isSelfUser
+              ? SizedBox(height: 12.0)
+              : SizedBox(height: 0.0),
               Text(
                 'Статус запроса',
                 style: TextStyle(fontSize: 20, color: Colors.deepPurple),
@@ -353,7 +380,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                     });
                   }),
               SizedBox(height: 12.0),
-              TextFormField(
+              isSelfUser
+              ? TextFormField(
                 controller: issueDescriptionController,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -363,9 +391,14 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                         ? 'Описание запроса не может быть пустым'
                         : null
                 ),
+              )
+              : Text(
+                'Описание запроса: ' + issueDescriptionController.text,
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
               SizedBox(height: 16.0),
-              TextFormField(
+              isSelfUser
+              ? TextFormField(
                 controller: issueLinkController,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -375,6 +408,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                         ? 'Ссылка не может быть пустой'
                         : null
                 ),
+              )
+              : Text(
+                'Ссылка на скриншот: ' + issueLinkController.text,
+                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
               ),
               SizedBox(height: 12.0),
               Image.network(utf8.decode(utf8.encode(issueLinkController.text)), scale: 0.01),

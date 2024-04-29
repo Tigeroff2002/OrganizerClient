@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleIssuePageWidget.dart';
 import 'package:todo_calendar_client/main_widgets/system_admin_page.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/FullIssueInfoResponse.dart';
@@ -290,7 +291,17 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 8.0),
+                      SizedBox(height: 12),
+                      ElevatedButton(
+                        child: Text('Просмотреть запрос'),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            => SingleIssuePageWidget(issueId: data.issueId, isSelfUser: false,)),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ),

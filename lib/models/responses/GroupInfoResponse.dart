@@ -8,13 +8,13 @@ class GroupInfoResponse {
   final int groupId;
   final String groupName;
   final String groupType;
-  //final List<ShortUserInfoResponse> participants;
+  final int managerId;
 
   GroupInfoResponse({
     required this.groupId,
     required this.groupName,
     required this.groupType,
-    //required this.participants
+    required this.managerId
   });
 
   factory GroupInfoResponse.fromJson(Map <String, dynamic> json) {
@@ -22,7 +22,7 @@ class GroupInfoResponse {
         groupId: json['group_id'],
         groupName: json['group_name'],
         groupType: json['group_type'],
-        //participants: json['participants']
+        managerId: json['manager_id']
     );
   }
 }

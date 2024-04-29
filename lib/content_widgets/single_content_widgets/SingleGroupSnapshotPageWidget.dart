@@ -41,6 +41,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
       GroupSnapshotInfoResponse groupSnapshot = 
         new GroupSnapshotInfoResponse(
+          snapshotId: 1,
           snapshotType: 'd',
           auditType: '1',
           beginMoment: 'e',

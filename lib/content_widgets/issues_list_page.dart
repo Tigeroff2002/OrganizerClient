@@ -302,7 +302,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context)
-                            => SingleIssuePageWidget(issueId: data.issueId)),
+                            => SingleIssuePageWidget(issueId: data.issueId, isSelfUser: true,)),
                           );
                         },
                       ),

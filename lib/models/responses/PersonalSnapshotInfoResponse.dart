@@ -5,6 +5,7 @@ class PersonalSnapshotInfoResponse extends CommonSnapshotInfoResponse {
   final double KPI;
 
   PersonalSnapshotInfoResponse({
+    required int snapshotId,
     required String snapshotType,
     required String auditType,
     required String creationTime,
@@ -14,6 +15,7 @@ class PersonalSnapshotInfoResponse extends CommonSnapshotInfoResponse {
     required String content
   })
     : super(
+      snapshotId: snapshotId,
       snapshotType: snapshotType,
       auditType: auditType,
       creationTime: creationTime,
@@ -23,6 +25,7 @@ class PersonalSnapshotInfoResponse extends CommonSnapshotInfoResponse {
 
   factory PersonalSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return PersonalSnapshotInfoResponse(
+        snapshotId: json['snapshot_id'],
         creationTime: json['creation_time'],
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],

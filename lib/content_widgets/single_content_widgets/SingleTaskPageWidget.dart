@@ -220,6 +220,10 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
         taskCaptionController.clear();
         taskDescriptionController.clear();
+
+        setState(() {
+          getExistedTask(context);
+        });
       }
       catch (e) {
         if (e is SocketException) {

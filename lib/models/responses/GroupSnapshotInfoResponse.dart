@@ -8,6 +8,7 @@ class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
   final double averageKPI;
 
   GroupSnapshotInfoResponse({
+    required int snapshotId,
     required String snapshotType,
     required String auditType,
     required String beginMoment,
@@ -18,6 +19,7 @@ class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
     required this.averageKPI,
     required String content
   }) : super(
+      snapshotId: snapshotId,
       snapshotType: snapshotType,
       auditType: auditType,
       creationTime: creationTime,
@@ -27,6 +29,7 @@ class GroupSnapshotInfoResponse extends CommonSnapshotInfoResponse{
 
     factory GroupSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
     return GroupSnapshotInfoResponse(
+        snapshotId: json['snapshot_id'],
         creationTime: json['creation_time'],
         beginMoment: json['begin_moment'],
         endMoment: json['end_moment'],

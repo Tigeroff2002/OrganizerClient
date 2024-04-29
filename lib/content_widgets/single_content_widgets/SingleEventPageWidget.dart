@@ -302,6 +302,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
         eventCaptionController.clear();
         eventDescriptionController.clear();
+
+        setState(() {
+          getCertainEventInfo(eventId);
+        });
       }
       catch (e) {
         if (e is SocketException) {
