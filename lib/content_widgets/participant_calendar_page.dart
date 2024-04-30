@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
 import 'package:todo_calendar_client/models/EventAppointment.dart';
 import 'package:todo_calendar_client/models/MeetingDataSource.dart';
 import 'package:todo_calendar_client/models/requests/GroupParticipantCalendarRequest.dart';
@@ -345,7 +346,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+                    builder: (context) => SingleGroupPageWidget(groupId: groupId)),);
             },
           ),
         ),

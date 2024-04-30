@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
+import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
@@ -161,7 +162,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+                    builder: (context) => UserInfoMapPage()),);
             },
           ),
         ),

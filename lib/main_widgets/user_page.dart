@@ -13,7 +13,7 @@ class UserPage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        scaffoldBackgroundColor: Colors.deepPurple,
       ),
       home: Home(),
     );
@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
   }
 
   final List<Widget> _children = [
-    PersonalAccount(
+    PersonalAccountWidget(
         color: Colors.red,
         text: 'Главная страница пользователя',
         index: 0

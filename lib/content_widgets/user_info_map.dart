@@ -4,6 +4,8 @@ import 'package:todo_calendar_client/content_widgets/groups_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/issues_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/snapshots_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/tasks_list_page.dart';
+import 'package:todo_calendar_client/main_widgets/map_info_dart.dart';
+import 'package:todo_calendar_client/main_widgets/personal_account.dart';
 
 class UserInfoMapPage extends StatelessWidget {
 
@@ -12,7 +14,7 @@ class UserInfoMapPage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
+        scaffoldBackgroundColor: Colors.deepPurple,
       ),
       home: HomeMap(),
     );
@@ -34,6 +36,11 @@ class _HomeState extends State<HomeMap> {
   }
 
   final List<Widget> _children = [
+    MapInfoWidget(
+        color: Colors.red,
+        text: 'Страница деятельности пользователя',
+        index: 0
+    ),
     EventsListPageWidget(),
     GroupsListPageWidget(),
     TasksListPageWidget(),
@@ -64,9 +71,12 @@ class _HomeState extends State<HomeMap> {
         onTap: onTabTapped,
         items: [
           BottomNavigationBarItem(
+              icon: Icon(Icons.toc),
+              label: 'Главная страница',
+            ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.access_alarms),
             label: 'Мои мероприятия',
-            tooltip: '1111'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business_outlined),

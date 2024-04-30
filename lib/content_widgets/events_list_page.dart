@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
+import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
 import 'package:todo_calendar_client/models/EventAppointment.dart';
 import 'package:todo_calendar_client/models/MeetingDataSource.dart';
 import 'package:todo_calendar_client/models/requests/EventInfoRequest.dart';
@@ -318,7 +319,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+                    builder: (context) => UserInfoMapPage()),);
             },
           ),
         ),

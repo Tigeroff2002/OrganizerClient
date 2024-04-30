@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/models/requests/UserLogoutModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
@@ -17,13 +18,13 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Respo
 import 'profile_page.dart';
 import 'home_page.dart';
 
-class PersonalAccountWidget extends StatefulWidget{
+class MapInfoWidget extends StatefulWidget{
 
   final Color color;
   final String text;
   final int index;
 
-  PersonalAccountWidget(
+  MapInfoWidget(
       {
         required this.color,
         required this.text,
@@ -31,18 +32,18 @@ class PersonalAccountWidget extends StatefulWidget{
       });
 
   @override
-  PersonalAccountState createState(){
-    return new PersonalAccountState(color: color, text: text, index: index);
+  MapInfoState createState(){
+    return new MapInfoState(color: color, text: text, index: index);
   }
 }
 
-class PersonalAccountState extends State<PersonalAccountWidget> {
+class MapInfoState extends State<MapInfoWidget> {
 
   final Color color;
   final String text;
   final int index;
 
-  PersonalAccountState(
+  MapInfoState(
       {
         required this.color,
         required this.text,
@@ -77,7 +78,8 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Главная страница приложения', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          title: Text('Информация о вашей деятельности',
+             style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true
         ),
         body: Center(
@@ -88,7 +90,7 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Добро пожаловать, " + currentUserName,
+                      "Еще раз, приветствуем вас, " + currentUserName,
                       style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                       textAlign: TextAlign.center,
                     ),
@@ -98,9 +100,9 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => UserInfoMapPage()),);
+                              builder: (context) => UserPage()),);
                       },
-                      child: Text('Информация о вашей деятельности', 
+                      child: Text('Вернуться на главную', 
                         style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                     SizedBox(height: 30.0),

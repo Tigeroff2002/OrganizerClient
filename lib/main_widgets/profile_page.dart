@@ -47,6 +47,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
 
   final EnumAliaser aliaser = new EnumAliaser();
 
+  bool isServerDataLoaded = false;
+
   @override
   void initState() {
     super.initState();
@@ -92,7 +94,6 @@ class ProfilePageState extends State<ProfilePageWidget> {
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
-          print(userRequestedInfo);
           var data = jsonDecode(userRequestedInfo);
 
           setState(() {
@@ -103,6 +104,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
             email = data['user_email'].toString();
             phoneNumber = data['phone_number'].toString();
             password = data['password'].toString();
+
+            isServerDataLoaded = true;
           });
         }
       }
@@ -155,6 +158,111 @@ class ProfilePageState extends State<ProfilePageWidget> {
     }
   }
 
+    Future<void> updateUserRole(bool isUserRole) async
+  {
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null) {
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+
+      var requestedRole = isUserRole ? 'Admin' : 'User';
+
+      var model = new UserUpdateRoleRequest(
+          userId: userId,
+          token: token,
+          newRole: requestedRole,
+          rootPassword: rootPasswordController.text.toString());
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/users/update_user_role';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final headers = {'Content-Type': 'application/json'};
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = Response.fromJson(jsonData);
+
+          setState(() {
+            getUserInfo();
+          });
+
+          if (responseContent.outInfo != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(responseContent.outInfo.toString())
+                )
+            );
+          }
+        }
+
+        rootPasswordController.clear();
+      }
+      catch (e) {
+        if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else {
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
+        }
+      }
+    }
+    else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Ошибка!'),
+          content: Text('Изменение роли текущего пользователя не удалось!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -162,7 +270,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Профиль пользователя', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+            title: Text('Профиль пользователя', 
+              style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
@@ -181,7 +290,10 @@ class ProfilePageState extends State<ProfilePageWidget> {
                 padding: EdgeInsets.all(32),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: 
+                  !isServerDataLoaded
+                  ? []
+                  : [
                     Text(
                       'Данные о пользователе: ',
                       style: TextStyle(
@@ -242,7 +354,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Image.network(pictureUrl, scale: 0.01),
+                    Image.network(pictureUrl, cacheWidth: 100, cacheHeight: 100,),
                     SizedBox(height: 12.0),
                     Text(
                       'Электронная почта: ',
@@ -362,106 +474,5 @@ class ProfilePageState extends State<ProfilePageWidget> {
           ),
         ),
     );
-  }
-
-  Future<void> updateUserRole(bool isUserRole) async
-  {
-    MySharedPreferences mySharedPreferences = new MySharedPreferences();
-
-    var cachedData = await mySharedPreferences.getDataIfNotExpired();
-
-    if (cachedData != null) {
-      var json = jsonDecode(cachedData.toString());
-      var cacheContent = ResponseWithToken.fromJson(json);
-
-      var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
-
-      var requestedRole = isUserRole ? 'Admin' : 'User';
-
-      var model = new UserUpdateRoleRequest(
-          userId: userId,
-          token: token,
-          newRole: requestedRole,
-          rootPassword: rootPasswordController.text.toString());
-
-      var requestMap = model.toJson();
-
-      var uris = GlobalEndpoints();
-
-      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
-
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
-      var requestString = '/users/update_user_role';
-
-      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
-
-      final url = Uri.parse(currentUri + currentPort + requestString);
-
-      final headers = {'Content-Type': 'application/json'};
-      final body = jsonEncode(requestMap);
-
-      try {
-        final response = await http.post(url, headers: headers, body: body);
-
-        if (response.statusCode == 200) {
-
-          var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
-
-          if (responseContent.outInfo != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(responseContent.outInfo.toString())
-                )
-            );
-          }
-        }
-
-        rootPasswordController.clear();
-      }
-      catch (e) {
-        if (e is TimeoutException) {
-          //treat TimeoutException
-          print("Timeout exception: ${e.toString()}");
-        }
-        else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
-        }
-      }
-    }
-    else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Ошибка!'),
-          content: Text('Изменение роли текущего пользователя не удалось!'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
   }
 }
