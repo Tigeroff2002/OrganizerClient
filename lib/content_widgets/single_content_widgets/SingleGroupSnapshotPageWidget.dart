@@ -309,13 +309,14 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
                         utf8.decode(utf8.encode(groupSnapshot.content)),
                           style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       )
-                      : SfCartesianChart(series: <CartesianSeries>[
-                    HistogramSeries<ParticipantKPIModel, double>(
-                    dataSource: histogramData,
-                    showNormalDistributionCurve: true,
-                    curveColor: const Color.fromRGBO(192, 108, 132, 1),
-                    binInterval: 20,
-                    yValueMapper: (ParticipantKPIModel data, _) => data.kpi)])
+                      : SfCartesianChart(
+                        primaryXAxis: CategoryAxis(),
+                        series: <CartesianSeries>[
+                          StackedColumnSeries<ParticipantKPIModel, String>(
+                            dataSource: histogramData,
+                            xValueMapper: (ParticipantKPIModel model, _) => model.participantName,
+                            yValueMapper: (ParticipantKPIModel model, _) => model.kpi,)
+                        ])
             ],
           ),
         ),

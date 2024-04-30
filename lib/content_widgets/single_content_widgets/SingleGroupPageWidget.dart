@@ -7,6 +7,7 @@ import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/group_manager_page.dart';
 import 'package:todo_calendar_client/content_widgets/group_participants_page_widget.dart';
+import 'package:todo_calendar_client/content_widgets/groups_list_page.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingGroupModel.dart';
 import 'package:todo_calendar_client/models/requests/GroupDeleteParticipantRequest.dart';
 import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
@@ -335,24 +336,6 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
-        else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
-        }
       }
     }
     else {
@@ -388,7 +371,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
         appBar: AppBar(
           title: 
           Text(
-            'Информация о группе ' + groupName + ': ',
+            'Информация о группе ' + groupName,
             style: TextStyle(
               color: Colors.deepPurple,
               fontSize: 16.0,
@@ -399,7 +382,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => UserPage()),);
+                    builder: (context) => GroupsListPageWidget()),);
             },
           ),
         ),

@@ -260,7 +260,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                       ),
                       SizedBox(height: 8),
                       ElevatedButton(
-                        child: Text('Страница группы: ',
+                        child: Text('Страница группы',
                           style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                         onPressed: () {
                           Navigator.pushReplacement(
