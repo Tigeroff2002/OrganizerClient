@@ -10,7 +10,7 @@ import 'package:todo_calendar_client/models/responses/additional_responces/GetRe
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
-import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/AddPersonalSnapshotWidget.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
@@ -191,10 +191,10 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context)
-                      => SnapshotPlaceholderWidget(
+                      => AddPersonalSnapshotWidget(
                           color: Colors.greenAccent,
                           text: 'Создание нового снапшота',
-                          index: 4))
+                          index: 5))
                   );
                 })
           ],
@@ -239,7 +239,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(data.auditType)),
+                            aliaser.getAuditTypeEnumValue(data.auditType)),
                         style: TextStyle(
                           color: Colors.white,
                         )

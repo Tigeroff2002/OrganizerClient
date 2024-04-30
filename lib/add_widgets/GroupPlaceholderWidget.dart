@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewGroupModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
@@ -173,7 +174,23 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
 
     final groupTypes = ['None', 'Educational', 'Job'];
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания новой группы'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -248,7 +265,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
             ],
       ),
       )
-    );
+    )));
   }
 
   String selectedGroupType = "None";

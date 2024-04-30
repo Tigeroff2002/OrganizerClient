@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
+import 'package:todo_calendar_client/add_widgets/IssuePlaceholderWidget.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleIssuePageWidget.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'dart:convert';
@@ -10,7 +11,7 @@ import 'package:todo_calendar_client/models/responses/additional_responces/GetRe
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
-import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/AddPersonalSnapshotWidget.dart';
 import 'package:todo_calendar_client/models/responses/IssueInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
@@ -194,7 +195,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context)
-                      => SnapshotPlaceholderWidget(
+                      => IssuePlaceholderWidget(
                           color: Colors.greenAccent,
                           text: 'Создание нового запроса',
                           index: 4))

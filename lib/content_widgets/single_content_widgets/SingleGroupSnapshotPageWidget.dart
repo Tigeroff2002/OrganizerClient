@@ -161,7 +161,10 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
     var modeTypes = ['Text', 'Diagram'];
 
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
         appBar: AppBar(
           title: Text(
             'Страничка отчета под номером ' + snapshotId.toString()
@@ -184,7 +187,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
                       Text(
-                        'Информация о текущем снапшоте',
+                        'Информация о текущем групповом снапшоте',
                         style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20.0),
@@ -208,20 +211,17 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
                       selectedModeType = newType.toString();
                       isDiagramMode = selectedModeType == 'Diagram';
                     });
-                  }),                     
+                  }),  
+                  SizedBox(height: 16.0),                   
                       Text(
                         'Тип снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getSnapshotTypeEnumValue(groupSnapshot.snapshotType)),
-                        style: TextStyle(
-                          color: Colors.white,
-                        )
-                      ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        ),
                       SizedBox(height: 8.0),
                       Text(
                         'Аудит снапшота: ',
@@ -231,81 +231,54 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(groupSnapshot.auditType)),
-                        style: TextStyle(
-                          color: Colors.white,
-                        )
+                            aliaser.getAuditTypeEnumValue(groupSnapshot.auditType)),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                         SizedBox(height: 8.0),
                         Text(
                           'Время создания снапшота: ',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                         ),
                         Text(
                           utf8.decode(groupSnapshot.creationTime.codeUnits),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                         ),
                         SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для начала снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(groupSnapshot.beginMoment.codeUnits),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для окончания снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(groupSnapshot.endMoment.codeUnits),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Cредний коэффициент KPI по результатам отчета: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(utf8.encode(groupSnapshot.averageKPI.toString())),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Информация, полученная в снапшоте: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       !isDiagramMode
                       ? Text(
                         utf8.decode(utf8.encode(groupSnapshot.content)),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       )
                       : SfCartesianChart(series: <CartesianSeries>[
                     HistogramSeries<ChartData1, double>(
@@ -318,7 +291,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
           ),
         ),
       ),
-    );
+    ));
   }
 
   final List<ChartData1> histogramData = <ChartData1>[

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/AddGroupSnapshotWidget.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupSnapshotPageWidget.dart';
+import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'dart:convert';
@@ -12,7 +13,7 @@ import 'package:todo_calendar_client/models/responses/additional_responces/GetRe
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
-import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/AddPersonalSnapshotWidget.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
@@ -72,7 +73,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-      var model = new UserInfoRequestModel(userId: userId, token: token);
+      var model = new GroupInfoRequest(userId: userId, token: token, groupId: groupId);
       var requestMap = model.toJson();
 
       var uris = GlobalEndpoints();
@@ -247,7 +248,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(data.auditType)),
+                            aliaser.getAuditTypeEnumValue(data.auditType)),
                         style: TextStyle(
                           color: Colors.white,
                         )

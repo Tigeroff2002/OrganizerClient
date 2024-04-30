@@ -101,8 +101,6 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
             var data = jsonDecode(userRequestedInfo);
 
-            print(userRequestedInfo);
-
             setState(() {
               snapshot = PersonalSnapshotInfoResponse.fromJson(data);
             });
@@ -112,6 +110,23 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
+        }
+        else if (e is FormatException){
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с данными на клиенте!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
         }
         else {
         showDialog<void>(
@@ -156,7 +171,10 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
         appBar: AppBar(
           title: Text('Страничка персонального отчета под номером ' + snapshotId.toString()),
           leading: IconButton(
@@ -183,105 +201,73 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
                       SizedBox(height: 30.0),
                       Text(
                         'Тип снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getSnapshotTypeEnumValue(snapshot.snapshotType)),
-                        style: TextStyle(
-                          color: Colors.white,
-                        )
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Аудит снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(snapshot.auditType)),
-                        style: TextStyle(
-                          color: Colors.white,
-                        )
+                            aliaser.getAuditTypeEnumValue(snapshot.auditType)),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                         SizedBox(height: 8.0),
                         Text(
                           'Время создания снапшота: ',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                         ),
                         Text(
                           utf8.decode(snapshot.creationTime.codeUnits),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                         ),
                         SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для начала снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(snapshot.beginMoment.codeUnits),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для окончания снапшота: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(snapshot.endMoment.codeUnits),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Коэффициент KPI по результатам отчета: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(utf8.encode(snapshot.KPI.toString())),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Информация, полученная в снапшоте: ',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(utf8.encode(snapshot.content)),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
             ],
           ),
         ),
       ),
+    ),
     );
   }
 

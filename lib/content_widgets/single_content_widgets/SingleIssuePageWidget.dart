@@ -284,7 +284,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
     var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
     var issueStatuses = ['None', 'Reported', 'InProgress', 'Closed'];
 
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
       appBar: AppBar(
         title: Text('Страничка просмотра запроса для администрации'),
         leading: IconButton(
@@ -439,7 +442,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   String existedTitle = '';

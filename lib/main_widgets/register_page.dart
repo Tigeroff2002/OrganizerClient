@@ -216,6 +216,7 @@ class RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: 'Электронная почта: ',
                     labelStyle: TextStyle(
+                        fontSize: 16,
                         color: Colors.deepPurple
                     ),
                     errorText: !isEmailValidated
@@ -229,6 +230,7 @@ class RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: 'Имя пользователя: ',
                     labelStyle: TextStyle(
+                        fontSize: 16,
                         color: Colors.deepPurple
                     ),
                     errorText: !isNameValidated
@@ -242,6 +244,7 @@ class RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: 'Пароль: ',
                     labelStyle: TextStyle(
+                        fontSize: 16,
                         color: Colors.deepPurple
                     ),
                     errorText: !isPasswordValidated
@@ -255,6 +258,7 @@ class RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(
                     labelText: 'Номер телефона: ',
                     labelStyle: TextStyle(
+                        fontSize: 16,
                         color: Colors.deepPurple
                     ),
                     errorText: !isPhoneValidated

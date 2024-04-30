@@ -278,7 +278,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
     final groupTypes = ['None', 'Educational', 'Job'];
 
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
         appBar: AppBar(
           title: 
           Text(
@@ -320,9 +323,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
               )
               : Text(
                  'Наименование группы: ' + groupNameController.text,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     ),
               SizedBox(height: 16.0),
               isUserManager
@@ -416,7 +417,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
             ),              
         )
         )
-        );
+    ));
   }
 
   Future<void> editCurrentGroup(BuildContext context) async

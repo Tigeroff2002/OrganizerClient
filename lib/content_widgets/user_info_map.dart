@@ -49,7 +49,10 @@ class _HomeState extends State<HomeMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
@@ -63,6 +66,7 @@ class _HomeState extends State<HomeMap> {
           BottomNavigationBarItem(
             icon: Icon(Icons.access_alarms),
             label: 'Мои мероприятия',
+            tooltip: '1111'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business_outlined),
@@ -78,10 +82,10 @@ class _HomeState extends State<HomeMap> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.comment_rounded),
-            label: 'Мои снапшоты',
+            label: 'Мои личные снапшоты',
           ),
         ],
       ),
-    );
+    ));
   }
 }

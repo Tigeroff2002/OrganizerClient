@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleIssuePageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
@@ -190,7 +191,23 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
 
     var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания нового запроса для администрации'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           padding: EdgeInsets.all(32),
@@ -280,7 +297,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
               ]
           ),
         )
-    );
+    )));
   }
 
   String selectedIssueType = 'None';

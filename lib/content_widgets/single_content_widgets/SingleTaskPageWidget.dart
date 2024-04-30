@@ -273,7 +273,10 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
     var taskTypes = ['None', 'AbstractGoal', 'MeetingPresense', 'JobComplete'];
     var taskStatuses = ['None', 'ToDo', 'InProgress', 'Review', 'Done'];
 
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
         appBar: AppBar(
           title: Text('Страничка просмотра задачи'),
           leading: IconButton(
@@ -390,7 +393,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   String selectedTaskType = 'None';

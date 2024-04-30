@@ -185,6 +185,7 @@ class LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     labelText: 'Электронная почта: ',
                     labelStyle: TextStyle(
+                      fontSize: 16,
                       color: Colors.deepPurple
                     ),
                     errorText: !isEmailValidated
@@ -199,6 +200,7 @@ class LoginPageState extends State<LoginPage> {
                 decoration: InputDecoration(
                     labelText: 'Пароль: ',
                     labelStyle: TextStyle(
+                        fontSize: 16,
                         color: Colors.deepPurple
                     ),
                     errorText: !isPasswordValidated

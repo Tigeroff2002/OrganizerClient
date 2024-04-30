@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/group_manager_page.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
@@ -183,7 +184,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
   @override
   Widget build(BuildContext context) {
 
-    var snapshotTypes = ['None', 'EventsSnapshot', 'TasksSnapshot', 'ReportsSnapshot', 'IssuesSnapshot'];
+    var snapshotTypes = ['None', 'EventsSnapshot', 'TasksSnapshot', 'IssuesSnapshot'];
 
     var showingBeginHours = selectedBeginDateTime.hour.toString().padLeft(2, '0');
     var showingBeginMinutes = selectedBeginDateTime.minute.toString().padLeft(2, '0');
@@ -272,7 +273,23 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
       selectedEndDateTime = newDateTime;
     }
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания отчета по работе группы'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GroupManagerPageWidget(groupId: groupId,)),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -281,7 +298,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
           children: [
             Text(
               'Создание снапшота для текущей группы',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
             SizedBox(height: 30.0),
               SizedBox(height: 16.0),
@@ -420,6 +437,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
           ]
       ),
       )
+    ))
     );
   }
 

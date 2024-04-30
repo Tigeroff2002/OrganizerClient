@@ -445,7 +445,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       });
     }
 
-    return Scaffold(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
       appBar: AppBar(
         title: Text('Страничка просмотра информации о событии'),
         leading: IconButton(icon: Icon(Icons.arrow_back),
@@ -805,7 +808,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
               ],
           ),
         ))
-    );
+    ));
   }
 
   String certainEventUsersDescription = '';

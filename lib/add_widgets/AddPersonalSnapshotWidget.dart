@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
@@ -11,13 +12,13 @@ import '../GlobalEndpoints.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
 import '../shared_pref_cached_data.dart';
 
-class SnapshotPlaceholderWidget extends StatefulWidget{
+class AddPersonalSnapshotWidget extends StatefulWidget{
 
   final Color color;
   final String text;
   final int index;
 
-  SnapshotPlaceholderWidget(
+  AddPersonalSnapshotWidget(
       {
         required this.color,
         required this.text,
@@ -25,12 +26,12 @@ class SnapshotPlaceholderWidget extends StatefulWidget{
       });
 
   @override
-  SnapshotPlaceholderState createState(){
-    return new SnapshotPlaceholderState(color: color, text: text, index: index, isPageJustLoaded: true);
+  AddPersonalSnapshotState createState(){
+    return new AddPersonalSnapshotState(color: color, text: text, index: index, isPageJustLoaded: true);
   }
 }
 
-class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
+class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
 
   final Color color;
   final String text;
@@ -46,7 +47,7 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
 
   final TextEditingController snapshotTypeController = TextEditingController();
 
-  SnapshotPlaceholderState(
+  AddPersonalSnapshotState(
       {
         required this.color,
         required this.text,
@@ -187,7 +188,7 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
   @override
   Widget build(BuildContext context) {
 
-    var snapshotTypes = ['None', 'EventsSnapshot', 'TasksSnapshot', 'ReportsSnapshot', 'IssuesSnapshot'];
+    var snapshotTypes = ['None', 'EventsSnapshot', 'TasksSnapshot', 'IssuesSnapshot'];
 
     var showingBeginHours = selectedBeginDateTime.hour.toString().padLeft(2, '0');
     var showingBeginMinutes = selectedBeginDateTime.minute.toString().padLeft(2, '0');
@@ -276,7 +277,23 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
       selectedEndDateTime = newDateTime;
     }
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания личного отчета'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -419,12 +436,12 @@ class SnapshotPlaceholderState extends State<SnapshotPlaceholderWidget> {
                     }
                   });
                 },
-                child: Text('Сделать новый снапшот'),
+                child: Text('Создать новый личный снапшот'),
               ),
           ]
       ),
       )
-    );
+    )));
   }
 
   String selectedSnapshotType = 'None';

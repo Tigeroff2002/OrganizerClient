@@ -3,7 +3,7 @@ import 'package:todo_calendar_client/add_widgets/EventPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/IssuePlaceholderWidget.dart';
 import 'package:todo_calendar_client/add_widgets/TaskPlaceholderWidget.dart';
-import 'package:todo_calendar_client/add_widgets/SnapshotPlaceholderWidget.dart';
+import 'package:todo_calendar_client/add_widgets/AddPersonalSnapshotWidget.dart';
 import 'package:todo_calendar_client/main_widgets/personal_account.dart';
 
 class UserPage extends StatelessWidget {
@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
         text: 'Страница создания нового запроса',
         index: 4),
 
-    SnapshotPlaceholderWidget(
+    AddPersonalSnapshotWidget(
         color: Colors.deepPurpleAccent,
         text: 'Страница создания нового снапшота',
         index: 5),

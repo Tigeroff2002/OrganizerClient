@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleEventPageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
@@ -314,7 +315,23 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
       });
     }
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания нового мероприятия'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -546,7 +563,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
             ],
       ),
     )
-    );
+      )));
   }
 
   String selectedEventType = "None";
