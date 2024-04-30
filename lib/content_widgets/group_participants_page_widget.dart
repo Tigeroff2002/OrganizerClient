@@ -213,10 +213,6 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
-          setState(() {
-            getUsersFromGroupInfo();
-          });
-
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -224,6 +220,10 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                 )
             );
           }
+
+          setState(() {
+            getUsersFromGroupInfo();
+          });
         }
       }
       catch (e) {

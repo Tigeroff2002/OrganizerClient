@@ -6,10 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
 import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
+import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/GroupInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
@@ -48,6 +50,8 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  int userId = -1;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -62,7 +66,10 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
-      var userId = cacheContent.userId;
+      setState(() {
+        userId = cacheContent.userId;
+      });
+
       var token = cacheContent.token.toString();
 
       var model = new UserInfoRequestModel(userId: userId, token: token);
@@ -111,6 +118,110 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
           print("Timeout exception: ${e.toString()}");
         }
         else {
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
+        }
+      }
+    }
+    else {
+      setState(() {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content:
+            Text(
+                'Произошла ошибка при получении'
+                    ' полной информации о пользователе!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
+    }
+  }
+
+    Future<void> deleteGroup(int deletionGroupId) async {
+
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null){
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+
+      var model = new GroupInfoRequest(
+          userId: userId,
+          token: token,
+          groupId: deletionGroupId);
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/groups/delete_group';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = Response.fromJson(jsonData);
+
+          if (responseContent.outInfo != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(responseContent.outInfo.toString())
+                )
+            );
+          }
+
+          setState(() {
+            getUserInfo();
+          });
+        }
+      }
+      catch (e) {
+        if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else{
         showDialog<void>(
           context: context,
           builder: (context) => AlertDialog(
@@ -270,6 +381,18 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                           );
                         },
                       ),
+                      SizedBox(height: 12),
+                      data.managerId == userId 
+                      ? ElevatedButton(
+                        child: Text('Удалить группу',
+                          style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
+                          onPressed: () {
+                            deleteGroup(data.groupId).then((value) => {
+                              groupsList.removeWhere((element) => element.groupId == data.groupId)
+                          });
+                        },
+                      )
+                      : SizedBox(height: 0.0),
                     ],
                   ),
                 ),

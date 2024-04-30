@@ -205,10 +205,6 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
-          setState(() {
-            getExistedGroup();
-          });
-
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -216,6 +212,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
                 )
             );
           }
+
+          setState(() {
+            getExistedGroup();
+          });
         }
       }
       catch (e) {

@@ -7,10 +7,12 @@ import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/AddGroupSnapshotWidget.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupSnapshotPageWidget.dart';
 import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
+import 'package:todo_calendar_client/models/requests/SnapshotInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
 import 'package:todo_calendar_client/models/responses/GroupSnapshotInfoResponse.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/responses/additional_responces/GetResponse.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
@@ -117,6 +119,109 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
           setState(() {
             groupSnapshotsList = fetchedSnapshots;
             isServerDataLoaded = true;
+          });
+        }
+      }
+      catch (e) {
+        if (e is TimeoutException) {
+          //treat TimeoutException
+          print("Timeout exception: ${e.toString()}");
+        }
+        else{
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
+        }
+      }
+    }
+    else {
+      setState(() {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content:
+            Text(
+                'Произошла ошибка при получении'
+                    ' полной информации о пользователе!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      });
+    }
+  }
+
+  Future<void> deleteSnapshot(int deletionSnapshotId) async {
+    MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    var cachedData = await mySharedPreferences.getDataIfNotExpired();
+
+    if (cachedData != null){
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = ResponseWithToken.fromJson(json);
+
+      var userId = cacheContent.userId;
+      var token = cacheContent.token.toString();
+
+      var model = new SnapshotInfoRequest(
+          userId: userId,
+          token: token,
+          snapshotId: deletionSnapshotId);
+
+      var requestMap = model.toJson();
+
+      var uris = GlobalEndpoints();
+
+      bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+
+      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+
+      var requestString = '/snapshots/delete_snapshot';
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentUri + currentPort + requestString);
+
+      final body = jsonEncode(requestMap);
+
+      try {
+        final response = await http.post(url, headers: headers, body: body);
+
+        if (response.statusCode == 200) {
+
+          var jsonData = jsonDecode(response.body);
+          var responseContent = Response.fromJson(jsonData);
+
+          if (responseContent.outInfo != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text(responseContent.outInfo.toString())
+                )
+            );
+          }
+
+          setState(() {
+            getGroupSnapshotsInfo();
           });
         }
       }
@@ -353,8 +458,18 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (context)
-                            => SingleGroupSnapshotPageWidget(snapshotId: data.snapshotId, groupId: groupId,)),
+                              => SingleGroupSnapshotPageWidget(snapshotId: data.snapshotId, groupId: groupId,)),
                           );
+                        },
+                      ),
+                      SizedBox(height: 12),
+                      ElevatedButton(
+                        child: Text('Удалить снапшот',
+                          style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
+                          onPressed: () {
+                            deleteSnapshot(data.snapshotId).then((value) => {
+                              groupSnapshotsList.removeWhere((element) => element.snapshotId == data.snapshotId)
+                          });
                         },
                       ),
                     ],

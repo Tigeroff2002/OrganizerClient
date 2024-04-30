@@ -209,10 +209,6 @@ class ProfilePageState extends State<ProfilePageWidget> {
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
-          setState(() {
-            getUserInfo();
-          });
-
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -220,6 +216,10 @@ class ProfilePageState extends State<ProfilePageWidget> {
                 )
             );
           }
+
+          setState(() {
+            getUserInfo();
+          });
         }
 
         rootPasswordController.clear();

@@ -298,6 +298,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
+          
           if (responseContent.outInfo != null){
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
