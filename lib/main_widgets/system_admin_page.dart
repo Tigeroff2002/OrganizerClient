@@ -74,37 +74,25 @@ class SystemAdminPageState extends State<SystemAdminPageWidget> {
                     ),
                     SizedBox(height: 12.0),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SystemIssuesListPageWidget()),);
                       },
-                      child: Text('Список открытых проблемных запросов'),
+                      child: Text('Список открытых проблемных запросов',
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                     SizedBox(height: 20.0),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SystemAlertsListPageWidget()),);
                       },
-                      child: Text('Список системных алертов'),
+                      child: Text('Список системных алертов', 
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                     SizedBox(height: 30.0),
                   ],

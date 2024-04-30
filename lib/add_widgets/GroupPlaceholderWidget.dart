@@ -103,20 +103,13 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SingleGroupPageWidget(groupId: createGroupId)));
                     },
-                    child: Text('Перейти на страницу новой группы с id = ' + createGroupId.toString()),
+                    child: Text('Перейти на страницу новой группы с id = ' + createGroupId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -203,6 +196,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
             ),
             SizedBox(height: 20.0),
               TextField(
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 controller: groupNameController,
                 decoration: InputDecoration(
                   labelText: 'Наименование группы:',
@@ -243,14 +237,6 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                    style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor : Colors.white,
-                    shadowColor: Colors.cyan,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    minimumSize: Size(150, 50)),
                 onPressed: () async {
                   setState(() {
                     isNameValidated = !groupNameController.text.isEmpty;
@@ -260,7 +246,8 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                     }
                   });
                 },
-                child: Text('Создать новую группу'),
+                child: Text('Создать новую группу',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
       ),

@@ -273,154 +273,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-
-    final groupTypes = ['None', 'Educational', 'Job'];
-
-    return new MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
-      home: Scaffold(
-        appBar: AppBar(
-          title: 
-          Text(
-            'Информация о группе ' + groupName + ': ',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold)),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => UserPage()),);
-            },
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-          padding: EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              isUserManager
-                ? TextField(
-                controller: groupNameController,
-                decoration: InputDecoration(
-                  labelText: 'Наименование группы:',
-                    labelStyle: TextStyle(
-                      fontSize: 16.0,
-                        color: Colors.deepPurple
-                    ),
-                    errorText: !isNameValidated
-                        ? 'Название группы не может быть пустым'
-                        : null
-                ),
-              )
-              : Text(
-                 'Наименование группы: ' + groupNameController.text,
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                    ),
-              SizedBox(height: 16.0),
-              isUserManager
-              ? Text(
-                'Тип группы:',
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-              )
-              : Text(
-                'Тип группы: ' + selectedGroupType,
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-              ),
-              isUserManager
-              ? SizedBox(height: 8.0)
-              : SizedBox(height: 0.0),
-              isUserManager
-              ? DropdownButton(
-                  value: selectedGroupType,
-                  items: groupTypes.map((String type){
-                    return DropdownMenuItem(
-                        value: type,
-                        child: Text(type));
-                  }).toList(),
-                  onChanged: (String? newType){
-                    setState(() {
-                      selectedGroupType = newType.toString();
-                    });
-                  })
-              : SizedBox(height: 0.0),
-              isUserManager
-              ? SizedBox(height: 8.0)
-              : SizedBox(height: 0.0),
-              selectedGroupType == 'None'
-                ? Text(
-                   'Доступно ограничение видимости группы для пользователей',
-                    style: TextStyle(fontSize: 16, color: Colors.deepOrange))
-                : Text(
-                   'Данная группа будет открытой, доступной для всех пользователей',
-                   style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
-                  SizedBox(height: 16.0),
-                    isUserManager
-                      ? ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => GroupManagerPageWidget(groupId: groupId)),);
-                      },
-                      child: Text('Функционал менеджера'),)
-                      : Text(
-                        'Вам недоступен функционал системного менеджера',
-                        style: TextStyle(
-                            color: Colors.deepOrange,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                    ),  
-                  SizedBox(height: 12.0),
-                  ElevatedButton(
-                        child: Text('Просмотреть список пользователей'),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context)
-                            => GroupParticipantsPageWidget(groupId: groupId)),
-                          );
-                        },
-                      ),
-                  SizedBox(height: 12.0),
-                  ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
-                onPressed: () async {
-                  setState(() {
-                    isNameValidated = !groupNameController.text.isEmpty;
-
-                    if (isNameValidated){
-                      editCurrentGroup(context);
-                    }
-                  });
-                },
-                child: Text('Изменить параметры группы'),
-              ),
-            ],
-            ),              
-        )
-        )
-    ));
-  }
-
-  Future<void> editCurrentGroup(BuildContext context) async
+    Future<void> editCurrentGroup(BuildContext context) async
   {
     String groupName = groupNameController.text;
     String groupType = selectedGroupType.toString();
@@ -527,6 +380,148 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
       );
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final groupTypes = ['None', 'Educational', 'Job'];
+
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: 
+          Text(
+            'Информация о группе ' + groupName + ': ',
+            style: TextStyle(
+              color: Colors.deepPurple,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold)),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+          padding: EdgeInsets.all(32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              isUserManager
+                ? TextField(
+                controller: groupNameController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                decoration: InputDecoration(
+                  labelText: 'Наименование группы:',
+                    labelStyle: TextStyle(
+                      fontSize: 16.0,
+                        color: Colors.deepPurple
+                    ),
+                    errorText: !isNameValidated
+                        ? 'Название группы не может быть пустым'
+                        : null
+                ),
+              )
+              : Text(
+                 'Наименование группы: ' + groupNameController.text,
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    ),
+              SizedBox(height: 16.0),
+              isUserManager
+              ? Text(
+                'Тип группы:',
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+              )
+              : Text(
+                'Тип группы: ' + selectedGroupType,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+              ),
+              isUserManager
+              ? SizedBox(height: 8.0)
+              : SizedBox(height: 0.0),
+              isUserManager
+              ? DropdownButton(
+                  value: selectedGroupType,
+                  items: groupTypes.map((String type){
+                    return DropdownMenuItem(
+                        value: type,
+                        child: Text(type));
+                  }).toList(),
+                  onChanged: (String? newType){
+                    setState(() {
+                      selectedGroupType = newType.toString();
+                    });
+                  })
+              : SizedBox(height: 0.0),
+              isUserManager
+              ? SizedBox(height: 8.0)
+              : SizedBox(height: 0.0),
+              selectedGroupType == 'None'
+                ? Text(
+                   'Доступно ограничение видимости группы для пользователей',
+                    style: TextStyle(fontSize: 16, color: Colors.deepOrange))
+                : Text(
+                   'Данная группа будет открытой, доступной для всех пользователей',
+                   style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
+                  SizedBox(height: 16.0),
+                    isUserManager
+                      ? ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupManagerPageWidget(groupId: groupId)),);
+                      },
+                      child: Text('Функционал менеджера',
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),)
+                      : Text(
+                        'Вам недоступен функционал системного менеджера',
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontSize: 16.0
+                        ),
+                    ),  
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                        child: Text('Просмотреть список пользователей',
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context)
+                            => GroupParticipantsPageWidget(groupId: groupId)),
+                          );
+                        },
+                      ),
+                  SizedBox(height: 12.0),
+                  ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isNameValidated = !groupNameController.text.isEmpty;
+
+                    if (isNameValidated){
+                      editCurrentGroup(context);
+                    }
+                  });
+                },
+                child: Text('Изменить параметры группы',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+              ),
+            ],
+            ),              
+        )
+        )
+    ));
+  }
+
 
     final TextEditingController groupNameController = TextEditingController();
     bool isNameValidated = true;

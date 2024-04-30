@@ -213,6 +213,7 @@ class RegisterPageState extends State<RegisterPage> {
             children: [
               TextField(
                 controller: emailController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Электронная почта: ',
                     labelStyle: TextStyle(
@@ -227,6 +228,7 @@ class RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 16.0),
               TextField(
                 controller: usernameController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Имя пользователя: ',
                     labelStyle: TextStyle(
@@ -240,6 +242,7 @@ class RegisterPageState extends State<RegisterPage> {
               ),
               TextField(
                 controller: passwordController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 obscureText: true,
                 decoration: InputDecoration(
                     labelText: 'Пароль: ',
@@ -255,6 +258,7 @@ class RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 30.0),
               TextField(
                 controller: phoneNumberController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Номер телефона: ',
                     labelStyle: TextStyle(
@@ -268,15 +272,6 @@ class RegisterPageState extends State<RegisterPage> {
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.greenAccent,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36.0)),
-                  minimumSize: Size(150, 60),
-                ),
                 onPressed: () async {
                   setState(() {
                     isEmailValidated = !emailController.text.isEmpty;
@@ -290,7 +285,8 @@ class RegisterPageState extends State<RegisterPage> {
                     }
                   });
                 },
-                child: Text('Зарегистрироваться'),
+                child: Text('Зарегистрироваться',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
           ),

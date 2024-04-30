@@ -189,16 +189,8 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
-                child: Text('Сделать новый снапшот'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
+                child: Text('Создать новый снапшот для группы',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () {
                   Navigator.pushReplacement(
                       context,
@@ -334,7 +326,8 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        child: Text('Просмотреть снапшот группы'),
+                        child: Text('Просмотреть снапшот группы',
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,

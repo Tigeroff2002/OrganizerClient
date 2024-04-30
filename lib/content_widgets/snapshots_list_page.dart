@@ -177,16 +177,8 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
-                child: Text('Сделать новый снапшот'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
+                child: Text('Создать новый личный снапшот',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () {
                   Navigator.pushReplacement(
                       context,
@@ -325,7 +317,8 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        child: Text('Просмотреть снапшот'),
+                        child: Text('Просмотреть снапшот',
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,

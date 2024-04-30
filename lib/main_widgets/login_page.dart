@@ -182,6 +182,7 @@ class LoginPageState extends State<LoginPage> {
             children: [
               TextField(
                 controller: emailController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Электронная почта: ',
                     labelStyle: TextStyle(
@@ -196,6 +197,7 @@ class LoginPageState extends State<LoginPage> {
               SizedBox(height: 16.0),
               TextField(
                 controller: passwordController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 obscureText: true,
                 decoration: InputDecoration(
                     labelText: 'Пароль: ',
@@ -210,15 +212,6 @@ class LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.greenAccent,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(36.0)),
-                  minimumSize: Size(150, 60),
-                ),
                 onPressed: () async {
                   setState(() {
                     isEmailValidated = !emailController.text.isEmpty;
@@ -229,7 +222,7 @@ class LoginPageState extends State<LoginPage> {
                     }
                   });
                 },
-                child: Text('Войти'),
+                child: Text('Войти в аккаунт', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
           ),

@@ -198,6 +198,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
               SizedBox(height: 4.0),
               DropdownButtonFormField(
                   value: selectedModeType,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   decoration: InputDecoration(
                     labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple)
                   ),

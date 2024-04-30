@@ -185,16 +185,8 @@ class TasksListPageState extends State<TasksListPageWidget> {
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
-                child: Text('Создать новую задачу'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
+                child: Text('Создать новую задачу',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () {
                   Navigator.pushReplacement(
                       context,
@@ -286,7 +278,8 @@ class TasksListPageState extends State<TasksListPageWidget> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        child: Text('Просмотреть задачу'),
+                        child: Text('Просмотреть задачу',
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,

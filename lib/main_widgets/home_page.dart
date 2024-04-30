@@ -30,15 +30,6 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.greenAccent,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0)),
-                  minimumSize: Size(200, 80),
-                ),
                 onPressed: () {
                   MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -54,7 +45,9 @@ class HomePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => UserPage())));
                 },
-                child: Text('Запуск приложения'),
+                child: Text(
+                  'Запуск приложения',
+                   style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
               SizedBox(height: 40),
               GestureDetector(

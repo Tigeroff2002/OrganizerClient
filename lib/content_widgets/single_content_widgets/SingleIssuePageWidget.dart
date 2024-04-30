@@ -320,6 +320,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               isSelfUser
               ? TextField(
                 controller: issueTitleController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Заголовок запроса: ',
                     labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
@@ -382,6 +383,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               isSelfUser
               ? TextFormField(
                 controller: issueDescriptionController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 maxLines: null,
                 decoration: InputDecoration(
                     labelText: 'Описание запроса: ',
@@ -399,6 +401,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               isSelfUser
               ? TextFormField(
                 controller: issueLinkController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 maxLines: null,
                 decoration: InputDecoration(
                     labelText: 'Ссылка на скриншот (или страницу): ',
@@ -416,15 +419,6 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               Image.network(utf8.decode(utf8.encode(issueLinkController.text)), scale: 0.01),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
                 onPressed: () async {
                   setState(() {
                     isTitleValidated = !issueTitleController.text.isEmpty;
@@ -436,7 +430,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
                     }
                   });
                 },
-                child: Text('Изменить текущий запрос'),
+                child: Text('Изменить текущий запрос',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
           ),

@@ -330,7 +330,8 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                                     fontSize: 16),),
                                 SizedBox(height: 12),
                                 ElevatedButton(
-                                  child: Text('Посмотреть календарь пользователя'),
+                                  child: Text('Посмотреть календарь пользователя',
+                                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                                   onPressed: () {
                                     Navigator.pushReplacement(
                                       context,
@@ -344,8 +345,10 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                                   SizedBox(height: 10),
                                   ElevatedButton(
                                     child: userId != data.userId
-                                      ? Text('Исключить пользователя')
-                                      : Text('Выйти из группы'),
+                                      ? Text('Исключить пользователя', 
+                                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),)
+                                      : Text('Выйти из группы', 
+                                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                                     onPressed: () {
                                       setState(() {
                                         deleteUserFromGroup(data.userId).then((value) => {

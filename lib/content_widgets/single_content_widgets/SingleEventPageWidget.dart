@@ -475,6 +475,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   SizedBox(height: 16.0),
                   TextField(
                     controller: eventCaptionController,
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     decoration: InputDecoration(
                         labelText: 'Наименование мероприятия:',
                         labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
@@ -486,6 +487,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   SizedBox(height: 16.0),
                   TextFormField(
                     controller: eventDescriptionController,
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     maxLines: null,
                     decoration: InputDecoration(
                         labelText: 'Описание меропрития:',
@@ -505,16 +507,9 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   ),
                   SizedBox(height: 12.0),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor : Colors.white,
-                      shadowColor: Colors.cyan,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      minimumSize: Size(250, 100),
-                    ),
-                    child: Text(outputBeginDateTime),
+                    child: Text(
+                      outputBeginDateTime,
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     onPressed: () async {
                       await pickBeginDateTime();
                       setState(() {
@@ -622,15 +617,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                       }),
                   SizedBox(height: 30.0),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor : Colors.white,
-                      shadowColor: Colors.cyan,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      minimumSize: Size(150, 50),
-                    ),
                     onPressed: () {
       setState(() {
         getCertainEventInfo(eventId).then((value) {
@@ -770,7 +756,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: new Text('ОК'))
+                        child: new Text('ОК', style: TextStyle(fontSize: 16, color: Colors.deepPurple),))
                   ],
                 );
               });
@@ -781,15 +767,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   ),
                   SizedBox(height: 30.0),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor : Colors.white,
-                      shadowColor: Colors.cyan,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      minimumSize: Size(150, 50),
-                    ),
                     onPressed: () async {
                       setState(() {
                         isCaptionValidated = !eventCaptionController.text.isEmpty;
@@ -809,7 +786,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                         }
                       });
                     },
-                    child: Text('Изменить текущее мероприятие'),
+                    child: Text('Изменить текущее мероприятие',
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
               ],
           ),

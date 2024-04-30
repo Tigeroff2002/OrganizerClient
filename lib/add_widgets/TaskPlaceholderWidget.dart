@@ -109,20 +109,13 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SingleTaskPageWidget(taskId: createdTaskId)));
                     },                      
-                    child: Text('Перейти на страницу новой задачи с id = ' + createdTaskId.toString()),
+                    child: Text('Перейти на страницу новой задачи с id = ' + createdTaskId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -213,6 +206,7 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
                   SizedBox(height: 16.0),
                   TextField(
                     controller: taskCaptionController,
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     decoration: InputDecoration(
                         labelText: 'Наименование задачи: ',
                         labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
@@ -224,6 +218,7 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
                   SizedBox(height: 12.0),
                   TextFormField(
                     controller: taskDescriptionController,
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                     maxLines: null,
                     decoration: InputDecoration(
                         labelText: 'Описание задачи: ',
@@ -276,14 +271,6 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
                   ),
                   SizedBox(height: 30.0),
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: () async {
                       setState(() {
                         isCaptionValidated = !taskCaptionController.text.isEmpty;
@@ -294,7 +281,8 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
                         }
                       });
                     },
-                    child: Text('Создать новую задачу'),
+                    child: Text('Создать новую задачу',
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 ],
           ),

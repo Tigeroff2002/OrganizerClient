@@ -152,20 +152,13 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: (){
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SingleEventPageWidget(eventId: createEventId)));
                     },
-                    child: Text('Перейти на страницу нового события с id = ' + createEventId.toString()),
+                    child: Text('Перейти на страницу нового события с id = ' + createEventId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -346,6 +339,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               SizedBox(height: 16.0),
               TextField(
                 controller: eventCaptionController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                   labelText: 'Наименование мероприятия:',
                     labelStyle: TextStyle(
@@ -359,6 +353,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               ),
               SizedBox(height: 12.0),
               TextFormField(
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 controller: eventDescriptionController,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -379,16 +374,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               ),
               SizedBox(height: 12.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
-                child: Text(outputBeginDateTime),
+                child: Text(outputBeginDateTime, style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () async {
                   await pickBeginDateTime();
                   setState(() {
@@ -479,6 +465,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               SizedBox(height: 4.0),
               DropdownButtonFormField(
                   value: selectedEventType,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   decoration: InputDecoration(
                     labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple)
                   ),
@@ -529,15 +516,6 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                   }),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
                 onPressed: () async {
                   setState(() {
                     isCaptionValidated = !eventCaptionController.text.isEmpty;
@@ -560,7 +538,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                     }
                   });
                 },
-                child: Text('Создать новое мероприятие'),
+                child: Text('Создать новое мероприятие',
+                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
       ),

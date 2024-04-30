@@ -299,7 +299,8 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
                       ),
                       SizedBox(height: 12),
                       ElevatedButton(
-                        child: Text('Просмотреть запрос'),
+                        child: Text('Просмотреть запрос',
+                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                         onPressed: () {
                           Navigator.pushReplacement(
                             context,

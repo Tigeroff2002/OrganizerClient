@@ -116,21 +116,14 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => 
                           SingleIssuePageWidget(issueId: createIssueId, isSelfUser: true,)));                      
                     },
-                    child: Text('Перейти на страницу нового issue с id = ' + createIssueId.toString()),
+                    child: Text('Перейти на страницу нового issue с id = ' + createIssueId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -222,6 +215,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 SizedBox(height: 16.0),
                 TextField(
                   controller: issueTitleController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   decoration: InputDecoration(
                       labelText: 'Заголовок запроса: ',
                       labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
@@ -250,6 +244,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: issueDescriptionController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   maxLines: null,
                   decoration: InputDecoration(
                       labelText: 'Описание запроса: ',
@@ -262,6 +257,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 SizedBox(height: 16.0),
                 TextFormField(
                   controller: issueLinkController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   maxLines: null,
                   decoration: InputDecoration(
                       labelText: 'Ссылка на скриншот (или страницу): ',
@@ -273,14 +269,6 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 ),
                 SizedBox(height: 30.0),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor : Colors.white,
-                      shadowColor: Colors.cyan,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      minimumSize: Size(150, 50)),
                   onPressed: () async {
                     setState(() {
                       isTitleValidated = !issueTitleController.text.isEmpty;
@@ -292,7 +280,8 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                       }
                     });
                   },
-                  child: Text('Сделать новый запрос'),
+                  child: Text('Сделать новый запрос',
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 ),
               ]
           ),

@@ -304,6 +304,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
               SizedBox(height: 16.0),
               TextField(
                 controller: taskCaptionController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Наименование задачи: ',
                     labelStyle: TextStyle(
@@ -318,6 +319,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
               SizedBox(height: 12.0),
               TextFormField(
                 controller: taskDescriptionController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 maxLines: null,
                 decoration: InputDecoration(
                     labelText: 'Описание задачи: ',
@@ -368,15 +370,6 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
                   }),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
                 onPressed: () async {
                   setState(() {
                     isCaptionValidated = !taskCaptionController.text.isEmpty;
@@ -387,7 +380,8 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
                     }
                   });
                 },
-                child: Text('Изменить текущую задачу'),
+                child: Text('Изменить текущую задачу',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
           ),

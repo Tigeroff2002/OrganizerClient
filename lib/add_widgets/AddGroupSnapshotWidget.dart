@@ -113,14 +113,6 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: (){
                       Navigator.push(
                         context,
@@ -129,7 +121,8 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
                     },
                     child: Text(
                       'Перейти на страницу нового группового отчета с id = '
-                       + createdGroupSnapshotId.toString()),
+                       + createdGroupSnapshotId.toString(),
+                       style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -326,16 +319,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
               ),
               SizedBox(height: 12.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
-                child: Text(outputBeginDateTime),
+                child: Text(outputBeginDateTime, style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () async {
                   await pickBeginDateTime();
                   setState(() {
@@ -407,14 +391,6 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor : Colors.white,
-                    shadowColor: Colors.cyan,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    minimumSize: Size(150, 50)),
                 onPressed: () async {
                   setState(() {
                     isSnapshotEndTimeGreaterThanBeginTime =
@@ -432,7 +408,8 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
                     }
                   });
                 },
-                child: Text('Сделать новый снапшот для текущей группы'),
+                child: Text('Сделать новый снапшот для текущей группы',
+                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
           ]
       ),

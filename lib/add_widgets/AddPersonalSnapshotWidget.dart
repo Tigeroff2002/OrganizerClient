@@ -118,21 +118,14 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                     content: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.cyan,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0)),
-                        minimumSize: Size(150, 50)),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => 
                           SinglePersonalSnapshotPageWidget(snapshotId: createdSnapshotId)));                      
                     },
-                    child: Text('Перейти на страницу нового отчета с id = ' + createdSnapshotId.toString()),
+                    child: Text('Перейти на страницу нового отчета с id = ' + createdSnapshotId.toString(),
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                   ),
                 )
             );
@@ -330,16 +323,7 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
               ),
               SizedBox(height: 12.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
-                child: Text(outputBeginDateTime),
+                child: Text(outputBeginDateTime, style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () async {
                   await pickBeginDateTime();
                   setState(() {
@@ -411,14 +395,6 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor : Colors.white,
-                    shadowColor: Colors.cyan,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    minimumSize: Size(150, 50)),
                 onPressed: () async {
                   setState(() {
                     isSnapshotEndTimeGreaterThanBeginTime =
@@ -436,7 +412,8 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
                     }
                   });
                 },
-                child: Text('Создать новый личный снапшот'),
+                child: Text('Создать новый личный снапшот',
+                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
           ]
       ),

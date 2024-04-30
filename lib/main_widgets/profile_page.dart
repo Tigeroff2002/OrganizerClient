@@ -225,20 +225,14 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     SizedBox(height: 12.0),
                     !isUserRole
                       ? ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => SystemAdminPageWidget(userName: userName)),);
                       },
-                      child: Text('Функционал администратора'),
+                      child: Text('Функционал администратора', 
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     )
                     : Text(
                       'Вам недоступен функционал администратора',
@@ -307,8 +301,10 @@ class ProfilePageState extends State<ProfilePageWidget> {
                           });
                         },
                         child: isPasswordHidden
-                            ? Text('Показать пароль')
-                            : Text('Cкрыть пароль')),
+                            ? Text('Показать пароль', 
+                                style: TextStyle(fontSize: 16, color: Colors.deepPurple),)
+                            : Text('Cкрыть пароль',
+                                style: TextStyle(fontSize: 16, color: Colors.deepPurple),)),
                     SizedBox(height: 20.0),
                     Text(
                       'Дата создания учетной записи: ',
@@ -329,6 +325,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     isUserRole
                     ? TextField(
                       controller: rootPasswordController,
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                       decoration: InputDecoration(
                           labelText: 'Рут пароль пользователя: ',
                           labelStyle: TextStyle(
@@ -354,8 +351,10 @@ class ProfilePageState extends State<ProfilePageWidget> {
                           });
                         },
                         child: isUserRole
-                            ? Text('Запросить роль админа')
-                            : Text('Сбросить роль до пользователя')),
+                            ? Text('Запросить роль админа', 
+                                style: TextStyle(fontSize: 16, color: Colors.deepPurple),)
+                            : Text('Сбросить роль до пользователя',
+                                style: TextStyle(fontSize: 16, color: Colors.deepPurple),)),
                   ],
                 ),
               ),

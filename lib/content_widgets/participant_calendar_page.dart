@@ -514,7 +514,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: new Text('ОК'))
+                        child: new Text('ОК', style: TextStyle(fontSize: 16, color: Colors.deepPurple),))
                   ],
                 );
               });

@@ -95,53 +95,35 @@ class PersonalAccountState extends State<PersonalAccount> {
                     ),
                     SizedBox(height: 30.0),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserInfoMapPage()),);
                       },
-                      child: Text('Информация о вашей деятельности'),
+                      child: Text('Информация о вашей деятельности', 
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                     SizedBox(height: 30.0),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ProfilePageWidget()),);
                       },
-                      child: Text('Профиль пользователя'),
+                      child: Text('Профиль пользователя',
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                     SizedBox(height: 36.0),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor : Colors.white,
-                        shadowColor: Colors.greenAccent,
-                        elevation: 3,
-                        minimumSize: Size(200, 60),
-                      ),
                       onPressed: () async {
                         setState(() {
                           logout(context);
                         });
                       },
-                      child: Text('Выйти из аккаунта'),
+                      child: Text('Выйти из аккаунта', 
+                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                     ),
                   ],
                 ),
