@@ -246,24 +246,6 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
-        else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
-        }
       }
     }
     else {

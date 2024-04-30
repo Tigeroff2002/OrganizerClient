@@ -108,6 +108,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
             setState(() {
               snapshot = PersonalSnapshotInfoResponse.fromJson(data);
+
               isServerDataLoaded = true;
             });
           }

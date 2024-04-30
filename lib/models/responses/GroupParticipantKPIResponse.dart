@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
 class GroupParticipantKPIResponse {
 
   final int participantId;
   final String participantName;
-  final Float participantKPI;
+  final double participantKPI;
 
   GroupParticipantKPIResponse({
     required this.participantId,
