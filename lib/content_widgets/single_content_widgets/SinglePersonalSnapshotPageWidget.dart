@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/snapshots_list_page.dart';
@@ -62,6 +63,10 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null) {
@@ -103,6 +108,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
             setState(() {
               snapshot = PersonalSnapshotInfoResponse.fromJson(data);
+              isServerDataLoaded = true;
             });
           }
       }
@@ -167,6 +173,8 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
     }
   }
 
+  bool isServerDataLoaded = false;
+
   final EnumAliaser aliaser = new EnumAliaser();
 
   @override
@@ -194,7 +202,13 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
           padding: EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              : [
                       Text(
                         'Информация о текущем снапшоте',
                         style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

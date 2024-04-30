@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
@@ -47,9 +48,15 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
   List<EventInfoResponse> eventsList = [];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -96,6 +103,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
           setState(() {
             eventsList = fetchedEvents;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -152,6 +160,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null){
@@ -185,7 +197,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-          print(userRequestedInfo);
+
           var rawBeginIndex = userRequestedInfo.indexOf('"guests"');
           var rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
 
@@ -222,6 +234,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
                       element1.userId == element.userId)){
               remainingGroupUsers.add(element);
             }
+          });
+
+          setState(() {
+            isServerDataLoaded = true;
           });
 
           var content = new UsersListsContent(
@@ -323,7 +339,13 @@ class EventsListPageState extends State<EventsListPageWidget> {
             },
           ),
         ),
-        body: SfCalendar(
+        body: !isServerDataLoaded
+        ? Center(
+            child: SpinKitCircle(
+            size: 100,
+            color: Colors.deepPurple, 
+            duration: Durations.medium1,) )
+        :SfCalendar(
           view: CalendarView.day,
           firstDayOfWeek: 1,
           initialDisplayDate: DateTime.now(),

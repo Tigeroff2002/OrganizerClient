@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/GroupPlaceholderWidget.dart';
@@ -45,9 +46,15 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
     )
   ];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -94,6 +101,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
 
           setState(() {
             groupsList = fetchedGroups;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -168,8 +176,14 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
         ),
         body: groupsList.length == 0
         ? Column(
-          children: [
-            SizedBox(height: 16.0),
+          children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : 
+                  [ SizedBox(height: 16.0),
             Text(
                 'Вы не состоите ни в одной группе',
                 style: TextStyle(
@@ -208,7 +222,13 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                   padding: EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                       Text(
                         'Название группы: ',
                         style: TextStyle(

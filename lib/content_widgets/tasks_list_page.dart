@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleTaskPageWidget.dart';
@@ -31,6 +32,8 @@ class TasksListPageState extends State<TasksListPageWidget> {
     getUserInfo();
   }
 
+  bool isServerDataLoaded = false;
+
   final headers = {'Content-Type': 'application/json'};
   bool isColor = false;
 
@@ -55,6 +58,10 @@ class TasksListPageState extends State<TasksListPageWidget> {
 
   Future<void> getUserInfo() async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -91,7 +98,6 @@ class TasksListPageState extends State<TasksListPageWidget> {
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
 
-          print(userRequestedInfo);
           var data = jsonDecode(userRequestedInfo);
           var userTasks = data['user_tasks'];
 
@@ -102,6 +108,7 @@ class TasksListPageState extends State<TasksListPageWidget> {
 
           setState(() {
             tasksList = fetchedTasks;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -176,7 +183,13 @@ class TasksListPageState extends State<TasksListPageWidget> {
         ),
         body: tasksList.length == 0
         ? Column(
-          children: [
+          children: !isServerDataLoaded
+          ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+          : [
             SizedBox(height: 16.0),
             Text(
               'Вы не брали ни одной задачи на реализацию',
@@ -216,7 +229,14 @@ class TasksListPageState extends State<TasksListPageWidget> {
                   padding: EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: 
+                  !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                       Text(
                         'Название задачи: ',
                         style: TextStyle(

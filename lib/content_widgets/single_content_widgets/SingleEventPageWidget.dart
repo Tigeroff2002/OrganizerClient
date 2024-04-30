@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/models/requests/EditExistingEventModel.dart';
@@ -79,6 +80,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null){
@@ -156,6 +161,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                       element1.userId == element.userId)){
               remainingGroupUsers.add(element);
             }
+          });
+
+          setState(() {
+            isServerDataLoaded = true;
           });
 
           var content = new UsersListsContent(
@@ -349,6 +358,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
     }
   }
 
+  bool isServerDataLoaded = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -467,7 +478,13 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
           padding: EdgeInsets.all(32),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              : [
                 Text(
                   'Просмотр текущего события:',
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

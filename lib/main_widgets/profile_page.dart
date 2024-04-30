@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/main_widgets/system_admin_page.dart';
 import 'package:todo_calendar_client/models/requests/UserUpdateRoleRequest.dart';
@@ -84,6 +85,10 @@ class ProfilePageState extends State<ProfilePageWidget> {
       final url = Uri.parse(currentUri + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
+
+      setState(() {
+        isServerDataLoaded = false;
+      });
 
       try {
         final response = await http.post(url, headers: headers, body: body);
@@ -292,7 +297,11 @@ class ProfilePageState extends State<ProfilePageWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: 
                   !isServerDataLoaded
-                  ? []
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
                   : [
                     Text(
                       'Данные о пользователе: ',

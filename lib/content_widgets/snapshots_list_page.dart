@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SinglePersonalSnapshotPageWidget.dart';
@@ -49,9 +50,15 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
     )
   ];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -98,6 +105,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
           setState(() {
             snapshotsList = fetchedSnapshots;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -171,7 +179,13 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
         ),
         body: snapshotsList.length == 0
         ? Column(
-          children: [
+          children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
             SizedBox(height: 16.0),
             Text(
               'Вы пока не составили ни одного снапшота',
@@ -213,7 +227,13 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
                   padding: EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                       Text(
                         'Тип снапшота: ',
                         style: TextStyle(

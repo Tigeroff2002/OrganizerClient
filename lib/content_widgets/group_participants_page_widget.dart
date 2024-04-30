@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
@@ -58,9 +59,15 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
   List<ShortUserInfoResponse> usersList = [];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getUsersFromGroupInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -110,6 +117,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
             usersList = fetchedGroupUsers;
             groupName = data['group_name'].toString();
             groupType = data['group_type'].toString();
+            isServerDataLoaded = true;
           });
         }
       }
@@ -204,6 +212,10 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
+
+          setState(() {
+            getUsersFromGroupInfo();
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -303,7 +315,13 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                           padding: EdgeInsets.all(25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              : [
                                 Text(
                                   'Пользователь с именем: ',
                                   style: TextStyle(

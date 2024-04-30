@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/content_widgets/issues_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/system_issues_list_page.dart';
@@ -67,6 +68,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null) {
@@ -115,6 +120,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
             selectedIssueStatus = issue.issueStatus;
             selectedIssueType = issue.issueType;
+
+            isServerDataLoaded = true;
           });
         }
       }
@@ -278,6 +285,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
     }
   }
 
+  bool isServerDataLoaded = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -312,7 +321,13 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
           padding: EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              : [
               Text(
                 'Просмотр существующего запроса о проблеме',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
@@ -56,8 +57,14 @@ class MapInfoState extends State<MapInfoWidget> {
     getUserNameFromCache();
   }
 
+  bool isCacheDataLoaded = false;
+
   Future<void> getUserNameFromCache() async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isCacheDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -67,6 +74,7 @@ class MapInfoState extends State<MapInfoWidget> {
 
       setState(() {
         currentUserName = cacheContent.userName.toString();
+        isCacheDataLoaded = true;
       });
     }
   }
@@ -88,7 +96,13 @@ class MapInfoState extends State<MapInfoWidget> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: !isCacheDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                     Text(
                       "Еще раз, приветствуем вас, " + currentUserName,
                       style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

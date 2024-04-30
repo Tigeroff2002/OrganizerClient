@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
@@ -66,6 +67,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null){
@@ -120,6 +125,8 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
             groupNameController.text = groupName;
             selectedGroupType = groupType;
+
+            isServerDataLoaded = true;
           });
         }
       }
@@ -214,6 +221,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
+
+          setState(() {
+            getExistedGroup();
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -381,6 +392,8 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
     }
   }
 
+  bool isServerDataLoaded = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -414,7 +427,13 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           padding: EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              : [
               isUserManager
                 ? TextField(
                 controller: groupNameController,

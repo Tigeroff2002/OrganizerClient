@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewTaskModel.dart';
@@ -45,6 +46,8 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
   bool isCaptionValidated = true;
   bool isDescriptionValidated = true;
 
+  bool isServerDataLoaded = false;
+
   TaskInfoResponse task = new TaskInfoResponse(
         taskId: 1,
         caption: 'caption',
@@ -55,6 +58,10 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
   Future<void> getExistedTask(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -104,6 +111,8 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
               taskDescriptionController.text = existedDescription;
               selectedTaskStatus = task.taskStatus;
               selectedTaskType = task.taskType;
+
+              isServerDataLoaded = true;
             });
           }
       }
@@ -296,7 +305,14 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
           padding: EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: 
+              !isServerDataLoaded
+                ? [Center(
+                    child: SpinKitCircle(
+                    size: 100,
+                    color: Colors.deepPurple, 
+                    duration: Durations.medium1,) )]
+                :[
               Text(
                 'Информация о задаче',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

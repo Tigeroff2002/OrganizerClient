@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -68,9 +69,15 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
   List<EventInfoResponse> eventsList = [];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getParticipantCalendarInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -122,6 +129,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
           setState(() {
             eventsList = fetchedEvents;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -178,6 +186,10 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null){
@@ -212,7 +224,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-          print(userRequestedInfo);
+
           var rawBeginIndex = userRequestedInfo.indexOf('"guests"');
           var rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
 
@@ -249,6 +261,10 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                 element1.userId == element.userId)){
               remainingGroupUsers.add(element);
             }
+          });
+
+          setState(() {
+            isServerDataLoaded = true;
           });
 
           var content = new UsersListsContent(
@@ -350,7 +366,13 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
             },
           ),
         ),
-        body: SfCalendar(
+        body: !isServerDataLoaded
+        ? Center(
+            child: SpinKitCircle(
+            size: 100,
+            color: Colors.deepPurple, 
+            duration: Durations.medium1,) )
+        : SfCalendar(
           view: CalendarView.day,
           firstDayOfWeek: 1,
           initialDisplayDate: DateTime.now(),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:todo_calendar_client/EnumAliaser.dart';
@@ -64,6 +65,10 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
     if (cachedData != null) {
@@ -105,6 +110,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
             setState(() {
               groupSnapshot = GroupSnapshotInfoResponse.fromJson(data);
+              isServerDataLoaded = true;
             });
           }
       }
@@ -156,6 +162,8 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
   bool isDiagramMode = false;
 
+  bool isServerDataLoaded = false;
+
   @override
   Widget build(BuildContext context) {
 
@@ -186,7 +194,13 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
           padding: EdgeInsets.all(32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: !isServerDataLoaded
+                              ? [Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple, 
+                                duration: Durations.medium1,) )]
+                              :  [
                       Text(
                         'Информация о текущем групповом снапшоте',
                         style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

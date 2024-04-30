@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/add_widgets/IssuePlaceholderWidget.dart';
@@ -50,9 +51,15 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
     )
   ];
 
+  bool isServerDataLoaded = false;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -99,6 +106,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
           setState(() {
             issuesList = fetchedIssues;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -172,8 +180,14 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
         ),
         body: issuesList.length == 0
             ? Column(
-          children: [
-            SizedBox(height: 16.0),
+          children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  :
+                  [ SizedBox(height: 16.0),
             Text(
                 'Вы пока не отправили администрации ни одного запроса',
                 style: TextStyle(
@@ -214,7 +228,13 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                   padding: EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                       Text(
                         'Заголовок запроса: ',
                         style: TextStyle(

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
@@ -55,8 +56,14 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
     getUserNameFromCache();
   }
 
+  bool isCacheDataLoaded = false;
+
   Future<void> getUserNameFromCache() async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isCacheDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -66,6 +73,7 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
 
       setState(() {
         currentUserName = cacheContent.userName.toString();
+        isCacheDataLoaded = true;
       });
     }
   }
@@ -77,7 +85,8 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Главная страница приложения', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          title: Text('Главная страница приложения', 
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true
         ),
         body: Center(
@@ -86,7 +95,14 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children:
+                  !isCacheDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                     Text(
                       "Добро пожаловать, " + currentUserName,
                       style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),

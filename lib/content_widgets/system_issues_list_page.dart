@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleIssuePageWidget.dart';
@@ -33,6 +34,8 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
     getSystemIssues();
   }
 
+  bool isServerDataLoaded = false;
+
   final headers = {'Content-Type': 'application/json'};
   bool isColor = false;
 
@@ -54,6 +57,10 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
   Future<void> getSystemIssues() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+    setState(() {
+      isServerDataLoaded = false;
+    });
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
@@ -100,6 +107,7 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
 
           setState(() {
             systemIssuesList = fetchedIssues;
+            isServerDataLoaded = true;
           });
         }
       }
@@ -173,7 +181,13 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
         ),
         body: systemIssuesList.length == 0
             ? Column(
-          children: [
+          children: !isServerDataLoaded
+          ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+          : [
             SizedBox(height: 16.0),
             Text(
                 'Нет ни одного открытого запроса',
@@ -202,7 +216,13 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
                   padding: EdgeInsets.all(25),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: !isServerDataLoaded
+                  ? [Center(
+                      child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple, 
+                        duration: Durations.medium1,) )]
+                  : [
                       Text(
                         'Пользователь, создавший запрос: ',
                         style: TextStyle(
