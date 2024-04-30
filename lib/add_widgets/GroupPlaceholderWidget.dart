@@ -172,7 +172,8 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания новой группы'),
+          title: Text('Страничка создания новой группы',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

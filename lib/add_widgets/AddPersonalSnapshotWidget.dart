@@ -275,7 +275,8 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания личного отчета'),
+          title: Text('Страничка создания личного отчета',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

@@ -450,7 +450,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
       appBar: AppBar(
-        title: Text('Страничка просмотра информации о событии'),
+        title: Text('Страничка просмотра информации о событии',
+          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
         leading: IconButton(icon: Icon(Icons.arrow_back),
           onPressed: () {
               Navigator.pushReplacement(

@@ -194,7 +194,8 @@ class RegisterPageState extends State<RegisterPage> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Регистрация нового аккаунта'),
+          title: Text('Регистрация нового аккаунта', 
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

@@ -189,7 +189,8 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания нового запроса для администрации'),
+          title: Text('Страничка создания нового запроса для администрации',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

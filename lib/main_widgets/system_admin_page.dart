@@ -48,7 +48,8 @@ class SystemAdminPageState extends State<SystemAdminPageWidget> {
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Страница системного администратора ' + userName),
+            title: Text('Страница системного администратора ' + userName,
+              style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),

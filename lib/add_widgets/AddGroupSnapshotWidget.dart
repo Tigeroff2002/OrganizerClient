@@ -271,7 +271,8 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания отчета по работе группы'),
+          title: Text('Страничка создания отчета по работе группы',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

@@ -313,7 +313,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания нового мероприятия'),
+          title: Text('Страничка создания нового мероприятия',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

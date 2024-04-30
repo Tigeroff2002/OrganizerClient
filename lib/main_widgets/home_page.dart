@@ -21,7 +21,8 @@ class HomePage extends StatelessWidget {
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-            title: Text('Мобильный органайзер'),
+            title: Text('Мобильный органайзер', 
+              style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             backgroundColor: Colors.cyan,
             centerTitle: true
         ),

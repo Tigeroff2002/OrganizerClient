@@ -180,7 +180,8 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка создания новой задачи'),
+          title: Text('Страничка создания новой задачи',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

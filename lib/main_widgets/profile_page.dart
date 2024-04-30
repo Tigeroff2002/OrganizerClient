@@ -162,7 +162,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
         theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
         home: Scaffold(
           appBar: AppBar(
-            title: Text('Профиль пользователя'),
+            title: Text('Профиль пользователя', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true,
             leading: IconButton(
               icon: Icon(Icons.arrow_back),

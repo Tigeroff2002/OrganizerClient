@@ -156,7 +156,8 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список созданных снапшотов'),
+          title: Text('Список созданных вами личных снапшотов',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

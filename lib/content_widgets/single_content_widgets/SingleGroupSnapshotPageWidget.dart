@@ -168,7 +168,8 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
         appBar: AppBar(
           title: Text(
             'Страничка отчета под номером ' + snapshotId.toString()
-             + ' для группы ' + groupId.toString()),
+             + ' для группы ' + groupId.toString(),
+             style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

@@ -163,7 +163,7 @@ class LoginPageState extends State<LoginPage> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Вход в ваш аккаунт'),
+          title: Text('Вход в ваш аккаунт', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),

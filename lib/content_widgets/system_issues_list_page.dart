@@ -159,7 +159,8 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список всех открытых проблемных запросов'),
+          title: Text('Список всех открытых запросов по поводу проблем',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

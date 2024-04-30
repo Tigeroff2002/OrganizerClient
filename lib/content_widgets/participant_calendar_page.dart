@@ -24,16 +24,21 @@ class ParticipantCalendarPageWidget extends StatefulWidget {
 
   final int groupId;
   final int participantId;
+  final String participantName;
 
   ParticipantCalendarPageWidget(
       {
         required this.groupId,
-        required this.participantId
+        required this.participantId,
+        required this.participantName
       });
 
   @override
   ParticipantCalendarPageState createState() =>
-      new ParticipantCalendarPageState(groupId: groupId, participantId: participantId);
+      new ParticipantCalendarPageState(
+        groupId: groupId,
+        participantId: participantId,
+        participantName: participantName);
 }
 
 class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> {
@@ -46,11 +51,13 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
   final int groupId;
   final int participantId;
+  final String participantName;
 
   ParticipantCalendarPageState(
       {
         required this.groupId,
-        required this.participantId
+        required this.participantId,
+        required this.participantName
       });
 
   final headers = {'Content-Type': 'application/json'};
@@ -330,7 +337,8 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Календарь мероприятий участника группы'),
+          title: Text('Календарь мероприятий одногруппника ' + participantName,
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

@@ -78,7 +78,7 @@ class PersonalAccountState extends State<PersonalAccount> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Главная страница приложения'),
+          title: Text('Главная страница приложения', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
             centerTitle: true
         ),
         body: Center(

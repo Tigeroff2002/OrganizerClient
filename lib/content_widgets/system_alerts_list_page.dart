@@ -156,7 +156,8 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Список всех алертов системы'),
+          title: Text('Список всех алертов системы',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

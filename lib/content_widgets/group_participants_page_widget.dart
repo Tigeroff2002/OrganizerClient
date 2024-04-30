@@ -273,10 +273,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
           title: 
           Text(
             'Список пользователей группы ' + groupName + ': ',
-            style: TextStyle(
-              color: Colors.deepPurple,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold)),
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
@@ -339,7 +336,8 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                                         => userId != data.userId
                                           ? ParticipantCalendarPageWidget(
                                               groupId: groupId,
-                                              participantId: data.userId)
+                                              participantId: data.userId,
+                                              participantName: data.userName,)
                                           : EventsListPageWidget()),);
                                         },),
                                   SizedBox(height: 10),

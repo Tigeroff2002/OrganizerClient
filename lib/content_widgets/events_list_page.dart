@@ -310,7 +310,8 @@ class EventsListPageState extends State<EventsListPageWidget> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Календарь мероприятий'),
+          title: Text('Ваш календарь мероприятий',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

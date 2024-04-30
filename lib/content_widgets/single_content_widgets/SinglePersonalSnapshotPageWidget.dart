@@ -176,7 +176,8 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка персонального отчета под номером ' + snapshotId.toString()),
+          title: Text('Страничка персонального отчета под номером ' + snapshotId.toString(),
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
