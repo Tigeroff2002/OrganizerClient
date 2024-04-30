@@ -313,8 +313,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Просмотр существующего запроса',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                'Просмотр существующего запроса о проблеме',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
               ),
               SizedBox(height: 30.0),
               isSelfUser
@@ -330,16 +330,16 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               )
               : Text(
                 'Заголовок запроса: ' + issueTitleController.text,
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               isSelfUser
               ? Text(
                 'Тип запроса',
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               )
               : Text(
                 'Тип запроса: ' + selectedIssueType,
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               isSelfUser
               ? SizedBox(height: 4.0)
@@ -363,7 +363,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               : SizedBox(height: 0.0),
               Text(
                 'Статус запроса',
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 4.0),
               DropdownButton(
@@ -393,7 +393,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               )
               : Text(
                 'Описание запроса: ' + issueDescriptionController.text,
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 16.0),
               isSelfUser
@@ -410,7 +410,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
               )
               : Text(
                 'Ссылка на скриншот: ' + issueLinkController.text,
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 12.0),
               Image.network(utf8.decode(utf8.encode(issueLinkController.text)), scale: 0.01),

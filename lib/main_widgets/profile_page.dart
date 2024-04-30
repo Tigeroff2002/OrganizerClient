@@ -185,8 +185,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     Text(
                       'Данные о пользователе: ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 20.0,
+                          color: Colors.deepPurple,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold
                       ),
                     ),
@@ -194,32 +194,32 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     Text(
                       'Имя пользователя: ',
                       style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(width: 12.0),
                     Text(
                       utf8.decode(utf8.encode(userName)),
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 16.0),
                     Text(
                       'Роль пользователя: ',
                       style: TextStyle(
-                        color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     Text(
                         aliaser.GetAlias(
                             aliaser.getUserRoleEnumValue(userRole)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         )
                     ),
                     SizedBox(height: 12.0),
@@ -243,9 +243,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     : Text(
                       'Вам недоступен функционал администратора',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepOrange,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 20.0),
@@ -254,45 +253,40 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     Text(
                       'Электронная почта: ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 6.0),
                     Text(
                       utf8.decode(utf8.encode(email)),
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 12.0),
                     Text(
                       'Номер телефона: ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 6.0),
                     Text(
                       utf8.decode(utf8.encode(phoneNumber)),
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 12.0),
                     Text(
                       'Пароль: ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 6.0),
@@ -301,9 +295,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
                         ? utf8.decode(utf8.encode(passwordHidden))
                         : utf8.decode(utf8.encode(password)),
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 8.0),
@@ -320,18 +313,16 @@ class ProfilePageState extends State<ProfilePageWidget> {
                     Text(
                       'Дата создания учетной записи: ',
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(width: 12.0),
                     Text(
                       utf8.decode(utf8.encode(accountCreationTime)),
                       style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold
+                          color: Colors.deepPurple,
+                          fontSize: 16
                       ),
                     ),
                     SizedBox(height: 16.0),

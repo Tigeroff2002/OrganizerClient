@@ -199,7 +199,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
             SizedBox(height: 20.0),
               TextField(
@@ -208,7 +208,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                   labelText: 'Наименование группы:',
                     labelStyle: TextStyle(
                       fontSize: 16.0,
-                        color: Colors.deepPurple
+                      color: Colors.deepPurple
                     ),
                     errorText: !isNameValidated
                         ? 'Название группы не может быть пустым'

@@ -196,7 +196,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
             children: [
                       Text(
                         'Информация о текущем снапшоте',
-                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 30.0),
                       Text(

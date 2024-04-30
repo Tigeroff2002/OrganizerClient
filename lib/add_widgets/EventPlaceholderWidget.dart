@@ -340,7 +340,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
             SizedBox(height: 30.0),
               SizedBox(height: 16.0),
@@ -349,7 +349,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                 decoration: InputDecoration(
                   labelText: 'Наименование мероприятия:',
                     labelStyle: TextStyle(
-                        color: Colors.deepPurple
+                        color: Colors.deepPurple,
+                        fontSize: 16
                     ),
                     errorText: !isCaptionValidated
                         ? 'Название мероприятия не может быть пустым'
@@ -363,7 +364,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                 decoration: InputDecoration(
                   labelText: 'Описание меропрития:',
                     labelStyle: TextStyle(
-                        color: Colors.deepPurple
+                        color: Colors.deepPurple,
+                        fontSize: 16
                     ),
                     errorText: !isDescriptionValidated
                         ? 'Описание мероприятия не может быть пустым'

@@ -188,7 +188,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
             children: [
                       Text(
                         'Информация о текущем групповом снапшоте',
-                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 20.0),
               Text(
@@ -226,7 +226,8 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
                       Text(
                         'Аудит снапшота: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(

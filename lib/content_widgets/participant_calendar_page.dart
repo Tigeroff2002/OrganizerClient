@@ -417,7 +417,8 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                       'Дата и время события:',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 20,
+                                        color: Colors.deepPurple,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ],
@@ -433,7 +434,8 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                       '$_dateText',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 20,
+                                        color: Colors.deepPurple,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ],
@@ -442,7 +444,10 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                   children: <Widget>[
                                     Text(_timeDetails!,
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400, fontSize: 18)),
+                                            fontWeight: 
+                                            FontWeight.w400,
+                                             fontSize: 18,
+                                             color: Colors.deepPurple)),
                                   ],
                                 ),
                                 Row(
@@ -456,6 +461,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                         'Список участников события: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
+                                            color: Colors.deepPurple,
                                             fontSize: 18)),
                                     SizedBox(height: 6.0)
                                   ],
@@ -467,7 +473,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
                                             fontSize: 14,
-                                            color: Colors.lightGreen
+                                            color: Colors.deepPurple
                                         ))
                                   ],
                                 ),
@@ -482,6 +488,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                         'Можно еще пригласить: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
+                                            color: Colors.deepPurple,
                                             fontSize: 18)),
                                     SizedBox(height: 6.0)
                                   ],
@@ -493,7 +500,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
                                             fontSize: 14,
-                                            color: Colors.indigo
+                                            color: Colors.deepPurple
                                         ))
                                   ],
                                 ),

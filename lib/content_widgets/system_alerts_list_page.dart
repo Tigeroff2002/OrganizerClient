@@ -174,9 +174,9 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
             Text(
                 'Нет ни одного системного алерта',
                 style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     fontWeight: FontWeight.bold,
-                    fontSize: 26),
+                    fontSize: 20),
                 textAlign: TextAlign.center),
             SizedBox(height: 16.0),
           ],
@@ -202,56 +202,60 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
                       Text(
                         'Заголовок алерта: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.title)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(width: 8.0),
                       Text(
-                        'Алерт был просмотрен: ',
+                        'Алерт был просмотрен админом: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.isAlerted.toString())),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Описание ошибки в алерте: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.description)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 12.0),
                       Text(
-                        'Время алерта: ',
+                        'Время возниковения алерта: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(data.moment.codeUnits),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8.0),

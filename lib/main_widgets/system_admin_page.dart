@@ -70,8 +70,7 @@ class SystemAdminPageState extends State<SystemAdminPageWidget> {
                   children: [
                     Text(
                       "Ваши дополнительные функции: ",
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                     ),
                     SizedBox(height: 12.0),
                     ElevatedButton(

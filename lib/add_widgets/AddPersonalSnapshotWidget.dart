@@ -302,13 +302,13 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
             SizedBox(height: 30.0),
               SizedBox(height: 16.0),
               Text(
                 'Тип снапшота',
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 4.0),
               DropdownButton(

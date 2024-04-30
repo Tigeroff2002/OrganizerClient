@@ -183,9 +183,9 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
             Text(
               'Вы пока не составили ни одного снапшота',
               style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                   fontWeight: FontWeight.bold,
-                  fontSize: 26),
+                  fontSize: 20),
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -229,98 +229,107 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
                       Text(
                         'Тип снапшота: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getSnapshotTypeEnumValue(data.snapshotType)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         )
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Аудит снапшота: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getAuditTypeEnumValue(data.auditType)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         )
                       ),
                         SizedBox(height: 8.0),
                         Text(
                           'Время создания снапшота: ',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.deepPurple,
+                            fontSize: 16
                           ),
                         ),
                         Text(
                           utf8.decode(data.creationTime.codeUnits),
                           style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
+                            fontSize: 16
                           ),
                         ),
                         SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для начала снапшота: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(data.beginMoment.codeUnits),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для окончания снапшота: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(data.endMoment.codeUnits),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Средний коэффициент KPI по результатам отчета: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.averageKPI.toString())),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.deepPurple
                         ),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Информация, полученная в снапшоте: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.content)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.deepPurple
                         ),
                       ),
                       SizedBox(height: 12),

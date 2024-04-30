@@ -469,7 +469,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
               children: [
                 Text(
                   'Просмотр текущего события:',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                 ),
                 SizedBox(height: 30.0),
                   SizedBox(height: 16.0),
@@ -587,7 +587,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   SizedBox(height: 16.0),
                   Text(
                     'Тип мероприятия',
-                    style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   ),
                   SizedBox(height: 4.0),
                   DropdownButtonFormField(
@@ -605,7 +605,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                   SizedBox(height: 20.0),
                   Text(
                     'Статус мероприятия',
-                    style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   ),
                   SizedBox(height: 4.0),
                   DropdownButtonFormField(
@@ -674,7 +674,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                       'Дата и время события:',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 20,
+                                        color: Colors.deepPurple,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ],
@@ -690,7 +691,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                       scheduledStart,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 20,
+                                        color: Colors.deepPurple,
+                                        fontSize: 18,
                                       ),
                                     ),
                                   ],
@@ -699,7 +701,9 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                   children: <Widget>[
                                     Text('All day',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400, fontSize: 18)),
+                                            fontWeight: FontWeight.w400,
+                                             fontSize: 18,
+                                             color: Colors.deepPurple)),
                                   ],
                                 ),
                                 Row(
@@ -713,6 +717,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                         'Список участников события: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
+                                            color: Colors.deepPurple,
                                             fontSize: 18)),
                                     SizedBox(height: 6.0)
                                   ],
@@ -724,7 +729,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w300,
                                           fontSize: 14,
-                                          color: Colors.lightGreen
+                                          color: Colors.deepPurple
                                       ))
                                   ],
                                 ),
@@ -739,6 +744,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                         'Можно еще пригласить: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
+                                            color: Colors.deepPurple,
                                             fontSize: 18)),
                                     SizedBox(height: 6.0)
                                   ],
@@ -750,7 +756,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
                                             fontSize: 14,
-                                            color: Colors.indigo
+                                            color: Colors.deepPurple
                                         ))
                                   ],
                                 ),

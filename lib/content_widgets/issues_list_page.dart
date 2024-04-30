@@ -175,9 +175,9 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
             Text(
                 'Вы пока не отправили администрации ни одного запроса',
                 style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     fontWeight: FontWeight.bold,
-                    fontSize: 26),
+                    fontSize: 20),
                 textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -224,56 +224,62 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                       Text(
                         'Заголовок запроса: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.title)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(width: 8.0),
                       Text(
                         'Тип запроса: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                           aliaser.GetAlias(
                               aliaser.getIssueTypeEnumValue(data.issueType)),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.deepPurple,
+                            fontSize: 16
                           )
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Статус запроса: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                           aliaser.GetAlias(
                               aliaser.getIssueStatusEnumValue(data.issueStatus)),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.deepPurple,
+                            fontSize: 16
                           )
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Описание запроса: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.description)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(width: 8.0),
@@ -284,14 +290,15 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
                       Text(
                         'Время создания запроса: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(data.createMoment.codeUnits),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 12),

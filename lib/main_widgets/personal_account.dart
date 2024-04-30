@@ -90,7 +90,7 @@ class PersonalAccountState extends State<PersonalAccount> {
                   children: [
                     Text(
                       "Добро пожаловать, " + currentUserName,
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 30.0),

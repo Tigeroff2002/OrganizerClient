@@ -179,9 +179,9 @@ class TasksListPageState extends State<TasksListPageWidget> {
             Text(
               'Вы не брали ни одной задачи на реализацию',
               style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.deepPurple,
                   fontWeight: FontWeight.bold,
-                  fontSize: 26),
+                  fontSize: 20),
               textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -226,56 +226,62 @@ class TasksListPageState extends State<TasksListPageWidget> {
                       Text(
                         'Название задачи: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.caption)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Описание задачи: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.description)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Тип задачи: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getTaskTypeEnumValue(data.taskType)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Текущий статус задачи: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getTaskStatusEnumValue(data.taskStatus)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 12),

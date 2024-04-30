@@ -287,7 +287,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
           Text(
             'Информация о группе ' + groupName + ': ',
             style: TextStyle(
-              color: Colors.blue,
+              color: Colors.deepPurple,
               fontSize: 16.0,
               fontWeight: FontWeight.bold)),
           leading: IconButton(
@@ -375,7 +375,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
                       : Text(
                         'Вам недоступен функционал системного менеджера',
                         style: TextStyle(
-                            color: Colors.blue,
+                            color: Colors.deepOrange,
                             fontSize: 16.0,
                             fontWeight: FontWeight.bold
                         ),

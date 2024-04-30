@@ -207,7 +207,7 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
               children: [
                 Text(
                   text,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                 ),
                 SizedBox(height: 30.0),
                   SizedBox(height: 16.0),

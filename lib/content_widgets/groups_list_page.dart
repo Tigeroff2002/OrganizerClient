@@ -170,9 +170,9 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
             Text(
                 'Вы не состоите ни в одной группе',
                 style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.deepPurple,
                     fontWeight: FontWeight.bold,
-                    fontSize: 24),
+                    fontSize: 20),
                 textAlign: TextAlign.center),
             SizedBox(height: 16.0),
             ElevatedButton(
@@ -217,27 +217,30 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
                       Text(
                         'Название группы: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         utf8.decode(utf8.encode(data.groupName)),
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8),
                       Text(
                         'Тип группы: ',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       Text(
                         aliaser.GetAlias(aliaser.getGroupEnumValue(data.groupType)),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.deepPurple,
+                          fontSize: 16
                         ),
                       ),
                       SizedBox(height: 8),

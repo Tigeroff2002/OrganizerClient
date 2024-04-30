@@ -274,8 +274,8 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
           Text(
             'Список пользователей группы ' + groupName + ': ',
             style: TextStyle(
-              color: Colors.blue,
-              fontSize: 16.0,
+              color: Colors.deepPurple,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold)),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -310,22 +310,24 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
                                 Text(
                                   'Пользователь с именем: ',
                                   style: TextStyle(
-                                    color: Colors.white,),),
+                                    color: Colors.deepPurple,
+                                    fontSize: 16),),
                                 Text(
                                   utf8.decode(utf8.encode(data.userName)),
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,),),
+                                    color: Colors.deepPurple,
+                                    fontSize: 16,),),
                                 SizedBox(height: 12),
                                 Text(
                                   'Электронная почта: ',
                                   style: TextStyle(
-                                    color: Colors.white,),),
+                                    color: Colors.deepPurple,
+                                    fontSize: 16,),),
                                 Text(
                                   utf8.decode(utf8.encode(data.userEmail)),
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,),),
+                                    color: Colors.deepPurple,
+                                    fontSize: 16),),
                                 SizedBox(height: 12),
                                 ElevatedButton(
                                   child: Text('Посмотреть календарь пользователя'),

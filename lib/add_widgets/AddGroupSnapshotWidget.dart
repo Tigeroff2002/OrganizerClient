@@ -304,7 +304,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
               SizedBox(height: 16.0),
               Text(
                 'Тип снапшота',
-                style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
               ),
               SizedBox(height: 4.0),
               DropdownButton(
