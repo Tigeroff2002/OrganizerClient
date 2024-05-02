@@ -51,6 +51,8 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
     getParticipantCalendarInfo();
   }
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   final int groupId;
   final int participantId;
   final String participantName;
@@ -85,6 +87,10 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -100,7 +106,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/get_participant_calendar';
 
@@ -196,6 +202,10 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -206,7 +216,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/get_event_info';
 

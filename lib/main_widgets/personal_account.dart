@@ -44,7 +44,7 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
   final String text;
   final int index;
 
-  String currentHost = GlobalEndpoints().currentMobilePort;
+  String currentHost = GlobalEndpoints().mobileUri;
 
   PersonalAccountState(
       {
@@ -165,6 +165,10 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
       var firebaseToken = cacheContent.firebaseToken.toString();
@@ -198,8 +202,6 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
 
         if (responseContent.result) {
           var sharedPreferences = new MySharedPreferences();
-
-          var cachedData = sharedPreferences.getDataIfNotExpired();
 
           var hostModel = new HostModel(currentHost: currentUri);
 

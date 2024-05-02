@@ -48,6 +48,8 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
     )
   ];
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   bool isServerDataLoaded = false;
 
   int userId = -1;
@@ -67,6 +69,10 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
       var cacheContent = ResponseWithToken.fromJson(json);
 
       setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
+      setState(() {
         userId = cacheContent.userId;
       });
 
@@ -79,7 +85,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/get_info';
 
@@ -171,6 +177,10 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -185,7 +195,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/delete_group';
 

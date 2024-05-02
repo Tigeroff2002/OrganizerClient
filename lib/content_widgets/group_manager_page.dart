@@ -65,6 +65,8 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getGroupSnapshotsInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -79,6 +81,10 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -89,7 +95,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/get_group_snapshots';
 
@@ -180,6 +186,10 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -194,7 +204,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/delete_snapshot';
 

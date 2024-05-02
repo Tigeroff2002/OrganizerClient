@@ -76,6 +76,8 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       eventType: '5', 
       eventStatus: '6');
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<UsersListsContent?> getCertainEventInfo(int eventId) async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -90,6 +92,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -100,7 +106,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/get_event_info';
 
@@ -117,7 +123,6 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
         if (responseContent.result) {
           var userRequestedInfo = responseContent.requestedInfo.toString();
-          print(userRequestedInfo);
 
           var data = jsonDecode(userRequestedInfo);
 
@@ -260,6 +265,10 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -280,7 +289,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/update_event_params';
 

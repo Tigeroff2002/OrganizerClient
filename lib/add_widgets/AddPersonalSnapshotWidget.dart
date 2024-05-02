@@ -57,6 +57,8 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
 
   int createdSnapshotId = -1;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewSnapshot(BuildContext context) async
   {
     String snapshotType = selectedSnapshotType;
@@ -70,6 +72,10 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
     if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
+
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
 
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
@@ -91,7 +97,7 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/perform_new';
 

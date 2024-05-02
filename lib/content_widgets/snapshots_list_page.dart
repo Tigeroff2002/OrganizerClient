@@ -54,6 +54,8 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -68,6 +70,10 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -78,7 +84,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/get_info';
 
@@ -170,6 +176,10 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -184,7 +194,7 @@ class SnapshotsListPageState extends State<SnapshotsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/delete_snapshot';
 

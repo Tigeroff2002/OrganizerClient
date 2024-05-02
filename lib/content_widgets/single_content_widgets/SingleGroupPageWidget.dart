@@ -64,6 +64,8 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
   List<ShortUserInfoResponse> usersList = [];
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getExistedGroup() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -78,6 +80,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -88,7 +94,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/get_group_info';
 
@@ -172,6 +178,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -187,7 +197,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/delete_participant';
 
@@ -280,6 +290,10 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -297,7 +311,7 @@ class SingleGroupPageState extends State<SingleGroupPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/update_group_params';
 

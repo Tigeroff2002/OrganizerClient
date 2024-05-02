@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'package:todo_calendar_client/models/requests/UserLogoutModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/HostModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
@@ -191,7 +192,15 @@ class MapInfoState extends State<MapInfoWidget> {
         var responseContent = GetResponse.fromJson(jsonData);
 
         if (responseContent.result) {
-          await mySharedPreferences.clearData();
+          var sharedPreferences = new MySharedPreferences();
+
+          var hostModel = new HostModel(currentHost: currentUri);
+
+          var json = hostModel.toJson();
+
+          await sharedPreferences.clearData();
+
+          await sharedPreferences.saveDataWithExpiration(jsonEncode(json),  const Duration(days: 7));
 
           Navigator.pushReplacement(
             context,

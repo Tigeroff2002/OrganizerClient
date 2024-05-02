@@ -34,6 +34,8 @@ class TasksListPageState extends State<TasksListPageWidget> {
     getUserInfo();
   }
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   bool isServerDataLoaded = false;
 
   final headers = {'Content-Type': 'application/json'};
@@ -71,6 +73,10 @@ class TasksListPageState extends State<TasksListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -81,7 +87,7 @@ class TasksListPageState extends State<TasksListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/get_info';
 
@@ -174,6 +180,10 @@ class TasksListPageState extends State<TasksListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -188,7 +198,7 @@ class TasksListPageState extends State<TasksListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/tasks/delete_task';
 

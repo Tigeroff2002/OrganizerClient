@@ -56,7 +56,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
     getUserInfo();
   }
 
-  String currentHost = GlobalEndpoints().currentMobilePort;
+  String currentHost = GlobalEndpoints().mobileUri;
 
   Future<void> getUserInfo() async {
 

@@ -51,6 +51,8 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
 
   int createdGroupSnapshotId = -1;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewGroupSnapshot(BuildContext context) async
   {
     String snapshotType = selectedSnapshotType;
@@ -65,10 +67,14 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
-    var auditType = 'Group';
+      var auditType = 'Group';
 
       var model = AddNewGroupSnapshotModel(
           userId: (userId),
@@ -86,7 +92,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/perform_for_group';
 

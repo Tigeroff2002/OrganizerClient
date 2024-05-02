@@ -64,6 +64,8 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
         createMoment: 'd'
     );
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getExistedIssue(BuildContext context) async
   {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -78,6 +80,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -89,7 +95,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/issues/get_issue_info';
 
@@ -186,6 +192,10 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -205,7 +215,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/issues/update_issue_params';
 

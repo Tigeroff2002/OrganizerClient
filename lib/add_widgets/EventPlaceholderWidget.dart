@@ -68,6 +68,8 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
 
   int createEventId = -1;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewEvent(BuildContext context) async
   {
     String caption = eventCaptionController.text;
@@ -104,6 +106,10 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -125,7 +131,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/schedule_new';
 

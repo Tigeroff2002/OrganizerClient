@@ -48,6 +48,8 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   TaskInfoResponse task = new TaskInfoResponse(
         taskId: 1,
         caption: 'caption',
@@ -69,6 +71,10 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -80,7 +86,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/tasks/get_task_info';
 
@@ -176,6 +182,10 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -197,7 +207,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/tasks/update_task_params';
 

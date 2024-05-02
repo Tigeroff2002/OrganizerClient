@@ -46,6 +46,8 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
 
   int createdTaskId = -1;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewTask(BuildContext context) async
   {
     String caption = taskCaptionController.text;
@@ -62,6 +64,10 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
     if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
+
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
 
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
@@ -82,7 +88,7 @@ class TaskPlaceholderState extends State<TaskPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/tasks/create';
 

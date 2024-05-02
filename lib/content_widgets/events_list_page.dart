@@ -51,6 +51,8 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -65,6 +67,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -75,7 +81,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/get_info';
 
@@ -171,6 +177,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -181,7 +191,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/get_event_info';
 
@@ -548,6 +558,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -562,7 +576,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/events/delete_event';
 

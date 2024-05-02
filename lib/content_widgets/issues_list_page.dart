@@ -53,6 +53,8 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
     )
   ];
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   bool isServerDataLoaded = false;
 
   Future<void> getUserInfo() async {
@@ -69,6 +71,10 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -79,7 +85,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/get_info';
 
@@ -161,7 +167,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
     }
   }
 
-    Future<void> deleteIssue(int deletionIssueId) async {
+  Future<void> deleteIssue(int deletionIssueId) async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -170,6 +176,10 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
     if (cachedData != null){
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
+
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
 
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
@@ -185,7 +195,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/issues/delete_issue';
 

@@ -51,6 +51,8 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
     )
   ];
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getSystemAlerts() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -64,6 +66,10 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
     if (cachedData != null){
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
+
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
 
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();

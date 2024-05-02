@@ -54,6 +54,8 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
           averageKPI: 1.0,
           content: 'd',);   
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   SingleGroupSnapshotPageState({required this.snapshotId, required this.groupId});
 
     @override
@@ -76,6 +78,10 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -87,7 +93,7 @@ class SingleGroupSnapshotPageState extends State<SingleGroupSnapshotPageWidget> 
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/get_snapshot_info';
 

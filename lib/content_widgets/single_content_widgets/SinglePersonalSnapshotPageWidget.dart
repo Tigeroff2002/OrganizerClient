@@ -51,6 +51,8 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
   bool isDiagramMode = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   SinglePersonalSnapshotPageState({required this.snapshotId});
 
     @override
@@ -73,6 +75,10 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -84,7 +90,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/snapshots/get_snapshot_info';
 

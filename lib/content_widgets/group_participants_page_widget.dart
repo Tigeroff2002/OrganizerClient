@@ -61,6 +61,8 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
   bool isServerDataLoaded = false;
 
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> getUsersFromGroupInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -75,6 +77,10 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -85,7 +91,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/get_group_info';
 
@@ -180,6 +186,10 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
 
@@ -195,7 +205,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/groups/delete_participant';
 
