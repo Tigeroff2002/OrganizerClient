@@ -56,6 +56,8 @@ class ProfilePageState extends State<ProfilePageWidget> {
     getUserInfo();
   }
 
+  String currentHost = GlobalEndpoints().currentMobilePort;
+
   Future<void> getUserInfo() async {
 
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
@@ -87,6 +89,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
       final body = jsonEncode(requestMap);
 
       setState(() {
+        currentHost = cacheContent.currentHost;
         isServerDataLoaded = false;
       });
 
@@ -190,7 +193,7 @@ class ProfilePageState extends State<ProfilePageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+      var currentUri = currentHost;
 
       var requestString = '/users/update_user_role';
 

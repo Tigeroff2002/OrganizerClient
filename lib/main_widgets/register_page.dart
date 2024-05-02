@@ -9,10 +9,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:todo_calendar_client/main_widgets/authorization_page.dart';
 import 'package:todo_calendar_client/models/requests/UserRegisterModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/RawResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RegistrationResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/main_widgets/user_page.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
@@ -143,9 +145,28 @@ class RegisterPageState extends State<RegisterPage> {
 
             MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
+            var data = await mySharedPreferences.getDataIfNotExpired();
+
+            var json = jsonDecode(data.toString());
+
+            var currentUri = json['current_host'];
+
             await mySharedPreferences.clearData();
 
-            await mySharedPreferences.saveDataWithExpiration(response.body, const Duration(days: 7));
+            var registerData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
+
+            var structuredData = 
+              new ResponseWithTokenAndName(
+                result: registerData.result,
+                userId: registerData.userId, 
+                token: registerData.token, 
+                firebaseToken: registerData.firebaseToken, 
+                currentHost: currentUri,
+                userName: registerData.userName);
+
+            var dataToBeCached = jsonEncode(structuredData.toJson());
+
+            await mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
 
             Navigator.push(
                 context,

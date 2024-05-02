@@ -1,7 +1,7 @@
 class GlobalEndpoints{
   final String webUri = "http://localhost";
 
-  final String mobileUri = "http://10.0.2.2";
+  final String mobileUri = "http://172.20.10.2";
 
   final String currentWebPort = ":3500";
 

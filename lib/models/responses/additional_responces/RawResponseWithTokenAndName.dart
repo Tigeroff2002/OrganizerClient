@@ -2,41 +2,30 @@ import 'dart:convert';
 
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 
-class ResponseWithToken extends Response{
+class RawResponseWithTokenAndName extends Response{
 
   final int userId;
   final String? token;
   final String? firebaseToken;
-  final String currentHost;
+  final String userName;
 
-  ResponseWithToken({
+  RawResponseWithTokenAndName({
     required bool result,
     String? outInfo,
     required this.userId,
     this.token,
     this.firebaseToken,
-    required this.currentHost
+    required this.userName
   }) :super(result: result, outInfo: outInfo);
 
-  factory ResponseWithToken.fromJson(Map <String, dynamic> json) {
-    return ResponseWithToken(
+  factory RawResponseWithTokenAndName.fromJson(Map <String, dynamic> json) {
+    return RawResponseWithTokenAndName(
         result: json['result'],
         outInfo: json['out_info'],
         userId: json['user_id'],
         token: json['token'],
         firebaseToken: json['firebase_token'],
-        currentHost: json['current_host']
+        userName: json['user_name']
     );
-  }
-
-    Map<String, dynamic> toJson() {
-      return {
-        'result': result,
-        'outinfo': outInfo,
-        'user_id': userId,
-        'token': token,
-        'firebase_token': firebaseToken,
-        'current_host': currentHost
-    };
   }
 }

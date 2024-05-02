@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/main_widgets/authorization_page.dart';
 import 'package:todo_calendar_client/models/requests/UserLoginModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/RawResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
@@ -75,15 +76,30 @@ class LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
 
-        var jsonData = jsonDecode(response.body);
-
         MySharedPreferences mySharedPreferences = new MySharedPreferences();
+
+        var data = await mySharedPreferences.getDataIfNotExpired();
+
+        var json = jsonDecode(data.toString());
+
+        var currentUri = json['current_host'];
 
         await mySharedPreferences.clearData();
 
-        print(response.body);
+        var loginData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
 
-        await mySharedPreferences.saveDataWithExpiration(response.body, const Duration(days: 7));
+        var structuredData = 
+          new ResponseWithTokenAndName(
+            result: loginData.result,
+            userId: loginData.userId, 
+            token: loginData.token, 
+            firebaseToken: loginData.firebaseToken, 
+            currentHost: currentUri,
+            userName: loginData.userName);
+
+        var dataToBeCached = jsonEncode(structuredData.toJson());
+
+        await mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
 
         Navigator.pushReplacement(
           context,
