@@ -135,7 +135,15 @@ class MapInfoState extends State<MapInfoWidget> {
                     ElevatedButton(
                       onPressed: () async {
                         setState(() {
+                        Navigator.pushReplacement(
+                          context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePage()),);
                           logout(context);
+
+                          var mySharedPreferences = new MySharedPreferences();
+
+                          mySharedPreferences.clearData();
                         });
                       },
                       child: Text('Выйти из аккаунта', 
@@ -163,6 +171,7 @@ class MapInfoState extends State<MapInfoWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.token.toString();
       var firebaseToken = cacheContent.firebaseToken.toString();
+      var currentHost = cacheContent.currentHost.toString();
 
       var model = new UserLogoutModel(
           userId: userId,
@@ -175,13 +184,11 @@ class MapInfoState extends State<MapInfoWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/users/logout';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 
@@ -194,7 +201,7 @@ class MapInfoState extends State<MapInfoWidget> {
         if (responseContent.result) {
           var sharedPreferences = new MySharedPreferences();
 
-          var hostModel = new HostModel(currentHost: currentUri);
+          var hostModel = new HostModel(currentHost: currentHost);
 
           var json = hostModel.toJson();
 

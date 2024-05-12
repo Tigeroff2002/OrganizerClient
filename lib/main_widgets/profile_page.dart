@@ -78,20 +78,18 @@ class ProfilePageState extends State<ProfilePageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/users/get_info';
-
-      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
-
-      final url = Uri.parse(currentUri + currentPort + requestString);
-
-      final body = jsonEncode(requestMap);
 
       setState(() {
         currentHost = cacheContent.currentHost;
         isServerDataLoaded = false;
       });
+
+      var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+
+      final url = Uri.parse(currentHost + currentPort + requestString);
+
+      final body = jsonEncode(requestMap);
 
       try {
         final response = await http.post(url, headers: headers, body: body);
@@ -193,13 +191,11 @@ class ProfilePageState extends State<ProfilePageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/users/update_user_role';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);

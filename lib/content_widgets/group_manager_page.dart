@@ -95,13 +95,11 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/snapshots/get_group_snapshots';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 
@@ -204,13 +202,11 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/snapshots/delete_snapshot';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 

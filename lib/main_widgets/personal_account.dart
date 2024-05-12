@@ -68,10 +68,7 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
       isCacheDataLoaded = false;
     });
 
-    var cachedData = await mySharedPreferences.getDataIfNotExpired();
-
-    print(cachedData);
-
+    mySharedPreferences.getDataIfNotExpired().then((cachedData) {
     if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithTokenAndName.fromJson(json);
@@ -82,6 +79,7 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
         isCacheDataLoaded = true;
       });
     }
+  });
   }
 
   @override
@@ -140,7 +138,15 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
                     ElevatedButton(
                       onPressed: () async {
                         setState(() {
+                        Navigator.pushReplacement(
+                          context,
+                            MaterialPageRoute(
+                              builder: (context) => HomePage()),);
                           logout(context);
+
+                          var mySharedPreferences = new MySharedPreferences();
+
+                          mySharedPreferences.clearData();
                         });
                       },
                       child: Text('Выйти из аккаунта', 
@@ -184,13 +190,11 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/users/logout';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 
@@ -203,18 +207,13 @@ class PersonalAccountState extends State<PersonalAccountWidget> {
         if (responseContent.result) {
           var sharedPreferences = new MySharedPreferences();
 
-          var hostModel = new HostModel(currentHost: currentUri);
+          var hostModel = new HostModel(currentHost: currentHost);
 
           var json = hostModel.toJson();
 
           await sharedPreferences.clearData();
 
           await sharedPreferences.saveDataWithExpiration(jsonEncode(json),  const Duration(days: 7));
-
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomePage()),);
         }
       }
       catch (e) {

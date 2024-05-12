@@ -86,13 +86,11 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/tasks/get_task_info';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
@@ -207,13 +205,11 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/tasks/update_task_params';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);

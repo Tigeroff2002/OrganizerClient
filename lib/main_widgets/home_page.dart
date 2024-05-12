@@ -50,6 +50,11 @@ class HomePage extends StatelessWidget {
 
                   cachedData.then((value)
                   {
+                    if (value == null){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AuthorizationPage()));                      
+                    }
                     var json = jsonDecode(value.toString());
 
                     var existedUser = json['user_id'];

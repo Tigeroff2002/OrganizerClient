@@ -327,6 +327,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
           ],
         )
         : ListView.builder(
+          physics: ScrollPhysics(),
           itemCount: groupsList.length,
           itemBuilder: (context, index) {
             final data = groupsList[index];

@@ -106,13 +106,11 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/groups/get_participant_calendar';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 
@@ -216,13 +214,11 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/events/get_event_info';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 

@@ -131,13 +131,11 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/events/schedule_new';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);

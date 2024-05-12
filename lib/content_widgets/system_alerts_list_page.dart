@@ -81,13 +81,11 @@ class SystemAlertsListPageState extends State<SystemAlertsListPageWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/alerts/get_all_alerts';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final body = jsonEncode(requestMap);
 

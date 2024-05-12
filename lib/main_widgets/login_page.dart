@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 import 'package:todo_calendar_client/main_widgets/authorization_page.dart';
 import 'package:todo_calendar_client/models/requests/UserLoginModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/HostModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RawResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithTokenAndName.dart';
@@ -59,13 +60,18 @@ class LoginPageState extends State<LoginPage> {
 
     bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-    var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+    var mySharedPreferences = new MySharedPreferences();
+
+    mySharedPreferences.getDataIfNotExpired().then((cachedData) {
+    if (cachedData != null) {
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = HostModel.fromJson(json);
+
+      var currentUri = cacheContent.currentHost.toString();
 
     var requestString = '/users/login';
 
     var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
-
-    currentUri = "http://192.168.0.104";
 
     final url = Uri.parse(currentUri + currentPort + requestString);
 
@@ -74,21 +80,21 @@ class LoginPageState extends State<LoginPage> {
     final body = jsonEncode(requestMap);
 
     try {
-      final response = await http.post(url, headers: headers, body: body);
+      http.post(url, headers: headers, body: body).then((response) {
 
       if (response.statusCode == 200) {
 
         MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
-        var data = await mySharedPreferences.getDataIfNotExpired();
+        mySharedPreferences.getDataIfNotExpired().then((data){
 
-        var json = jsonDecode(data.toString());
+          var json = jsonDecode(data.toString());
 
-        var currentUri = json['current_host'];
+          var currentUri = json['current_host'];
 
-        await mySharedPreferences.clearData();
+          mySharedPreferences.clearData().then((value) => null);
 
-        var loginData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
+          var loginData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
 
         var structuredData = 
           new ResponseWithTokenAndName(
@@ -101,15 +107,16 @@ class LoginPageState extends State<LoginPage> {
 
         var dataToBeCached = jsonEncode(structuredData.toJson());
 
-        await mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
+        mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7)).then((value) => null);
 
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context)
-          => UserPage()),
-        );
+            context,
+            MaterialPageRoute(builder: (context)
+            => UserPage()));
+            
         emailController.clear();
         passwordController.clear();
+        });
 
       } else if (response.statusCode == 400){
         showDialog<void>(
@@ -148,6 +155,7 @@ class LoginPageState extends State<LoginPage> {
       }
 
       passwordController.clear();
+      });
     }
     catch (e) {
     if (e is TimeoutException) {
@@ -172,6 +180,8 @@ class LoginPageState extends State<LoginPage> {
         );
         print("Unhandled exception: ${e.toString()}");
     }
+    }
+  });
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:todo_calendar_client/main_widgets/authorization_page.dart';
 import 'package:todo_calendar_client/models/requests/UserRegisterModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/HostModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RawResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RegistrationResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
@@ -70,7 +71,15 @@ class RegisterPageState extends State<RegisterPage> {
 
     bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-    var currentUri = isMobile ? uris.mobileUri : uris.webUri;
+    var mySharedPreferences = new MySharedPreferences();
+
+    mySharedPreferences.getDataIfNotExpired().then((cachedData) {
+    if (cachedData != null) {
+      
+      var json = jsonDecode(cachedData.toString());
+      var cacheContent = HostModel.fromJson(json);
+
+      var currentUri = cacheContent.currentHost.toString();
 
     var requestString = '/users/register';
 
@@ -82,7 +91,7 @@ class RegisterPageState extends State<RegisterPage> {
     final body = jsonEncode(requestMap);
 
     try {
-      http.post(url ,headers: headers, body : body).then((response) async {
+      http.post(url, headers: headers, body : body).then((response) async {
 
         if (response.statusCode == 200)
         {
@@ -141,17 +150,17 @@ class RegisterPageState extends State<RegisterPage> {
               ),
             );
 
-            await Future.delayed(const Duration(milliseconds: 30000));
+            await Future.delayed(const Duration(milliseconds: 5000));
 
             MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
-            var data = await mySharedPreferences.getDataIfNotExpired();
+            mySharedPreferences.getDataIfNotExpired().then((data){
 
             var json = jsonDecode(data.toString());
 
             var currentUri = json['current_host'];
 
-            await mySharedPreferences.clearData();
+            mySharedPreferences.clearData();
 
             var registerData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
 
@@ -166,7 +175,7 @@ class RegisterPageState extends State<RegisterPage> {
 
             var dataToBeCached = jsonEncode(structuredData.toJson());
 
-            await mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
+            mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
 
             Navigator.push(
                 context,
@@ -178,6 +187,7 @@ class RegisterPageState extends State<RegisterPage> {
             emailController.clear();
             passwordController.clear();
             phoneNumberController.clear();
+            });
           }
         }
       });
@@ -206,6 +216,8 @@ class RegisterPageState extends State<RegisterPage> {
         print("Unhandled exception: ${e.toString()}");
       }
     }
+    }
+  });
   }
 
   @override

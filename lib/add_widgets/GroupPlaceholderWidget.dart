@@ -82,13 +82,11 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = currentHost;
-
       var requestString = '/groups/create';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
