@@ -65,6 +65,8 @@ class LoginPageState extends State<LoginPage> {
 
     var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
+    currentUri = "http://192.168.0.104";
+
     final url = Uri.parse(currentUri + currentPort + requestString);
 
     final headers = {'Content-Type': 'application/json'};
