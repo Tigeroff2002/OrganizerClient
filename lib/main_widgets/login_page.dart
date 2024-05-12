@@ -43,11 +43,11 @@ class LoginPageState extends State<LoginPage> {
     String email = emailController.text;
     String password = passwordController.text;
 
-    //String? token = await FirebaseMessaging.instance.getToken();
+    FirebaseMessaging.instance.getToken().then((value) { 
+      setState(() {
+        String token = value.toString();
 
-    final randomNumber = Random().nextDouble();
-    final randomBytes = utf8.encode(randomNumber.toString());
-    final token = md5.convert(randomBytes).toString();
+        print('Token: ' + token);
 
     var model = new UserLoginModel(
         email: email,
@@ -63,6 +63,7 @@ class LoginPageState extends State<LoginPage> {
     var mySharedPreferences = new MySharedPreferences();
 
     mySharedPreferences.getDataIfNotExpired().then((cachedData) {
+
     if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = HostModel.fromJson(json);
@@ -92,8 +93,7 @@ class LoginPageState extends State<LoginPage> {
 
           var currentUri = json['current_host'];
 
-          mySharedPreferences.clearData().then((value) => null);
-
+          mySharedPreferences.clearData().then((_){
           var loginData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
 
         var structuredData = 
@@ -107,17 +107,18 @@ class LoginPageState extends State<LoginPage> {
 
         var dataToBeCached = jsonEncode(structuredData.toJson());
 
-        mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7)).then((value) => null);
-
-        Navigator.pushReplacement(
+        mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7)).then((_) {
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context)
-            => UserPage()));
-            
-        emailController.clear();
-        passwordController.clear();
-        });
+              => UserPage()));
 
+          emailController.clear();
+          passwordController.clear();
+          
+        });
+        });
+    });
       } else if (response.statusCode == 400){
         showDialog<void>(
           context: context,
@@ -182,6 +183,8 @@ class LoginPageState extends State<LoginPage> {
     }
     }
   });
+      });
+    });
   }
 
   @override

@@ -160,8 +160,7 @@ class RegisterPageState extends State<RegisterPage> {
 
             var currentUri = json['current_host'];
 
-            mySharedPreferences.clearData();
-
+            mySharedPreferences.clearData().then((_) {
             var registerData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
 
             var structuredData = 
@@ -175,19 +174,20 @@ class RegisterPageState extends State<RegisterPage> {
 
             var dataToBeCached = jsonEncode(structuredData.toJson());
 
-            mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7));
-
-            Navigator.push(
+            mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7)).then((_){
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context)
-                    => UserPage()));
+                      => UserPage()));
 
-            usernameController.clear();
-            emailController.clear();
-            passwordController.clear();
-            phoneNumberController.clear();
+              usernameController.clear();
+              emailController.clear();
+              passwordController.clear();
+              phoneNumberController.clear();
             });
+            });
+          });
           }
         }
       });
