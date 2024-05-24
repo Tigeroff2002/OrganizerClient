@@ -33,6 +33,12 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildTypes {
+    release {
+        crunchPngs false // or true
+    }
+  }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
