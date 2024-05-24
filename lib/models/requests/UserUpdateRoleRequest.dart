@@ -3,7 +3,6 @@ import 'package:todo_calendar_client/models/requests/RequestWithToken.dart';
 class UserUpdateRoleRequest extends RequestWithToken{
 
   final String newRole;
-
   final String rootPassword;
 
   UserUpdateRoleRequest(

@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleEventPageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewEventModel.dart';
@@ -34,7 +37,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
   bool isBeginTimeChanged = false;
   bool isEndTimeChanged = false;
 
-  final int groupId = 17;
+  int groupId = 1;
 
   late String token;
 
@@ -62,6 +65,10 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
         required this.index,
         required this.isPageJustLoaded
       });
+
+  int createEventId = -1;
+
+  String currentHost = GlobalEndpoints().mobileUri;
 
   Future<void> addNewEvent(BuildContext context) async
   {
@@ -99,8 +106,12 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new AddNewEventModel(
           userId: (userId),
@@ -120,13 +131,11 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/events/schedule_new';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
@@ -137,11 +146,24 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
         if (response.statusCode == 200){
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
-          if (responseContent.outInfo != null){
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createEventId = responseContent.id;
+          });
+
+         if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SingleEventPageWidget(eventId: createEventId)));
+                    },
+                    child: Text('Перейти на страницу нового события с id = ' + createEventId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                  ),
                 )
             );
           }
@@ -151,30 +173,28 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
         eventDescriptionController.clear();
       }
       catch (e) {
-        if (e is SocketException) {
-          //treat SocketException
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Ошибка!'),
-              content: Text('Проблема с соединением к серверу!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-        else if (e is TimeoutException) {
+        if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
-        else
-          print("Unhandled exception: ${e.toString()}");
+        else {
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
+        }
       }
     }
     else {
@@ -292,7 +312,24 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
       });
     }
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания нового мероприятия',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -301,16 +338,18 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
             SizedBox(height: 30.0),
               SizedBox(height: 16.0),
               TextField(
                 controller: eventCaptionController,
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                   labelText: 'Наименование мероприятия:',
                     labelStyle: TextStyle(
-                        color: Colors.deepPurple
+                        color: Colors.deepPurple,
+                        fontSize: 16
                     ),
                     errorText: !isCaptionValidated
                         ? 'Название мероприятия не может быть пустым'
@@ -319,12 +358,14 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               ),
               SizedBox(height: 12.0),
               TextFormField(
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 controller: eventDescriptionController,
                 maxLines: null,
                 decoration: InputDecoration(
                   labelText: 'Описание меропрития:',
                     labelStyle: TextStyle(
-                        color: Colors.deepPurple
+                        color: Colors.deepPurple,
+                        fontSize: 16
                     ),
                     errorText: !isDescriptionValidated
                         ? 'Описание мероприятия не может быть пустым'
@@ -338,16 +379,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               ),
               SizedBox(height: 12.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(250, 100),
-                ),
-                child: Text(outputBeginDateTime),
+                child: Text(outputBeginDateTime, style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 onPressed: () async {
                   await pickBeginDateTime();
                   setState(() {
@@ -438,6 +470,7 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
               SizedBox(height: 4.0),
               DropdownButtonFormField(
                   value: selectedEventType,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   decoration: InputDecoration(
                     labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple)
                   ),
@@ -488,15 +521,6 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                   }),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor : Colors.white,
-                  shadowColor: Colors.cyan,
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  minimumSize: Size(150, 50),
-                ),
                 onPressed: () async {
                   setState(() {
                     isCaptionValidated = !eventCaptionController.text.isEmpty;
@@ -519,12 +543,13 @@ class EventPlaceholderState extends State<EventPlaceholderWidget> {
                     }
                   });
                 },
-                child: Text('Создать новое мероприятие'),
+                child: Text('Создать новое мероприятие',
+                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
       ),
     )
-    );
+      )));
   }
 
   String selectedEventType = "None";

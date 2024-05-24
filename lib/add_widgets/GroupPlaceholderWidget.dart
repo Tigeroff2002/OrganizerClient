@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewGroupModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import '../GlobalEndpoints.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
 import '../shared_pref_cached_data.dart';
@@ -39,6 +42,10 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         required this.index
       });
 
+  int createGroupId = -1;
+
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewGroup(BuildContext context) async
   {
     String name = groupNameController.text;
@@ -54,8 +61,12 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new AddNewGroupModel(
           userId: (userId),
@@ -71,13 +82,11 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/groups/create';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
@@ -88,12 +97,24 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         if (response.statusCode == 200) {
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createGroupId = responseContent.id;
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SingleGroupPageWidget(groupId: createGroupId)));
+                    },
+                    child: Text('Перейти на страницу новой группы с id = ' + createGroupId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                  ),
                 )
             );
           }
@@ -102,32 +123,30 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         groupNameController.clear();
       }
       catch (e) {
-        if (e is SocketException) {
-          //treat SocketException
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Ошибка!'),
-              content: Text('Проблема с соединением к серверу!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-        else if (e is TimeoutException) {
+        if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
-        else
-          print("Unhandled exception: ${e.toString()}");
+        else {
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
       }
     }
+  }
     else {
       showDialog(
         context: context,
@@ -152,7 +171,24 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
 
     final groupTypes = ['None', 'Educational', 'Job'];
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания новой группы',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
       padding: EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         padding: EdgeInsets.all(32),
@@ -161,17 +197,17 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
           children: [
             Text(
               text,
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
             ),
-            SizedBox(height: 30.0),
-              SizedBox(height: 16.0),
+            SizedBox(height: 20.0),
               TextField(
+                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 controller: groupNameController,
                 decoration: InputDecoration(
                   labelText: 'Наименование группы:',
                     labelStyle: TextStyle(
                       fontSize: 16.0,
-                        color: Colors.deepPurple
+                      color: Colors.deepPurple
                     ),
                     errorText: !isNameValidated
                         ? 'Название группы не может быть пустым'
@@ -196,7 +232,7 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                       selectedGroupType = newType.toString();
                     });
                   }),
-              SizedBox(height: 6.0),
+              SizedBox(height: 8.0),
               selectedGroupType == 'None'
                 ? Text(
                    'Данная группа будет открытой, доступной для всех пользователей',
@@ -206,14 +242,6 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                    style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
               SizedBox(height: 30.0),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor : Colors.white,
-                    shadowColor: Colors.cyan,
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    minimumSize: Size(150, 50)),
                 onPressed: () async {
                   setState(() {
                     isNameValidated = !groupNameController.text.isEmpty;
@@ -223,12 +251,13 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                     }
                   });
                 },
-                child: Text('Создать новую группу'),
+                child: Text('Создать новую группу',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
               ),
             ],
       ),
       )
-    );
+    )));
   }
 
   String selectedGroupType = "None";

@@ -8,6 +8,7 @@ import 'dart:convert';
 class EditExistingIssueModel extends AddNewIssueModel {
 
   final int issueId;
+  final String issueStatus;
 
   EditExistingIssueModel({
     required int userId,
@@ -16,7 +17,8 @@ class EditExistingIssueModel extends AddNewIssueModel {
     required String title,
     required String description,
     required String imgLink,
-    required this.issueId
+    required this.issueId,
+    required this.issueStatus
   })
       : super(
         userId: userId,
@@ -34,7 +36,9 @@ class EditExistingIssueModel extends AddNewIssueModel {
       'issue_type': issueType,
       'title': title,
       'description': description,
-      'img_link': imgLink
+      'img_link': imgLink,
+      'issue_id': issueId,
+      'issue_status': issueStatus
     };
   }
 

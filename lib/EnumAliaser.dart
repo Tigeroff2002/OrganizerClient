@@ -1,15 +1,17 @@
+import 'package:todo_calendar_client/models/enums/AuditType.dart';
 import 'package:todo_calendar_client/models/enums/DecisionType.dart';
 import 'package:todo_calendar_client/models/enums/EventType.dart';
 import 'package:todo_calendar_client/models/enums/EventStatus.dart';
 import 'package:todo_calendar_client/models/enums/GroupType.dart';
-import 'package:todo_calendar_client/models/enums/ReportType.dart';
+import 'package:todo_calendar_client/models/enums/IssueStatus.dart';
+import 'package:todo_calendar_client/models/enums/SnapshotType.dart';
 import 'package:todo_calendar_client/models/enums/TaskCurrentStatus.dart';
 import 'package:todo_calendar_client/models/enums/TaskType.dart';
 import 'package:todo_calendar_client/models/enums/UserRole.dart';
 
 import 'models/enums/IssueType.dart';
 
-final class EnumAliaser{
+final class EnumAliaser {
   String GetAlias(Object enumValue){
     if (enumValue is DecisionType){
       if (enumValue == DecisionType.None){
@@ -83,11 +85,19 @@ final class EnumAliaser{
       else if (enumValue == SnapshotType.EventsSnapshot){
         return 'По мероприятиям пользователя';
       }
-      else if (enumValue == SnapshotType.ReportsSnapshot){
-        return 'По отчетам пользователя';
-      }
       else if (enumValue == SnapshotType.IssuesSnapshot){
         return 'По вопросам пользователя';
+      }
+    }
+    else if (enumValue is AuditType){
+      if (enumValue == AuditType.None){
+        return 'Без статуса';
+      }
+      if (enumValue == AuditType.Personal){
+        return 'Личный пользовательский';
+      }
+      else if (enumValue == AuditType.Group){
+        return 'Групповой';
       }
     }
     else if (enumValue is TaskCurrentStatus){
@@ -130,6 +140,20 @@ final class EnumAliaser{
       }
       else if (enumValue == IssueType.ViolationIssue){
         return 'По нарушениям пользователей';
+      }
+    }
+    else if (enumValue is IssueStatus){
+      if (enumValue == IssueStatus.None){
+        return 'Без статуса';
+      }
+      else if (enumValue == IssueStatus.Reported){
+        return 'Зарегистрированный';
+      }
+      else if (enumValue == IssueStatus.InProgress){
+        return 'В процессе решения';
+      }
+      else if (enumValue == IssueStatus.Closed){
+        return 'Закрытый';
       }
     }
     else if (enumValue is UserRole){
@@ -228,13 +252,20 @@ final class EnumAliaser{
     else if (naming == 'TasksSnapshot'){
       return SnapshotType.TasksSnapshot;
     }
-    else if (naming == 'ReportsSnapshot'){
-      return SnapshotType.ReportsSnapshot;
-    }
     else if (naming == 'IssuesSnapshot'){
       return SnapshotType.IssuesSnapshot;
     }
     else return SnapshotType.None;
+  }
+
+  AuditType getAuditTypeEnumValue(String naming){
+    if (naming == 'Personal'){
+      return AuditType.Personal;
+    }
+    else if (naming == 'Group'){
+      return AuditType.Group;
+    }
+    else return AuditType.None;
   }
 
   DecisionType getDecisionTypeEnumValue(String naming){
@@ -258,6 +289,19 @@ final class EnumAliaser{
       return IssueType.ViolationIssue;
     }
     else return IssueType.None;
+  }
+
+  IssueStatus getIssueStatusEnumValue(String naming){
+    if (naming == 'Reported'){
+      return IssueStatus.Reported;
+    }
+    else if (naming == 'InProgress'){
+      return IssueStatus.InProgress;
+    }
+    else if (naming == 'Closed'){
+      return IssueStatus.Closed;
+    }
+    else return IssueStatus.None;
   }
 
   UserRole getUserRoleEnumValue(String naming){

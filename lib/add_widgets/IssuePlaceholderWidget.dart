@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleIssuePageWidget.dart';
+import 'package:todo_calendar_client/main_widgets/user_page.dart';
 import 'dart:convert';
 import 'package:todo_calendar_client/models/requests/AddNewSnapshotModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithId.dart';
 import '../GlobalEndpoints.dart';
 import '../models/requests/AddNewIssueModel.dart';
 import '../models/responses/additional_responces/ResponseWithToken.dart';
@@ -51,6 +54,10 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
         required this.index
       });
 
+  int createIssueId = -1;
+
+  String currentHost = GlobalEndpoints().mobileUri;
+
   Future<void> addNewIssue(BuildContext context) async
   {
     String issueType = selectedIssueType;
@@ -66,8 +73,12 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
+      setState(() {
+        currentHost = cacheContent.currentHost;
+      });
+
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new AddNewIssueModel(
           userId: (userId),
@@ -84,13 +95,11 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
 
       bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-      var currentUri = isMobile ? uris.mobileUri : uris.webUri;
-
       var requestString = '/snapshots/create_new';
 
       var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-      final url = Uri.parse(currentUri + currentPort + requestString);
+      final url = Uri.parse(currentHost + currentPort + requestString);
 
       final headers = {'Content-Type': 'application/json'};
       final body = jsonEncode(requestMap);
@@ -101,12 +110,25 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
         if (response.statusCode == 200) {
 
           var jsonData = jsonDecode(response.body);
-          var responseContent = Response.fromJson(jsonData);
+          var responseContent = ResponseWithId.fromJson(jsonData);
+
+          setState(() {
+            createIssueId = responseContent.id;
+          });
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                    content: Text(responseContent.outInfo.toString())
+                    content: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => 
+                          SingleIssuePageWidget(issueId: createIssueId, isSelfUser: true,)));                      
+                    },
+                    child: Text('Перейти на страницу нового issue с id = ' + createIssueId.toString(),
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                  ),
                 )
             );
           }
@@ -118,30 +140,28 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
         issueLinkController.clear();
       }
       catch (e) {
-        if (e is SocketException) {
-          //treat SocketException
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text('Ошибка!'),
-              content: Text('Проблема с соединением к серверу!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
-        else if (e is TimeoutException) {
+        if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
         }
-        else
-          print("Unhandled exception: ${e.toString()}");
+        else{
+        showDialog<void>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Ошибка!'),
+            content: Text('Проблема с соединением к серверу!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+        print("Unhandled exception: ${e.toString()}");
+        }
       }
     }
     else {
@@ -168,7 +188,24 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
 
     var issueTypes = ['None', 'BagIssue', 'ViolationIssue'];
 
-    return Padding(
+    return new MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Страничка создания нового запроса для администрации',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserPage()),);
+            },
+          ),
+        ), 
+    body: Padding(
         padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           padding: EdgeInsets.all(32),
@@ -177,12 +214,13 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
               children: [
                 Text(
                   text,
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
                 ),
                 SizedBox(height: 30.0),
                 SizedBox(height: 16.0),
                 TextField(
                   controller: issueTitleController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   decoration: InputDecoration(
                       labelText: 'Заголовок запроса: ',
                       labelStyle: TextStyle(fontSize: 16, color: Colors.deepPurple),
@@ -193,7 +231,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 ),
                 Text(
                   'Тип запроса',
-                  style: TextStyle(fontSize: 20, color: Colors.deepPurple),
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 ),
                 SizedBox(height: 4.0),
                 DropdownButton(
@@ -211,6 +249,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 SizedBox(height: 12.0),
                 TextFormField(
                   controller: issueDescriptionController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   maxLines: null,
                   decoration: InputDecoration(
                       labelText: 'Описание запроса: ',
@@ -223,6 +262,7 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 SizedBox(height: 16.0),
                 TextFormField(
                   controller: issueLinkController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                   maxLines: null,
                   decoration: InputDecoration(
                       labelText: 'Ссылка на скриншот (или страницу): ',
@@ -234,14 +274,6 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                 ),
                 SizedBox(height: 30.0),
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor : Colors.white,
-                      shadowColor: Colors.cyan,
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      minimumSize: Size(150, 50)),
                   onPressed: () async {
                     setState(() {
                       isTitleValidated = !issueTitleController.text.isEmpty;
@@ -253,12 +285,13 @@ class IssuePlaceholderState extends State<IssuePlaceholderWidget> {
                       }
                     });
                   },
-                  child: Text('Сделать новый запрос'),
+                  child: Text('Сделать новый запрос',
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
                 ),
               ]
           ),
         )
-    );
+    )));
   }
 
   String selectedIssueType = 'None';
