@@ -75,7 +75,7 @@ class SystemIssuesListPageState extends State<SystemIssuesListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new UserInfoRequestModel(userId: userId, token: token);
       var requestMap = model.toJson();

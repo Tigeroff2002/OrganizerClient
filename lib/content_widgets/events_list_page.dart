@@ -72,7 +72,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new UserInfoRequestModel(userId: userId, token: token);
       var requestMap = model.toJson();
@@ -180,7 +180,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
       var requestMap = model.toJson();
@@ -559,7 +559,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EventInfoRequest(
           userId: userId,

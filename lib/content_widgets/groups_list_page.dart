@@ -76,7 +76,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
         userId = cacheContent.userId;
       });
 
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new UserInfoRequestModel(userId: userId, token: token);
       var requestMap = model.toJson();
@@ -182,7 +182,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupInfoRequest(
           userId: userId,

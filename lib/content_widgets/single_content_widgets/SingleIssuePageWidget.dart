@@ -85,7 +85,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new IssueInfoRequest(userId: userId, token: token, issueId: issueId);
 
@@ -195,7 +195,7 @@ class SingleIssuePageState extends State<SingleIssuePageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EditExistingIssueModel(
           userId: userId,

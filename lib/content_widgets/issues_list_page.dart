@@ -76,7 +76,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new UserInfoRequestModel(userId: userId, token: token);
       var requestMap = model.toJson();
@@ -180,7 +180,7 @@ class IssuesListPageState extends State<IssuesListPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new IssueInfoRequest(
           userId: userId,

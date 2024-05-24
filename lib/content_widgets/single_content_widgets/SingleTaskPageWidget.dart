@@ -76,7 +76,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new TaskInfoRequest(userId: userId, token: token, taskId: taskId);
 
@@ -185,7 +185,7 @@ class SingleTaskPageState extends State<SingleTaskPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var implementerId = 3;
 

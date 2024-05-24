@@ -78,7 +78,7 @@ class AddPersonalSnapshotState extends State<AddPersonalSnapshotWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var auditType = "Personal";
 

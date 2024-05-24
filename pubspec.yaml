@@ -47,6 +47,11 @@ dependencies:
   crypto: ^3.0.3
   flutter_spinkit: ^5.2.1
   flutter_config: ^2.0.2
+  flutter_launcher_icons: ^0.9.2
+
+flutter_icons:
+  android: truef
+  image_path: "assets/logo.png"
 
 dev_dependencies:
   flutter_test:

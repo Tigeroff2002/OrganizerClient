@@ -92,7 +92,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupParticipantCalendarRequest(
           userId: userId,
@@ -205,7 +205,7 @@ class ParticipantCalendarPageState extends State<ParticipantCalendarPageWidget> 
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
       var requestMap = model.toJson();

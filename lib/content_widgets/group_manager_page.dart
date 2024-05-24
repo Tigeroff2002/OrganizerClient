@@ -86,7 +86,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupInfoRequest(userId: userId, token: token, groupId: groupId);
       var requestMap = model.toJson();
@@ -189,7 +189,7 @@ class GroupManagerPageState extends State<GroupManagerPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new SnapshotInfoRequest(
           userId: userId,

@@ -72,7 +72,7 @@ class GroupSnapshotState extends State<AddGroupSnapshotWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var auditType = 'Group';
 

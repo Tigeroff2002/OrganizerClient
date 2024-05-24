@@ -82,7 +82,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
       });
 
       userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupInfoRequest(userId: userId, token: token, groupId: groupId);
       var requestMap = model.toJson();
@@ -191,7 +191,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupDeleteParticipantRequest(
           userId: userId,

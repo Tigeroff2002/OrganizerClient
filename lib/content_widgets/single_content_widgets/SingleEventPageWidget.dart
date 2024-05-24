@@ -97,7 +97,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
       var requestMap = model.toJson();
@@ -268,7 +268,7 @@ class SingleEventPageState extends State<SingleEventPageWidget> {
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new EditExistingEventModel(
           userId: userId,

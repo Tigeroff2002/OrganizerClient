@@ -80,7 +80,7 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
       });
 
       var userId = cacheContent.userId;
-      var token = cacheContent.token.toString();
+      var token = cacheContent.firebaseToken.toString();
 
       var model = new SnapshotInfoRequest(userId: userId, token: token, snapshotId: snapshotId);
 
