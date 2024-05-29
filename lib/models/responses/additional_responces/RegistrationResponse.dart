@@ -1,8 +1,9 @@
 import 'dart:convert';
 
+import 'package:todo_calendar_client/models/responses/additional_responces/PreRegistrationResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/Response.dart';
 
-class RegistrationResponse extends Response{
+class RegistrationResponse extends PreRegistrationResponse{
 
   int? userId;
   final String? token;
@@ -14,7 +15,7 @@ class RegistrationResponse extends Response{
     this.userId,
     this.token,
     required this.registrationCase
-  }) :super(result: result, outInfo: outInfo);
+  }) :super(result: result, outInfo: outInfo, registrationCase: registrationCase);
 
   factory RegistrationResponse.fromJson(Map <String, dynamic> json) {
     return RegistrationResponse(

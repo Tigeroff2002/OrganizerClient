@@ -46,9 +46,7 @@ class LoginPageState extends State<LoginPage> {
     FirebaseMessaging.instance.getToken().then((value) { 
       setState(() {
         String token = value.toString();
-
-        print('Token: ' + token);
-
+        
     var model = new UserLoginModel(
         email: email,
         password: password,

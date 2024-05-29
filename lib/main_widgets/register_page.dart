@@ -8,8 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:todo_calendar_client/main_widgets/authorization_page.dart';
+import 'package:todo_calendar_client/main_widgets/email_confirmation_page.dart';
+import 'package:todo_calendar_client/main_widgets/login_page.dart';
 import 'package:todo_calendar_client/models/requests/UserRegisterModel.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/HostModel.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/HostModelConfirmation.dart';
+import 'package:todo_calendar_client/models/responses/additional_responces/PreRegistrationResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RawResponseWithTokenAndName.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/RegistrationResponse.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
@@ -48,174 +52,160 @@ class RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
+  String currentHost = "";
+
   Future<void> register(BuildContext context) async {
     String name = usernameController.text;
     String password = passwordController.text;
     String email = emailController.text;
     String phoneNumber = phoneNumberController.text;
 
-    final randomNumber = Random().nextDouble();
-    final randomBytes = utf8.encode(randomNumber.toString());
-    final token = md5.convert(randomBytes).toString();
+    FirebaseMessaging.instance.getToken().then((value){
+      setState(() {
+        String token = value.toString();
+        var model = new UserRegisterModel(
+          email: email,
+          name: name,
+          password: password,
+          phoneNumber: phoneNumber,
+          firebaseToken: token);
 
-    var model = new UserRegisterModel(
-        email: email,
-        name: name,
-        password: password,
-        phoneNumber: phoneNumber,
-        firebaseToken: token);
+        var requestMap = model.toJson();
 
-    var requestMap = model.toJson();
+        var uris = GlobalEndpoints();
 
-    var uris = GlobalEndpoints();
+        bool isMobile = Theme.of(context).platform == TargetPlatform.android;
 
-    bool isMobile = Theme.of(context).platform == TargetPlatform.android;
+        var mySharedPreferences = new MySharedPreferences();
 
-    var mySharedPreferences = new MySharedPreferences();
+        mySharedPreferences.getDataIfNotExpired().then((cachedData){
+          if (cachedData != null){
+            var json = jsonDecode(cachedData.toString());
+            var cacheContent = HostModel.fromJson(json);
 
-    mySharedPreferences.getDataIfNotExpired().then((cachedData) {
-    if (cachedData != null) {
-      
-      var json = jsonDecode(cachedData.toString());
-      var cacheContent = HostModel.fromJson(json);
+            setState(() {
+              currentHost = cacheContent.currentHost.toString();
+            });
 
-      var currentUri = cacheContent.currentHost.toString();
+            var requestString = '/users/register';
 
-    var requestString = '/users/register';
+            var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
-    var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+            final url = Uri.parse(currentHost + currentPort + requestString);
 
-    final url = Uri.parse(currentUri + currentPort + requestString);
+            final headers = {'Content-Type': 'application/json'};
+            final body = jsonEncode(requestMap);  
 
-    final headers = {'Content-Type': 'application/json'};
-    final body = jsonEncode(requestMap);
+            try {
+              http.post(url, headers: headers, body : body).then((response) async {
 
-    try {
-      http.post(url, headers: headers, body : body).then((response) async {
+              if (response.statusCode == 200)
+              {
+                var jsonData = jsonDecode(response.body);
 
-        if (response.statusCode == 200)
-        {
-          var jsonData = jsonDecode(response.body);
+                var responseContent = PreRegistrationResponse.fromJson(jsonData);
 
-          var responseContent = RegistrationResponse.fromJson(jsonData);
+                var registerCase = responseContent.registrationCase;
 
-          var registerCase = responseContent.registrationCase;
-
-          if (registerCase == 'SuchUserExisted'){
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Ошибка!'),
-                content: Text(
-                    'Регистрация не удалась!'
-                        ' Пользователь с указанной почтой был уже зарегистрирован'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              ),
-            );
-
-            usernameController.clear();
-            emailController.clear();
-            passwordController.clear();
-            phoneNumberController.clear();
-          }
-          else if (registerCase == 'ConfirmationFailed'){
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Ошибка'),
-                content: Text('Учетная запись не была подтверждена в течение 2 минут'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          content: Text(
-                              'Пробуйте снова произвести регистрацию с подтверждением'),
+                if (registerCase == 'SuchUserExisted'){
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Ошибка!'),
+                      content: Text(
+                          'Регистрация не удалась!'
+                              ' Пользователь с указанной почтой был уже зарегистрирован'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text('OK'),
                         ),
-                      );
-                    },
-                    child: Text('OK'),
+                      ],
+                    ),
+                  );
+
+                  usernameController.clear();
+                  emailController.clear();
+                  passwordController.clear();
+                  phoneNumberController.clear();
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context)
+                      => LoginPage()));
+                }
+                else if (registerCase == 'ConfirmationFailed'){
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text('Ошибка'),
+                      content: Text('Проблемы с регистрацией на сервере'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: Text(
+                                    'Пробуйте снова произвести регистрацию с подтверждением'),
+                              ),
+                            );
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                else if (registerCase == 'ConfirmationAwaited'){
+
+                  var hostModelConfirmation = 
+                    new HostModelConfirmation(
+                      email: email,
+                      userName: name, 
+                      password: password,
+                      phone: phoneNumber, 
+                      token: token, 
+                      currentHost: currentHost);
+
+                  Navigator.pushReplacement(
+                    context,
+                      MaterialPageRoute(builder: (context)
+                        => EmailConfirmationPage(cachedData: hostModelConfirmation,)));
+                }
+            }
+        });
+            } 
+            catch (e){
+              if (e is TimeoutException) {
+                print("Timeout exception: ${e.toString()}");
+              }
+              else {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Ошибка!'),
+                    content: Text('Проблема с соединением к серверу!'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                            Navigator.pop(context);
+                        },
+                        child: Text('OK'),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-
-            MySharedPreferences mySharedPreferences = new MySharedPreferences();
-
-            mySharedPreferences.getDataIfNotExpired().then((data){
-
-            var json = jsonDecode(data.toString());
-
-            var currentUri = json['current_host'];
-
-            mySharedPreferences.clearData().then((_) {
-            var registerData = RawResponseWithTokenAndName.fromJson(jsonDecode(response.body));
-
-            var structuredData = 
-              new ResponseWithTokenAndName(
-                result: registerData.result,
-                userId: registerData.userId, 
-                token: registerData.token, 
-                firebaseToken: registerData.firebaseToken, 
-                currentHost: currentUri,
-                userName: registerData.userName);
-
-            var dataToBeCached = jsonEncode(structuredData.toJson());
-
-            mySharedPreferences.saveDataWithExpiration(
-              dataToBeCached, const Duration(days: 7)).then((_){
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context)
-                      => UserPage()));
-
-              usernameController.clear();
-              emailController.clear();
-              passwordController.clear();
-              phoneNumberController.clear();
-            });
-            });
-          });
+                );
+                print("Unhandled exception: ${e.toString()}");
+              }
+            }    
           }
-        }
+        });
       });
+    });
     }
-    catch (e) {
-      if (e is TimeoutException) {
-        //treat TimeoutException
-        print("Timeout exception: ${e.toString()}");
-      }
-      else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
-      }
-    }
-    }
-  });
-  }
 
   @override
   Widget build(BuildContext context) {

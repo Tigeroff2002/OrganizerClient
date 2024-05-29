@@ -8,7 +8,7 @@ class HostModel {
         return {
           'current_host': currentHost
         };
-    }
+      }
 
     factory HostModel.fromJson(Map <String, dynamic> json) {
       return HostModel(
