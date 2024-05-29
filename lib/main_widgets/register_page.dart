@@ -125,13 +125,12 @@ class RegisterPageState extends State<RegisterPage> {
             passwordController.clear();
             phoneNumberController.clear();
           }
-          else {
+          else if (registerCase == 'ConfirmationFailed'){
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Необходимо подтвердить ваш аккаунт'),
-                content: Text('Перейдите на указанный вами адрес электронной почты'
-                    ' "' + email + '" для его подтверждения'),
+                title: Text('Ошибка'),
+                content: Text('Учетная запись не была подтверждена в течение 2 минут'),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -139,8 +138,7 @@ class RegisterPageState extends State<RegisterPage> {
                         context: context,
                         builder: (context) => AlertDialog(
                           content: Text(
-                              'Ожидание подтверждения вашей электронной почты'
-                                  ' в течение 5 минут'),
+                              'Пробуйте снова произвести регистрацию с подтверждением'),
                         ),
                       );
                     },
@@ -149,8 +147,6 @@ class RegisterPageState extends State<RegisterPage> {
                 ],
               ),
             );
-
-            await Future.delayed(const Duration(milliseconds: 5000));
 
             MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
@@ -174,7 +170,8 @@ class RegisterPageState extends State<RegisterPage> {
 
             var dataToBeCached = jsonEncode(structuredData.toJson());
 
-            mySharedPreferences.saveDataWithExpiration(dataToBeCached, const Duration(days: 7)).then((_){
+            mySharedPreferences.saveDataWithExpiration(
+              dataToBeCached, const Duration(days: 7)).then((_){
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -315,6 +312,22 @@ class RegisterPageState extends State<RegisterPage> {
 
                     if (isEmailValidated && isPasswordValidated
                         && isNameValidated && isPhoneValidated){
+                                      showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Необходимо подтверждение'),
+                content: Text(
+                  'Перейдите по ссылке, отправленной на ваш адрес электронной почты'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              ),
+            );
                       register(context);
                     }
                   });
