@@ -11,16 +11,18 @@ class AuthorizationPage extends StatelessWidget {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-            title: Text('Страница авторизации', 
-              style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-            centerTitle: true,
+          title: Text(
+            'Страница авторизации',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
+          centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage()),);
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
             },
           ),
         ),
@@ -35,7 +37,10 @@ class AuthorizationPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
-                child: Text('Авторизация', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                child: Text(
+                  'Авторизация',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                ),
               ),
               SizedBox(height: 40),
               ElevatedButton(
@@ -45,7 +50,10 @@ class AuthorizationPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => RegisterPage()),
                   );
                 },
-                child: Text('Регистрация', style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                child: Text(
+                  'Регистрация',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                ),
               ),
             ],
           ),

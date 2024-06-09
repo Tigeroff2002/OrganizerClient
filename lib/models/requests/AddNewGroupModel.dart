@@ -3,18 +3,16 @@ import 'dart:convert';
 import 'RequestWithToken.dart';
 
 class AddNewGroupModel extends RequestWithToken {
-
   final String groupName;
   final String groupType;
   final List<int> participants;
 
-  AddNewGroupModel({
-    required int userId,
-    required String token,
-    required this.groupName,
-    required this.groupType,
-    this.participants = const []
-  })
+  AddNewGroupModel(
+      {required int userId,
+      required String token,
+      required this.groupName,
+      required this.groupType,
+      this.participants = const []})
       : super(userId: userId, token: token);
 
   Map<String, dynamic> toJson() {

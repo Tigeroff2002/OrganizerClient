@@ -1,12 +1,1 @@
-enum EventType
-{
-    None,
-
-    Personal,
-
-    OneToOne,
-
-    StandUp,
-
-    Meeting
-}
+enum EventType { None, Personal, OneToOne, StandUp, Meeting }

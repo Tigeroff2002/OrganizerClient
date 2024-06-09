@@ -1,12 +1,11 @@
-class UsersListResponse {
+import 'package:todo_calendar_client/models/responses/UserInfoResponse.dart';
 
+class UsersListResponse {
   final List<dynamic> users;
 
   UsersListResponse({required this.users});
 
-    Map<String, dynamic> toJson() {
-    return {
-      'users': users
-    };
+  factory UsersListResponse.fromJson(Map<String, dynamic> json) {
+    return UsersListResponse(users: json['users']);
   }
 }

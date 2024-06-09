@@ -1,10 +1,1 @@
-enum TaskType
-{
-  None,
-
-  AbstractGoal,
-
-  MeetingPresense,
-
-  JobComplete
-}
+enum TaskType { None, AbstractGoal, MeetingPresense, JobComplete }

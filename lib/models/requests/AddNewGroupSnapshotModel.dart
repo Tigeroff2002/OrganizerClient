@@ -4,25 +4,23 @@ import 'dart:convert';
 import 'RequestWithToken.dart';
 
 class AddNewGroupSnapshotModel extends AddNewSnapshotModel {
-
   final int groupId;
 
-  AddNewGroupSnapshotModel({
-    required int userId,
-    required String token,
-    required String snapshotType,
-    required String auditType,
-    required String beginMoment,
-    required String endMoment,
-    required this.groupId
-  })
-    : super(
-        userId: userId, 
-        token: token, 
-        snapshotType: snapshotType, 
-        auditType: auditType,
-        beginMoment: beginMoment, 
-        endMoment: endMoment);
+  AddNewGroupSnapshotModel(
+      {required int userId,
+      required String token,
+      required String snapshotType,
+      required String auditType,
+      required String beginMoment,
+      required String endMoment,
+      required this.groupId})
+      : super(
+            userId: userId,
+            token: token,
+            snapshotType: snapshotType,
+            auditType: auditType,
+            beginMoment: beginMoment,
+            endMoment: endMoment);
 
   Map<String, dynamic> toJson() {
     return {

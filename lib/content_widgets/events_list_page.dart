@@ -26,13 +26,11 @@ import 'package:intl/intl.dart';
 class EventsListPageWidget extends StatefulWidget {
   const EventsListPageWidget({super.key});
 
-
   @override
   EventsListPageState createState() => EventsListPageState();
 }
 
 class EventsListPageState extends State<EventsListPageWidget> {
-
   @override
   void initState() {
     super.initState();
@@ -54,7 +52,6 @@ class EventsListPageState extends State<EventsListPageWidget> {
   String currentHost = GlobalEndpoints().mobileUri;
 
   Future<void> getUserInfo() async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     setState(() {
@@ -63,7 +60,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -101,52 +98,45 @@ class EventsListPageState extends State<EventsListPageWidget> {
           var data = jsonDecode(userRequestedInfo);
           var userEvents = data['user_events'];
 
-          var fetchedEvents =
-          List<EventInfoResponse>
-              .from(userEvents.map(
-                  (data) => EventInfoResponse.fromJson(data)));
+          var fetchedEvents = List<EventInfoResponse>.from(
+              userEvents.map((data) => EventInfoResponse.fromJson(data)));
 
           setState(() {
             eventsList = fetchedEvents;
             isServerDataLoaded = true;
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -162,7 +152,6 @@ class EventsListPageState extends State<EventsListPageWidget> {
   }
 
   Future<UsersListsContent?> getCertainEventInfo(int eventId) async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     setState(() {
@@ -171,7 +160,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -182,7 +171,8 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var userId = cacheContent.userId;
       var token = cacheContent.firebaseToken.toString();
 
-      var model = new EventInfoRequest(userId: userId, token: token, eventId: eventId);
+      var model =
+          new EventInfoRequest(userId: userId, token: token, eventId: eventId);
       var requestMap = model.toJson();
 
       var uris = GlobalEndpoints();
@@ -208,37 +198,36 @@ class EventsListPageState extends State<EventsListPageWidget> {
           var rawBeginIndex = userRequestedInfo.indexOf('"guests"');
           var rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
 
-          var string = '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex) + '}';
+          var string = '{' +
+              userRequestedInfo.substring(rawBeginIndex, rawEndIndex) +
+              '}';
 
           var contentData = jsonDecode(string);
 
           var eventParticipants = contentData['guests'];
 
-          var fetchedEventUsers =
-          List<ShortUserInfoResponse>
-              .from(eventParticipants.map(
-                  (data) => ShortUserInfoResponse.fromJson(data)));
+          var fetchedEventUsers = List<ShortUserInfoResponse>.from(
+              eventParticipants
+                  .map((data) => ShortUserInfoResponse.fromJson(data)));
 
           rawBeginIndex = userRequestedInfo.indexOf('"participants"');
           rawEndIndex = userRequestedInfo.indexOf(']}') + 2;
 
-          string = '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex);
+          string =
+              '{' + userRequestedInfo.substring(rawBeginIndex, rawEndIndex);
 
           contentData = jsonDecode(string);
 
           var groupUsers = contentData['participants'];
 
-          var fetchedGroupUsers =
-          List<ShortUserInfoResponse>
-              .from(groupUsers.map(
-                  (data) => ShortUserInfoResponse.fromJson(data)));
+          var fetchedGroupUsers = List<ShortUserInfoResponse>.from(
+              groupUsers.map((data) => ShortUserInfoResponse.fromJson(data)));
 
           List<ShortUserInfoResponse> remainingGroupUsers = [];
 
           fetchedGroupUsers.forEach((element) {
-            if (!fetchedEventUsers.any(
-                    (element1) =>
-                      element1.userId == element.userId)){
+            if (!fetchedEventUsers
+                .any((element1) => element1.userId == element.userId)) {
               remainingGroupUsers.add(element);
             }
           });
@@ -253,42 +242,37 @@ class EventsListPageState extends State<EventsListPageWidget> {
 
           return content;
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");          
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -303,27 +287,20 @@ class EventsListPageState extends State<EventsListPageWidget> {
     }
   }
 
-  List<Appointment> getAppointments(List<EventInfoResponse> fetchedEvents){
+  List<Appointment> getAppointments(List<EventInfoResponse> fetchedEvents) {
     MaterialColor color = Colors.blue;
 
-    List<EventAppointment> meetings =
-      List.from(
-          fetchedEvents.map((data) =>
-            new EventAppointment(
-                data.eventId,
-                data.start,
-                data.duration,
-                data.caption)));
+    List<EventAppointment> meetings = List.from(fetchedEvents.map((data) =>
+        new EventAppointment(
+            data.eventId, data.start, data.duration, data.caption)));
 
-    List<Appointment> appointments =
-        List.from(
-          meetings.map((data) =>
-            new Appointment(
-                id: data.eventId,
-                startTime: data.startTime,
-                endTime: data.endTime,
-                subject: data.subject,
-                color: color)));
+    List<Appointment> appointments = List.from(meetings.map((data) =>
+        new Appointment(
+            id: data.eventId,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            subject: data.subject,
+            color: color)));
 
     return appointments;
   }
@@ -334,33 +311,36 @@ class EventsListPageState extends State<EventsListPageWidget> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Ваш календарь мероприятий',
-            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          title: Text(
+            'Ваш календарь мероприятий',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => UserInfoMapPage()),);
+                MaterialPageRoute(builder: (context) => UserInfoMapPage()),
+              );
             },
           ),
         ),
         body: !isServerDataLoaded
-        ? Center(
-            child: SpinKitCircle(
-            size: 100,
-            color: Colors.deepPurple, 
-            duration: Durations.medium1,) )
-        :SfCalendar(
-          view: CalendarView.day,
-          firstDayOfWeek: 1,
-          initialDisplayDate: DateTime.now(),
-          initialSelectedDate: DateTime.now(),
-          dataSource: MeetingDataSource(getAppointments(eventsList)),
-          timeZone: 'Russian Standard Time',
-          onTap: calendarTapped,
-        ),
+            ? Center(
+                child: SpinKitCircle(
+                size: 100,
+                color: Colors.deepPurple,
+                duration: Durations.medium1,
+              ))
+            : SfCalendar(
+                view: CalendarView.day,
+                firstDayOfWeek: 1,
+                initialDisplayDate: DateTime.now(),
+                initialSelectedDate: DateTime.now(),
+                dataSource: MeetingDataSource(getAppointments(eventsList)),
+                timeZone: 'Russian Standard Time',
+                onTap: calendarTapped,
+              ),
       ),
     );
   }
@@ -373,10 +353,12 @@ class EventsListPageState extends State<EventsListPageWidget> {
       _dateText = DateFormat('MMMM dd, yyyy')
           .format(appointmentDetails.startTime)
           .toString();
-      _startTimeText =
-          DateFormat('hh:mm a').format(appointmentDetails.startTime.add(Duration(hours: 3))).toString();
-      _endTimeText =
-          DateFormat('hh:mm a').format(appointmentDetails.endTime.add(Duration(hours: 3))).toString();
+      _startTimeText = DateFormat('hh:mm a')
+          .format(appointmentDetails.startTime.add(Duration(hours: 3)))
+          .toString();
+      _endTimeText = DateFormat('hh:mm a')
+          .format(appointmentDetails.endTime.add(Duration(hours: 3)))
+          .toString();
       _eventId = appointmentDetails.id.toString();
 
       int eventId = int.parse(_eventId);
@@ -428,10 +410,9 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                     Text(
                                       'Дата и время события:',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                        color: Colors.deepPurple
-                                      ),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                          color: Colors.deepPurple),
                                     ),
                                   ],
                                 ),
@@ -445,10 +426,9 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                     Text(
                                       '$_dateText',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
-                                        color: Colors.deepPurple
-                                      ),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                          color: Colors.deepPurple),
                                     ),
                                   ],
                                 ),
@@ -468,8 +448,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(
-                                        'Список участников события: \n',
+                                    Text('Список участников события: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 18,
@@ -479,13 +458,11 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(
-                                      certainEventUsersDescription,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 14,
-                                          color: Colors.deepPurple
-                                      ))
+                                    Text(certainEventUsersDescription,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14,
+                                            color: Colors.deepPurple))
                                   ],
                                 ),
                                 Row(
@@ -495,8 +472,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(
-                                        'Можно еще пригласить: \n',
+                                    Text('Можно еще пригласить: \n',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 18,
@@ -506,36 +482,38 @@ class EventsListPageState extends State<EventsListPageWidget> {
                                 ),
                                 Row(
                                   children: [
-                                    Text(
-                                        certainEventUsersFromGroupDescription,
+                                    Text(certainEventUsersFromGroupDescription,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w300,
                                             fontSize: 16,
-                                            color: Colors.deepPurple
-                                        ))
+                                            color: Colors.deepPurple))
                                   ],
                                 ),
                               ],
                             ),
-                          )
-                      )
-                  ),
+                          ))),
                   actions: <Widget>[
                     new ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: new Text('ОК', style: TextStyle(fontSize: 16, color: Colors.deepPurple),)),
+                        child: new Text(
+                          'ОК',
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        )),
                     new SizedBox(height: 12.0),
                     new ElevatedButton(
-                        child: Text('Удалить событие',
-                          style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
-                          onPressed: () {
-                            setState(() {
-                              deleteEvent(eventId);
-                            });
-                          }
-                      )                    
+                        child: Text(
+                          'Удалить событие',
+                          style:
+                              TextStyle(fontSize: 16, color: Colors.deepOrange),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            deleteEvent(eventId);
+                          });
+                        })
                   ],
                 );
               });
@@ -545,12 +523,11 @@ class EventsListPageState extends State<EventsListPageWidget> {
   }
 
   Future<void> deleteEvent(int deletionEventId) async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -562,9 +539,7 @@ class EventsListPageState extends State<EventsListPageWidget> {
       var token = cacheContent.firebaseToken.toString();
 
       var model = new EventInfoRequest(
-          userId: userId,
-          token: token,
-          eventId: deletionEventId);
+          userId: userId, token: token, eventId: deletionEventId);
 
       var requestMap = model.toJson();
 
@@ -584,58 +559,49 @@ class EventsListPageState extends State<EventsListPageWidget> {
         final response = await http.post(url, headers: headers, body: body);
 
         if (response.statusCode == 200) {
-
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(responseContent.outInfo.toString())
-                )
-            );
+                SnackBar(content: Text(responseContent.outInfo.toString())));
           }
 
           setState(() {
             getUserInfo();
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -661,13 +627,10 @@ class EventsListPageState extends State<EventsListPageWidget> {
   String certainEventUsersFromGroupDescription = '';
 }
 
-class UsersListsContent{
+class UsersListsContent {
   final List<ShortUserInfoResponse> eventUsers;
   final List<ShortUserInfoResponse> remainingGroupUsers;
 
   UsersListsContent(
-      {
-        required this.eventUsers,
-        required this.remainingGroupUsers
-      });
+      {required this.eventUsers, required this.remainingGroupUsers});
 }

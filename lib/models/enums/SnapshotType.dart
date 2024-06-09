@@ -1,10 +1,1 @@
-enum SnapshotType
-{
-  None,
-
-  EventsSnapshot,
-
-  TasksSnapshot,
-
-  IssuesSnapshot
-}
+enum SnapshotType { None, EventsSnapshot, TasksSnapshot, IssuesSnapshot }

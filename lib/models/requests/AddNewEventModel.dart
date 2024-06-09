@@ -4,7 +4,6 @@ import 'package:todo_calendar_client/models/enums/EventStatus.dart';
 import 'dart:convert';
 
 class AddNewEventModel extends RequestWithToken {
-
   final String caption;
   final String description;
   final String start;
@@ -14,19 +13,18 @@ class AddNewEventModel extends RequestWithToken {
   final int groupId;
   final List<int> guestIds;
 
-  AddNewEventModel({
-    required int userId,
-    required String token,
-    required this.caption,
-    required this.description,
-    required this.start,
-    required this.duration,
-    required this.eventType,
-    required this.eventStatus,
-    this.groupId = 0,
-    this.guestIds = const []
-  })
-  : super(userId: userId, token: token);
+  AddNewEventModel(
+      {required int userId,
+      required String token,
+      required this.caption,
+      required this.description,
+      required this.start,
+      required this.duration,
+      required this.eventType,
+      required this.eventStatus,
+      this.groupId = 0,
+      this.guestIds = const []})
+      : super(userId: userId, token: token);
 
   Map<String, dynamic> toJson() {
     return {

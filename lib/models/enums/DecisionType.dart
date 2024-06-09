@@ -1,9 +1,1 @@
-enum DecisionType{
-  None,
-
-  Default,
-
-  Apply,
-
-  Deny
-}
+enum DecisionType { None, Default, Apply, Deny }

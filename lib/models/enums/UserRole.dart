@@ -1,7 +1,1 @@
-enum UserRole{
-  None,
-
-  User,
-
-  Admin
-}
+enum UserRole { None, User, Admin }

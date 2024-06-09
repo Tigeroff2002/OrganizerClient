@@ -21,33 +21,30 @@ import '../../models/responses/additional_responces/GetResponse.dart';
 import '../../models/responses/additional_responces/ResponseWithToken.dart';
 import '../../shared_pref_cached_data.dart';
 
-class SinglePersonalSnapshotPageWidget extends StatefulWidget{
-
+class SinglePersonalSnapshotPageWidget extends StatefulWidget {
   final int snapshotId;
 
   SinglePersonalSnapshotPageWidget({required this.snapshotId});
 
   @override
-  SinglePersonalSnapshotPageState createState(){
+  SinglePersonalSnapshotPageState createState() {
     return new SinglePersonalSnapshotPageState(snapshotId: snapshotId);
   }
 }
 
-
-class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWidget> {
-
+class SinglePersonalSnapshotPageState
+    extends State<SinglePersonalSnapshotPageWidget> {
   final int snapshotId;
 
-      PersonalSnapshotInfoResponse snapshot = 
-      PersonalSnapshotInfoResponse(
-        snapshotId: 1,
-        snapshotType: 'd',
-        auditType: '1',
-        beginMoment: 'e',
-        endMoment: 'df',
-        content: 'd',
-        KPI: 1.0,
-        creationTime: 'd');
+  PersonalSnapshotInfoResponse snapshot = PersonalSnapshotInfoResponse(
+      snapshotId: 1,
+      snapshotType: 'd',
+      auditType: '1',
+      beginMoment: 'e',
+      endMoment: 'df',
+      content: 'd',
+      KPI: 1.0,
+      creationTime: 'd');
 
   bool isDiagramMode = false;
 
@@ -55,14 +52,13 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
 
   SinglePersonalSnapshotPageState({required this.snapshotId});
 
-    @override
-    void initState() {
-      super.initState();
-      getExistedSnapshot(context);
+  @override
+  void initState() {
+    super.initState();
+    getExistedSnapshot(context);
   }
 
-  Future<void> getExistedSnapshot(BuildContext context) async
-  {
+  Future<void> getExistedSnapshot(BuildContext context) async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     setState(() {
@@ -82,7 +78,8 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
       var userId = cacheContent.userId;
       var token = cacheContent.firebaseToken.toString();
 
-      var model = new SnapshotInfoRequest(userId: userId, token: token, snapshotId: snapshotId);
+      var model = new SnapshotInfoRequest(
+          userId: userId, token: token, snapshotId: snapshotId);
 
       var requestMap = model.toJson();
 
@@ -106,60 +103,56 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
         var responseContent = GetResponse.fromJson(jsonData);
 
         if (responseContent.result) {
-            var userRequestedInfo = responseContent.requestedInfo.toString();
+          var userRequestedInfo = responseContent.requestedInfo.toString();
 
-            var data = jsonDecode(userRequestedInfo);
+          var data = jsonDecode(userRequestedInfo);
 
-            setState(() {
-              snapshot = PersonalSnapshotInfoResponse.fromJson(data);
+          setState(() {
+            snapshot = PersonalSnapshotInfoResponse.fromJson(data);
 
-              isServerDataLoaded = true;
-            });
-          }
-      }
-      catch (e) {
+            isServerDataLoaded = true;
+          });
+        }
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else if (e is FormatException){
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с данными на клиенте!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        }
-        else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else if (e is FormatException) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с данными на клиенте!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -189,105 +182,129 @@ class SinglePersonalSnapshotPageState extends State<SinglePersonalSnapshotPageWi
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Страничка персонального отчета под номером ' + snapshotId.toString(),
-            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          title: Text(
+            'Страничка персонального отчета под номером ' +
+                snapshotId.toString(),
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SnapshotsListPageWidget()),);
+                    builder: (context) => SnapshotsListPageWidget()),
+              );
             },
           ),
         ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: !isServerDataLoaded
-                              ? [Center(
-                                  child: SpinKitCircle(
-                                size: 100,
-                                color: Colors.deepPurple, 
-                                duration: Durations.medium1,) )]
-                              : [
+        body: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(32),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: !isServerDataLoaded
+                  ? [
+                      Center(
+                          child: SpinKitCircle(
+                        size: 100,
+                        color: Colors.deepPurple,
+                        duration: Durations.medium1,
+                      ))
+                    ]
+                  : [
                       Text(
                         'Информация о текущем снапшоте',
-                        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple),
                       ),
                       SizedBox(height: 30.0),
                       Text(
                         'Тип снапшота: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
-                        aliaser.GetAlias(
-                            aliaser.getSnapshotTypeEnumValue(snapshot.snapshotType)),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        aliaser.GetAlias(aliaser
+                            .getSnapshotTypeEnumValue(snapshot.snapshotType)),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Аудит снапшота: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         aliaser.GetAlias(
                             aliaser.getAuditTypeEnumValue(snapshot.auditType)),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
-                        SizedBox(height: 8.0),
-                        Text(
-                          'Время создания снапшота: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                        ),
-                        Text(
-                          utf8.decode(snapshot.creationTime.codeUnits),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                        ),
-                        SizedBox(height: 8.0),
+                      SizedBox(height: 8.0),
+                      Text(
+                        'Время создания снапшота: ',
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
+                      ),
+                      Text(
+                        utf8.decode(snapshot.creationTime.codeUnits),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
+                      ),
+                      SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для начала снапшота: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(snapshot.beginMoment.codeUnits),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 8.0),
                       Text(
                         'Время, взятое для окончания снапшота: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(snapshot.endMoment.codeUnits),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Коэффициент KPI по результатам отчета: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(utf8.encode(snapshot.KPI.toString())),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       SizedBox(height: 12.0),
                       Text(
                         'Информация, полученная в снапшоте: ',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
                       Text(
                         utf8.decode(utf8.encode(snapshot.content)),
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.deepPurple),
                       ),
-            ],
+                    ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 

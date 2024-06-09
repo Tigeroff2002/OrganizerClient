@@ -5,7 +5,8 @@ class MySharedPreferences {
   static const String _keyExpiration = 'expirationTime';
 
   // Function to save data with an expiration date to SharedPreferences
-  Future<bool> saveDataWithExpiration(String data, Duration expirationDuration) async {
+  Future<bool> saveDataWithExpiration(
+      String data, Duration expirationDuration) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       DateTime expirationTime = DateTime.now().add(expirationDuration);

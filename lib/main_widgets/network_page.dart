@@ -7,24 +7,23 @@ import 'package:todo_calendar_client/main_widgets/home_page.dart';
 import 'package:todo_calendar_client/models/responses/additional_responces/HostModel.dart';
 import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 
-class NetworkPage extends StatefulWidget{
+class NetworkPage extends StatefulWidget {
   @override
-  NetworkPageState createState(){
+  NetworkPageState createState() {
     return new NetworkPageState();
   }
 }
 
 class NetworkPageState extends State<NetworkPage> {
-
   final TextEditingController ipController = TextEditingController();
 
   bool isIpValidated = true;
 
-    @override
-    void initState() {
-      super.initState();
+  @override
+  void initState() {
+    super.initState();
 
-      ipController.text = GlobalEndpoints().mobileUri;
+    ipController.text = GlobalEndpoints().mobileUri;
   }
 
   @override
@@ -38,13 +37,12 @@ class NetworkPageState extends State<NetworkPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    setState((){
+    setState(() {
       var mySharedPreferences = new MySharedPreferences();
 
       var cachedData = mySharedPreferences.getDataIfNotExpired();
 
-      cachedData.then((value){
+      cachedData.then((value) {
         var model = HostModel.fromJson(jsonDecode(value.toString()));
 
         ipController.text = model.currentHost;
@@ -53,75 +51,73 @@ class NetworkPageState extends State<NetworkPage> {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-        theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
-        appBar: AppBar(
-            title: Text('Ручная настройка сети', 
-              style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => HomePage()),);
-            },
+          appBar: AppBar(
+            title: Text(
+              'Ручная настройка сети',
+              style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+            ),
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
           ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: ipController,
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),
-                decoration: InputDecoration(
-                    labelText: 'IP адрес: ',
-                    labelStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.deepPurple
-                    ),
-                    errorText: !isIpValidated
-                        ? 'IP не может быть пустым'
-                        : null
+          body: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: ipController,
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                  decoration: InputDecoration(
+                      labelText: 'IP адрес: ',
+                      labelStyle:
+                          TextStyle(fontSize: 16, color: Colors.deepPurple),
+                      errorText:
+                          !isIpValidated ? 'IP не может быть пустым' : null),
                 ),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isIpValidated = !ipController.text.isEmpty;
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isIpValidated = !ipController.text.isEmpty;
 
-                    if (isIpValidated){
-                      MySharedPreferences sharedPreferences = new MySharedPreferences();
-                      sharedPreferences.clearData();
+                      if (isIpValidated) {
+                        MySharedPreferences sharedPreferences =
+                            new MySharedPreferences();
+                        sharedPreferences.clearData();
 
-                      var currentUri = ipController.text.toString();
+                        var currentUri = ipController.text.toString();
 
-                      var hostModel = new HostModel(currentHost: currentUri);
+                        var hostModel = new HostModel(currentHost: currentUri);
 
-                      var json = hostModel.toJson();
+                        var json = hostModel.toJson();
 
-                      sharedPreferences.saveDataWithExpiration(jsonEncode(json),  const Duration(days: 7));
+                        sharedPreferences.saveDataWithExpiration(
+                            jsonEncode(json), const Duration(days: 7));
 
-                      ipController.text = currentUri;
-                    }
-                  });
-                },
-                child: Text(
-                  'Изменить ip',
-                   style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-              ),
-              GestureDetector(
-                  child: Image.network(pictureUrl)
-              ),
-              SizedBox(height: 10.0)
-            ],
-          ),
-        )
-        ),
-      );
+                        ipController.text = currentUri;
+                      }
+                    });
+                  },
+                  child: Text(
+                    'Изменить ip',
+                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                  ),
+                ),
+                GestureDetector(child: Image.network(pictureUrl)),
+                SizedBox(height: 10.0)
+              ],
+            ),
+          )),
+    );
   }
 }

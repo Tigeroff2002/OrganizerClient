@@ -7,17 +7,16 @@ class CommonSnapshotInfoResponse {
   final String auditType;
   final String content;
 
-  CommonSnapshotInfoResponse({
-    required this.snapshotId,
-    required this.snapshotType,
-    required this.auditType,
-    required this.creationTime,
-    required this.beginMoment,
-    required this.endMoment,
-    required this.content
-  });
+  CommonSnapshotInfoResponse(
+      {required this.snapshotId,
+      required this.snapshotType,
+      required this.auditType,
+      required this.creationTime,
+      required this.beginMoment,
+      required this.endMoment,
+      required this.content});
 
-  factory CommonSnapshotInfoResponse.fromJson(Map <String, dynamic> json) {
+  factory CommonSnapshotInfoResponse.fromJson(Map<String, dynamic> json) {
     return CommonSnapshotInfoResponse(
         snapshotId: json['snapshot_id'],
         creationTime: json['creation_time'],
@@ -25,7 +24,6 @@ class CommonSnapshotInfoResponse {
         endMoment: json['end_moment'],
         snapshotType: json['snapshot_type'],
         auditType: json['audit_type'],
-        content: json['content']
-    );
+        content: json['content']);
   }
 }
