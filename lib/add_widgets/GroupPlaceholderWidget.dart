@@ -49,6 +49,17 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
         required this.index
       });
 
+  @override
+  void initState(){
+    setState(() {
+      isServerDataLoaded = false;
+    });
+
+    getAllUsers(context).then((_){
+      isServerDataLoaded = true;
+    });
+  }
+
   int createGroupId = -1;
 
   String currentHost = GlobalEndpoints().mobileUri;
@@ -81,6 +92,8 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
       var token = cacheContent.firebaseToken.toString();
 
       List<int> participants = [];
+
+      participants.add(currentUserId);
 
       for (int key in choosedIndexes.keys){
         var value = choosedIndexes[key];
@@ -406,41 +419,38 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
                     });
                   }),
               SizedBox(height: 10.0),
-              selectedGroupType == 'None'
+              choosedIndexes.values.where((element) => element).length == 0
                 ? Text(
-                   'Данная группа будет открытой, доступной для всех пользователей',
+                   'Вы не добавили участников группы (кроме себя)',
                     style: TextStyle(fontSize: 16, color: Colors.deepOrange))
                 : Text(
-                   'Доступно ограничение видимости группы для пользователей',
-                   style: TextStyle(fontSize: 16, color: Colors.deepOrange)),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: (){
-                  setState(() {
-                    getAllUsers(context).then((_) => {
-                    showDialog(
-                      context: context,
-                      builder: (context){
-                        return Dialog(
-                          elevation: 0,
-                          child: Container(
-                            height: 1000,
+                   'Вы добавили ' + choosedIndexes.values.where((element) => element).length.toString() + ' участников',
+                   style: TextStyle(fontSize: 16, color: Colors.deepPurple)),
+              SizedBox(height: 2.0),
+              Container(
+                            height: 200,
                             alignment: Alignment.center,
                             child: 
                             ListView.builder(
       shrinkWrap: true,
       itemCount: usersCount,
       itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text('Gujarat, India'),
+        return Row(
+          children: [
+            Text(
+          users[index].userName, 
+          style: TextStyle(fontSize: 20, color: Colors.deepPurple)),
+            Checkbox(
+              value: choosedIndexes[users[index].userId], 
+              onChanged: (value){
+                setState(() {
+                  choosedIndexes[users[index].userId] = !choosedIndexes[users[index].userId]!;
+                });
+              })
+          ],
         );
       },
-    ),
-                            ));})
-                    });});},
-                 child: Text(
-                  'Выбрать пользователей', 
-                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),)),
+    ),),
               SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () async {
