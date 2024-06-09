@@ -1,16 +1,14 @@
 import 'dart:convert';
 
 class UserLoginModel {
-
   final String email;
   final String password;
   final String firebaseToken;
 
-  UserLoginModel({
-    required this.email,
-    required this.password,
-    required this.firebaseToken
-  });
+  UserLoginModel(
+      {required this.email,
+      required this.password,
+      required this.firebaseToken});
 
   Map<String, dynamic> toJson() {
     return {

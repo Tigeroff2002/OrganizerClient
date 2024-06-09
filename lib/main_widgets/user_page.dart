@@ -7,7 +7,6 @@ import 'package:todo_calendar_client/add_widgets/AddPersonalSnapshotWidget.dart'
 import 'package:todo_calendar_client/main_widgets/personal_account.dart';
 
 class UserPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +20,6 @@ class UserPage extends StatelessWidget {
 }
 
 class Home extends StatefulWidget {
-
   @override
   State<Home> createState() => _HomeState();
 }
@@ -30,37 +28,25 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
   final List<Widget> _children = [
     PersonalAccountWidget(
-        color: Colors.red,
-        text: 'Главная страница пользователя',
-        index: 0
-    ),
-
+        color: Colors.red, text: 'Главная страница пользователя', index: 0),
     EventPlaceholderWidget(
-        color: Colors.green,
-        text: 'Страница создания мероприятия',
-        index: 1),
-
+        color: Colors.green, text: 'Страница создания мероприятия', index: 1),
     GroupPlaceholderWidget(
         color: Colors.blueAccent,
         text: 'Страница создания новой группы',
         index: 2),
-
     TaskPlaceholderWidget(
-        color: Colors.lime,
-        text: 'Страница создания новой задачи',
-        index: 3),
-
+        color: Colors.lime, text: 'Страница создания новой задачи', index: 3),
     IssuePlaceholderWidget(
         color: Colors.deepOrange,
         text: 'Страница создания нового запроса',
         index: 4),
-
     AddPersonalSnapshotWidget(
         color: Colors.deepPurpleAccent,
         text: 'Страница создания нового снапшота',

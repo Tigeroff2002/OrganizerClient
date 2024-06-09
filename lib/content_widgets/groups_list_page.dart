@@ -21,13 +21,11 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Respo
 class GroupsListPageWidget extends StatefulWidget {
   const GroupsListPageWidget({super.key});
 
-
   @override
   GroupsListPageState createState() => GroupsListPageState();
 }
 
 class GroupsListPageState extends State<GroupsListPageWidget> {
-
   @override
   void initState() {
     super.initState();
@@ -40,12 +38,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
   final EnumAliaser aliaser = new EnumAliaser();
 
   List<GroupInfoResponse> groupsList = [
-    GroupInfoResponse(
-      groupId: 1,
-      groupType: 'd',
-      groupName: 'f',
-      managerId: 1
-    )
+    GroupInfoResponse(groupId: 1, groupType: 'd', groupName: 'f', managerId: 1)
   ];
 
   String currentHost = GlobalEndpoints().mobileUri;
@@ -55,7 +48,6 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
   int userId = -1;
 
   Future<void> getUserInfo() async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     setState(() {
@@ -64,7 +56,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -107,52 +99,45 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
           var data = jsonDecode(userRequestedInfo);
           var userGroups = data['user_groups'];
 
-          var fetchedGroups =
-          List<GroupInfoResponse>
-              .from(userGroups.map(
-                  (data) => GroupInfoResponse.fromJson(data)));
+          var fetchedGroups = List<GroupInfoResponse>.from(
+              userGroups.map((data) => GroupInfoResponse.fromJson(data)));
 
           setState(() {
             groupsList = fetchedGroups;
             isServerDataLoaded = true;
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else {
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -167,13 +152,12 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
     }
   }
 
-    Future<void> deleteGroup(int deletionGroupId) async {
-
+  Future<void> deleteGroup(int deletionGroupId) async {
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -185,9 +169,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
       var token = cacheContent.firebaseToken.toString();
 
       var model = new GroupInfoRequest(
-          userId: userId,
-          token: token,
-          groupId: deletionGroupId);
+          userId: userId, token: token, groupId: deletionGroupId);
 
       var requestMap = model.toJson();
 
@@ -209,58 +191,49 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
         final response = await http.post(url, headers: headers, body: body);
 
         if (response.statusCode == 200) {
-
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(responseContent.outInfo.toString())
-                )
-            );
+                SnackBar(content: Text(responseContent.outInfo.toString())));
           }
 
           setState(() {
             getUserInfo();
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -276,7 +249,7 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
@@ -284,133 +257,151 @@ class GroupsListPageState extends State<GroupsListPageWidget> {
         appBar: AppBar(
           title: Text(
             'Ваш список групп',
-             style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => UserInfoMapPage()),);
+                MaterialPageRoute(builder: (context) => UserInfoMapPage()),
+              );
             },
           ),
         ),
         body: groupsList.length == 0
-        ? Column(
-          children: !isServerDataLoaded
-                  ? [Center(
-                      child: SpinKitCircle(
-                        size: 100,
-                        color: Colors.deepPurple, 
-                        duration: Durations.medium1,) )]
-                  : 
-                  [ SizedBox(height: 16.0),
-            Text(
-                'Вы не состоите ни в одной группе',
-                style: TextStyle(
-                    color: Colors.deepPurple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-                textAlign: TextAlign.center),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              child: Text('Создать новую группу',
-                style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context)
-                    => GroupPlaceholderWidget(
-                  color: Colors.greenAccent, text: 'Составление новой группы', index: 1))
-                );
-              })
-          ],
-        )
-        : ListView.builder(
-          physics: ScrollPhysics(),
-          itemCount: groupsList.length,
-          itemBuilder: (context, index) {
-            final data = groupsList[index];
-            return Card(
-              color: isColor ? Colors.cyan : Colors.greenAccent,
-              elevation: 15,
-              child: InkWell(
-                onTap: () {
-                  setState(() {
-                    isColor = !isColor;
-                  });
+            ? Column(
+                children: !isServerDataLoaded
+                    ? [
+                        Center(
+                            child: SpinKitCircle(
+                          size: 100,
+                          color: Colors.deepPurple,
+                          duration: Durations.medium1,
+                        ))
+                      ]
+                    : [
+                        SizedBox(height: 16.0),
+                        Text('Вы не состоите ни в одной группе',
+                            style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                            textAlign: TextAlign.center),
+                        SizedBox(height: 16.0),
+                        ElevatedButton(
+                            child: Text(
+                              'Создать новую группу',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.deepPurple),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          GroupPlaceholderWidget(
+                                              color: Colors.greenAccent,
+                                              text: 'Составление новой группы',
+                                              index: 1)));
+                            })
+                      ],
+              )
+            : ListView.builder(
+                physics: ScrollPhysics(),
+                itemCount: groupsList.length,
+                itemBuilder: (context, index) {
+                  final data = groupsList[index];
+                  return Card(
+                    color: isColor ? Colors.cyan : Colors.greenAccent,
+                    elevation: 15,
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isColor = !isColor;
+                        });
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: !isServerDataLoaded
+                              ? [
+                                  Center(
+                                      child: SpinKitCircle(
+                                    size: 100,
+                                    color: Colors.deepPurple,
+                                    duration: Durations.medium1,
+                                  ))
+                                ]
+                              : [
+                                  Text(
+                                    'Название группы: ',
+                                    style: TextStyle(
+                                        color: Colors.deepPurple, fontSize: 16),
+                                  ),
+                                  Text(
+                                    utf8.decode(utf8.encode(data.groupName)),
+                                    style: TextStyle(
+                                        color: Colors.deepPurple, fontSize: 16),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Тип группы: ',
+                                    style: TextStyle(
+                                        color: Colors.deepPurple, fontSize: 16),
+                                  ),
+                                  Text(
+                                    aliaser.GetAlias(aliaser
+                                        .getGroupEnumValue(data.groupType)),
+                                    style: TextStyle(
+                                        color: Colors.deepPurple, fontSize: 16),
+                                  ),
+                                  SizedBox(height: 8),
+                                  ElevatedButton(
+                                    child: Text(
+                                      'Страница группы',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.deepPurple),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SingleGroupPageWidget(
+                                                    groupId: data.groupId)),
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 12),
+                                  data.managerId == userId
+                                      ? ElevatedButton(
+                                          child: Text(
+                                            'Удалить группу',
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.deepOrange),
+                                          ),
+                                          onPressed: () {
+                                            deleteGroup(data.groupId).then(
+                                                (value) => {
+                                                      groupsList.removeWhere(
+                                                          (element) =>
+                                                              element.groupId ==
+                                                              data.groupId)
+                                                    });
+                                          },
+                                        )
+                                      : SizedBox(height: 0.0),
+                                ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                child: Padding(
-                  padding: EdgeInsets.all(25),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: !isServerDataLoaded
-                  ? [Center(
-                      child: SpinKitCircle(
-                        size: 100,
-                        color: Colors.deepPurple, 
-                        duration: Durations.medium1,) )]
-                  : [
-                      Text(
-                        'Название группы: ',
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 16
-                        ),
-                      ),
-                      Text(
-                        utf8.decode(utf8.encode(data.groupName)),
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 16
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        'Тип группы: ',
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 16
-                        ),
-                      ),
-                      Text(
-                        aliaser.GetAlias(aliaser.getGroupEnumValue(data.groupType)),
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 16
-                        ),
-                      ),
-                      SizedBox(height: 8),
-                      ElevatedButton(
-                        child: Text('Страница группы',
-                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context)
-                            => SingleGroupPageWidget(groupId: data.groupId)),
-                          );
-                        },
-                      ),
-                      SizedBox(height: 12),
-                      data.managerId == userId 
-                      ? ElevatedButton(
-                        child: Text('Удалить группу',
-                          style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
-                          onPressed: () {
-                            deleteGroup(data.groupId).then((value) => {
-                              groupsList.removeWhere((element) => element.groupId == data.groupId)
-                          });
-                        },
-                      )
-                      : SizedBox(height: 0.0),
-                    ],
-                  ),
-                ),
               ),
-            );
-          },
-        ),
       ),
     );
   }

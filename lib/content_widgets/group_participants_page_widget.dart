@@ -24,7 +24,6 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Respo
 import 'package:todo_calendar_client/models/responses/additional_responces/ResponseWithToken.dart';
 
 class GroupParticipantsPageWidget extends StatefulWidget {
-
   final int groupId;
 
   GroupParticipantsPageWidget({required this.groupId});
@@ -35,7 +34,6 @@ class GroupParticipantsPageWidget extends StatefulWidget {
 }
 
 class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
-
   final int groupId;
   int userId = -1;
 
@@ -64,7 +62,6 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
   String currentHost = GlobalEndpoints().mobileUri;
 
   Future<void> getUsersFromGroupInfo() async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     setState(() {
@@ -73,7 +70,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -84,7 +81,8 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
       userId = cacheContent.userId;
       var token = cacheContent.firebaseToken.toString();
 
-      var model = new GroupInfoRequest(userId: userId, token: token, groupId: groupId);
+      var model =
+          new GroupInfoRequest(userId: userId, token: token, groupId: groupId);
       var requestMap = model.toJson();
 
       var uris = GlobalEndpoints();
@@ -114,10 +112,9 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
 
           var userParticipants = data['participants'];
 
-          var fetchedGroupUsers =
-          List<ShortUserInfoResponse>
-              .from(userParticipants.map(
-                  (data) => ShortUserInfoResponse.fromJson(data)));
+          var fetchedGroupUsers = List<ShortUserInfoResponse>.from(
+              userParticipants
+                  .map((data) => ShortUserInfoResponse.fromJson(data)));
 
           setState(() {
             usersList = fetchedGroupUsers;
@@ -126,42 +123,37 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
             isServerDataLoaded = true;
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -177,12 +169,11 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
   }
 
   Future<void> deleteUserFromGroup(int deletionUserId) async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
 
-    if (cachedData != null){
+    if (cachedData != null) {
       var json = jsonDecode(cachedData.toString());
       var cacheContent = ResponseWithToken.fromJson(json);
 
@@ -217,58 +208,49 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
         final response = await http.post(url, headers: headers, body: body);
 
         if (response.statusCode == 200) {
-
           var jsonData = jsonDecode(response.body);
           var responseContent = Response.fromJson(jsonData);
 
           if (responseContent.outInfo != null) {
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(responseContent.outInfo.toString())
-                )
-            );
+                SnackBar(content: Text(responseContent.outInfo.toString())));
           }
 
           setState(() {
             getUsersFromGroupInfo();
           });
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
-        }
-        else{
-        showDialog<void>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('OK'),
-              ),
-            ],
-          ),
-        );
-        print("Unhandled exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
       }
-    }
-    else {
+    } else {
       setState(() {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content:
-            Text(
-                'Произошла ошибка при получении'
-                    ' полной информации о пользователе!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -284,111 +266,136 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: 
-          Text(
+          title: Text(
             'Список пользователей группы ' + groupName + ': ',
-            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => SingleGroupPageWidget(groupId: groupId)),);
+                    builder: (context) =>
+                        SingleGroupPageWidget(groupId: groupId)),
+              );
             },
           ),
         ),
         body: ListView.builder(
-                      itemCount: usersList.length,
-                      itemBuilder: (context, index) {
-                      final data = usersList[index];
-                      return Card(
-                        color: userId != data.userId
-                          ? Colors.cyan
-                          : Colors.red,
-                        elevation: 15,
-                      child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            isColor = !isColor;
-                          });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(25),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: !isServerDataLoaded
-                              ? [Center(
-                                  child: SpinKitCircle(
-                                size: 100,
-                                color: Colors.deepPurple, 
-                                duration: Durations.medium1,) )]
-                              : [
-                                Text(
-                                  'Пользователь с именем: ',
-                                  style: TextStyle(
-                                    color: Colors.deepPurple,
-                                    fontSize: 16),),
-                                Text(
-                                  utf8.decode(utf8.encode(data.userName)),
-                                  style: TextStyle(
-                                    color: Colors.deepPurple,
-                                    fontSize: 16,),),
-                                SizedBox(height: 12),
-                                Text(
-                                  'Электронная почта: ',
-                                  style: TextStyle(
-                                    color: Colors.deepPurple,
-                                    fontSize: 16,),),
-                                Text(
-                                  utf8.decode(utf8.encode(data.userEmail)),
-                                  style: TextStyle(
-                                    color: Colors.deepPurple,
-                                    fontSize: 16),),
-                                SizedBox(height: 12),
-                                ElevatedButton(
-                                  child: Text('Посмотреть календарь пользователя',
-                                    style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                        => userId != data.userId
+          itemCount: usersList.length,
+          itemBuilder: (context, index) {
+            final data = usersList[index];
+            return Card(
+              color: userId != data.userId ? Colors.cyan : Colors.red,
+              elevation: 15,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    isColor = !isColor;
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(25),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: !isServerDataLoaded
+                        ? [
+                            Center(
+                                child: SpinKitCircle(
+                              size: 100,
+                              color: Colors.deepPurple,
+                              duration: Durations.medium1,
+                            ))
+                          ]
+                        : [
+                            Text(
+                              'Пользователь с именем: ',
+                              style: TextStyle(
+                                  color: Colors.deepPurple, fontSize: 16),
+                            ),
+                            Text(
+                              utf8.decode(utf8.encode(data.userName)),
+                              style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontSize: 16,
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Text(
+                              'Электронная почта: ',
+                              style: TextStyle(
+                                color: Colors.deepPurple,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              utf8.decode(utf8.encode(data.userEmail)),
+                              style: TextStyle(
+                                  color: Colors.deepPurple, fontSize: 16),
+                            ),
+                            SizedBox(height: 12),
+                            ElevatedButton(
+                              child: Text(
+                                'Посмотреть календарь пользователя',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.deepPurple),
+                              ),
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => userId !=
+                                              data.userId
                                           ? ParticipantCalendarPageWidget(
                                               groupId: groupId,
                                               participantId: data.userId,
-                                              participantName: data.userName,)
-                                          : EventsListPageWidget()),);
-                                        },),
-                                  SizedBox(height: 10),
-                                  ElevatedButton(
-                                    child: userId != data.userId
-                                      ? Text('Исключить пользователя', 
-                                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),)
-                                      : Text('Выйти из группы', 
-                                          style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                                    onPressed: () {
-                                      setState(() {
-                                        deleteUserFromGroup(data.userId).then((value) => {
-                                          usersList.removeWhere((element) => element.userId == data.userId)
-                                        });
-                                    });
-                                  },),
-                                  SizedBox(height: 10)
-                                ],
-                              ),
+                                              participantName: data.userName,
+                                            )
+                                          : EventsListPageWidget()),
+                                );
+                              },
                             ),
-                          ),
-                        );
-                      },
-                    ),  
-                ),              
+                            SizedBox(height: 10),
+                            ElevatedButton(
+                              child: userId != data.userId
+                                  ? Text(
+                                      'Исключить пользователя',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.deepPurple),
+                                    )
+                                  : Text(
+                                      'Выйти из группы',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.deepPurple),
+                                    ),
+                              onPressed: () {
+                                setState(() {
+                                  deleteUserFromGroup(data.userId).then(
+                                      (value) => {
+                                            usersList.removeWhere((element) =>
+                                                element.userId == data.userId)
+                                          });
+                                });
+                              },
+                            ),
+                            SizedBox(height: 10)
+                          ],
+                  ),
+                ),
+              ),
             );
+          },
+        ),
+      ),
+    );
   }
 }

@@ -1,8 +1,1 @@
-enum GroupType
-{
-  None,
-
-  Educational,
-
-  Job
-}
+enum GroupType { None, Educational, Job }

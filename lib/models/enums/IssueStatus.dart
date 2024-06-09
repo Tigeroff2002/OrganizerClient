@@ -1,10 +1,1 @@
-enum IssueStatus
-{
-  None,
-
-  Reported,
-
-  InProgress,
-
-  Closed
-}
+enum IssueStatus { None, Reported, InProgress, Closed }

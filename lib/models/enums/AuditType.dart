@@ -1,8 +1,1 @@
-enum AuditType {
-
-  None,
-  
-  Personal,
-  
-  Group
-}
+enum AuditType { None, Personal, Group }

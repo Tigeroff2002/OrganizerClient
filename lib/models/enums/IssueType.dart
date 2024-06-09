@@ -1,8 +1,1 @@
-enum IssueType
-{
-  None,
-
-  BagIssue,
-
-  ViolationIssue
-}
+enum IssueType { None, BagIssue, ViolationIssue }

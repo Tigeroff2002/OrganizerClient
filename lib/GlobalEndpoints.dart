@@ -1,4 +1,4 @@
-class GlobalEndpoints{
+class GlobalEndpoints {
   final String webUri = "http://localhost";
 
   final String mobileUri = "http://172.20.10.2";
@@ -7,5 +7,5 @@ class GlobalEndpoints{
 
   final String currentMobilePort = ":3500";
 
-  // flutter run -d chrome --web-renderer html
+// flutter run -d chrome --web-renderer html
 }

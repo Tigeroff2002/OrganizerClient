@@ -1,5 +1,4 @@
 class ParticipantCalendarResponse {
-
   final List<dynamic> userEvents;
 
   ParticipantCalendarResponse({
@@ -12,9 +11,7 @@ class ParticipantCalendarResponse {
     };
   }
 
-  factory ParticipantCalendarResponse.fromJson(Map <String, dynamic> json) {
-    return ParticipantCalendarResponse(
-        userEvents: json['user_events']
-    );
+  factory ParticipantCalendarResponse.fromJson(Map<String, dynamic> json) {
+    return ParticipantCalendarResponse(userEvents: json['user_events']);
   }
 }

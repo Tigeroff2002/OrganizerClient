@@ -20,37 +20,25 @@ import 'package:todo_calendar_client/models/responses/additional_responces/Respo
 import 'profile_page.dart';
 import 'home_page.dart';
 
-class MapInfoWidget extends StatefulWidget{
-
+class MapInfoWidget extends StatefulWidget {
   final Color color;
   final String text;
   final int index;
 
-  MapInfoWidget(
-      {
-        required this.color,
-        required this.text,
-        required this.index
-      });
+  MapInfoWidget({required this.color, required this.text, required this.index});
 
   @override
-  MapInfoState createState(){
+  MapInfoState createState() {
     return new MapInfoState(color: color, text: text, index: index);
   }
 }
 
 class MapInfoState extends State<MapInfoWidget> {
-
   final Color color;
   final String text;
   final int index;
 
-  MapInfoState(
-      {
-        required this.color,
-        required this.text,
-        required this.index
-      });
+  MapInfoState({required this.color, required this.text, required this.index});
 
   @override
   void initState() {
@@ -81,85 +69,102 @@ class MapInfoState extends State<MapInfoWidget> {
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Информация о вашей деятельности',
-             style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-            centerTitle: true
-        ),
-        body: Center(
-          child: Padding(
-              padding: EdgeInsets.all(6.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: !isCacheDataLoaded
-                  ? [Center(
-                      child: SpinKitCircle(
-                        size: 100,
-                        color: Colors.deepPurple, 
-                        duration: Durations.medium1,) )]
-                  : [
-                    Text(
-                      "Еще раз, приветствуем вас, " + currentUserName,
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.deepPurple),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 30.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => UserPage()),);
-                      },
-                      child: Text('Вернуться на главную', 
-                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                    ),
-                    SizedBox(height: 30.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePageWidget()),);
-                      },
-                      child: Text('Профиль пользователя',
-                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                    ),
-                    SizedBox(height: 36.0),
-                    ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                        Navigator.pushReplacement(
-                          context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage()),);
-                          logout(context);
-
-                          var mySharedPreferences = new MySharedPreferences();
-
-                          mySharedPreferences.clearData();
-                        });
-                      },
-                      child: Text('Выйти из аккаунта', 
-                        style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
-                    ),
-                  ],
+        debugShowCheckedModeBanner: false,
+        theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
+        home: Scaffold(
+            appBar: AppBar(
+                title: Text(
+                  'Информация о вашей деятельности',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 ),
-              )
-          ),
-        )
-      )
-    );
+                centerTitle: true),
+            body: Center(
+              child: Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: !isCacheDataLoaded
+                          ? [
+                              Center(
+                                  child: SpinKitCircle(
+                                size: 100,
+                                color: Colors.deepPurple,
+                                duration: Durations.medium1,
+                              ))
+                            ]
+                          : [
+                              Text(
+                                "Еще раз, приветствуем вас, " + currentUserName,
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.deepPurple),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: 30.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UserPage()),
+                                  );
+                                },
+                                child: Text(
+                                  'Вернуться на главную',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.deepPurple),
+                                ),
+                              ),
+                              SizedBox(height: 30.0),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProfilePageWidget()),
+                                  );
+                                },
+                                child: Text(
+                                  'Профиль пользователя',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.deepPurple),
+                                ),
+                              ),
+                              SizedBox(height: 36.0),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  setState(() {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                    );
+                                    logout(context);
+
+                                    var mySharedPreferences =
+                                        new MySharedPreferences();
+
+                                    mySharedPreferences.clearData();
+                                  });
+                                },
+                                child: Text(
+                                  'Выйти из аккаунта',
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.deepPurple),
+                                ),
+                              ),
+                            ],
+                    ),
+                  )),
+            )));
   }
 
   Future<void> logout(BuildContext context) async {
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
@@ -174,9 +179,7 @@ class MapInfoState extends State<MapInfoWidget> {
       var currentHost = cacheContent.currentHost.toString();
 
       var model = new UserLogoutModel(
-          userId: userId,
-          token: token,
-          firebaseToken: firebaseToken);
+          userId: userId, token: token, firebaseToken: firebaseToken);
 
       var requestMap = model.toJson();
 
@@ -207,25 +210,45 @@ class MapInfoState extends State<MapInfoWidget> {
 
           await sharedPreferences.clearData();
 
-          await sharedPreferences.saveDataWithExpiration(jsonEncode(json),  const Duration(days: 7));
+          await sharedPreferences.saveDataWithExpiration(
+              jsonEncode(json), const Duration(days: 7));
 
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(
-                builder: (context) => HomePage()),);
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
         }
-      }
-      catch (e) {
+      } catch (e) {
         if (e is TimeoutException) {
           //treat TimeoutException
           print("Timeout exception: ${e.toString()}");
+        } else {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Ошибка!'),
+              content: Text('Проблема с соединением к серверу!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          );
+          print("Unhandled exception: ${e.toString()}");
         }
-        else {
-        showDialog<void>(
+      }
+    } else {
+      setState(() {
+        showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Ошибка!'),
-            content: Text('Проблема с соединением к серверу!'),
+            content: Text('Произошла ошибка при получении'
+                ' полной информации о пользователе!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -236,34 +259,9 @@ class MapInfoState extends State<MapInfoWidget> {
             ],
           ),
         );
-        print("Unhandled exception: ${e.toString()}");
-        }
-      }
-    }
-    else {
-      setState(() {
-        showDialog(
-          context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: Text('Ошибка!'),
-                content:
-                Text(
-                    'Произошла ошибка при получении'
-                        ' полной информации о пользователе!'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              ),
-        );
       });
     }
   }
-  
+
   String currentUserName = "None user";
 }

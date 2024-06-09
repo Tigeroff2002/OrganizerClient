@@ -4,22 +4,20 @@ import 'package:todo_calendar_client/models/requests/RequestWithToken.dart';
 import 'dart:convert';
 
 class AddNewTaskModel extends RequestWithToken {
-
   final String caption;
   final String description;
   final String taskType;
   final String taskStatus;
   final int implementerId;
 
-  AddNewTaskModel({
-    required int userId,
-    required String token,
-    required this.caption,
-    required this.description,
-    required this.taskType,
-    required this.taskStatus,
-    required this.implementerId
-  })
+  AddNewTaskModel(
+      {required int userId,
+      required String token,
+      required this.caption,
+      required this.description,
+      required this.taskType,
+      required this.taskStatus,
+      required this.implementerId})
       : super(userId: userId, token: token);
 
   Map<String, dynamic> toJson() {

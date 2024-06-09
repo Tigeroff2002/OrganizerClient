@@ -12,158 +12,116 @@ import 'package:todo_calendar_client/models/enums/UserRole.dart';
 import 'models/enums/IssueType.dart';
 
 final class EnumAliaser {
-  String GetAlias(Object enumValue){
-    if (enumValue is DecisionType){
-      if (enumValue == DecisionType.None){
+  String GetAlias(Object enumValue) {
+    if (enumValue is DecisionType) {
+      if (enumValue == DecisionType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == DecisionType.Default){
+      } else if (enumValue == DecisionType.Default) {
         return 'По умолчанию';
-      }
-      else if (enumValue == DecisionType.Apply){
+      } else if (enumValue == DecisionType.Apply) {
         return 'Собирается посетить';
-      }
-      else if (enumValue == DecisionType.Default){
+      } else if (enumValue == DecisionType.Default) {
         return 'Не будет присутствовать';
       }
-    }
-    else if (enumValue is EventStatus){
-      if (enumValue == EventStatus.None){
+    } else if (enumValue is EventStatus) {
+      if (enumValue == EventStatus.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == EventStatus.Cancelled){
+      } else if (enumValue == EventStatus.Cancelled) {
         return 'Отменено';
-      }
-      else if (enumValue == EventStatus.NotStarted){
+      } else if (enumValue == EventStatus.NotStarted) {
         return 'Не начато';
-      }
-      else if (enumValue == EventStatus.WithinReminderOffset){
+      } else if (enumValue == EventStatus.WithinReminderOffset) {
         return 'Скоро начнется';
-      }
-      else if (enumValue == EventStatus.Live){
+      } else if (enumValue == EventStatus.Live) {
         return 'Идет сейчас';
-      }
-      else if (enumValue == EventStatus.Finished){
+      } else if (enumValue == EventStatus.Finished) {
         return 'Завершено';
       }
-    }
-    else if (enumValue is EventType){
-      if (enumValue == EventType.None){
+    } else if (enumValue is EventType) {
+      if (enumValue == EventType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == EventType.Personal){
+      } else if (enumValue == EventType.Personal) {
         return 'Личное';
-      }
-      else if (enumValue == EventType.OneToOne){
+      } else if (enumValue == EventType.OneToOne) {
         return 'Парное';
-      }
-      else if (enumValue == EventType.StandUp){
+      } else if (enumValue == EventType.StandUp) {
         return 'Стэндап команды';
-      }
-      else if (enumValue == EventType.Meeting){
+      } else if (enumValue == EventType.Meeting) {
         return 'Общее собрание';
       }
-    }
-    else if (enumValue is GroupType){
-      if (enumValue == GroupType.None){
+    } else if (enumValue is GroupType) {
+      if (enumValue == GroupType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == GroupType.Educational){
+      } else if (enumValue == GroupType.Educational) {
         return 'Учебная';
-      }
-      else if (enumValue == GroupType.Job){
+      } else if (enumValue == GroupType.Job) {
         return 'Рабочая';
       }
-    }
-    else if (enumValue is SnapshotType){
-      if (enumValue == SnapshotType.None){
+    } else if (enumValue is SnapshotType) {
+      if (enumValue == SnapshotType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == SnapshotType.TasksSnapshot){
+      } else if (enumValue == SnapshotType.TasksSnapshot) {
         return 'По задачам пользователя';
-      }
-      else if (enumValue == SnapshotType.EventsSnapshot){
+      } else if (enumValue == SnapshotType.EventsSnapshot) {
         return 'По мероприятиям пользователя';
-      }
-      else if (enumValue == SnapshotType.IssuesSnapshot){
+      } else if (enumValue == SnapshotType.IssuesSnapshot) {
         return 'По вопросам пользователя';
       }
-    }
-    else if (enumValue is AuditType){
-      if (enumValue == AuditType.None){
+    } else if (enumValue is AuditType) {
+      if (enumValue == AuditType.None) {
         return 'Без статуса';
       }
-      if (enumValue == AuditType.Personal){
+      if (enumValue == AuditType.Personal) {
         return 'Личный пользовательский';
-      }
-      else if (enumValue == AuditType.Group){
+      } else if (enumValue == AuditType.Group) {
         return 'Групповой';
       }
-    }
-    else if (enumValue is TaskCurrentStatus){
-      if (enumValue == TaskCurrentStatus.None){
+    } else if (enumValue is TaskCurrentStatus) {
+      if (enumValue == TaskCurrentStatus.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == TaskCurrentStatus.ToDo){
+      } else if (enumValue == TaskCurrentStatus.ToDo) {
         return 'Ожидает выполнения';
-      }
-      else if (enumValue == TaskCurrentStatus.InProgress){
+      } else if (enumValue == TaskCurrentStatus.InProgress) {
         return 'В процессе';
-      }
-      else if (enumValue == TaskCurrentStatus.Review){
+      } else if (enumValue == TaskCurrentStatus.Review) {
         return 'На стадии оценки';
-      }
-      else if (enumValue == TaskCurrentStatus.Done){
+      } else if (enumValue == TaskCurrentStatus.Done) {
         return 'Выполнена';
       }
-    }
-    else if (enumValue is TaskType){
-      if (enumValue == TaskType.None){
+    } else if (enumValue is TaskType) {
+      if (enumValue == TaskType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == TaskType.AbstractGoal){
+      } else if (enumValue == TaskType.AbstractGoal) {
         return 'Абстрактная цель';
-      }
-      else if (enumValue == TaskType.MeetingPresense){
+      } else if (enumValue == TaskType.MeetingPresense) {
         return 'Цель посещения мероприятий';
-      }
-      else if (enumValue == TaskType.JobComplete){
+      } else if (enumValue == TaskType.JobComplete) {
         return 'Цель в выполнении работы';
       }
-    }
-    else if (enumValue is IssueType){
-      if (enumValue == IssueType.None){
+    } else if (enumValue is IssueType) {
+      if (enumValue == IssueType.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == IssueType.BagIssue){
+      } else if (enumValue == IssueType.BagIssue) {
         return 'По багам пользователей';
-      }
-      else if (enumValue == IssueType.ViolationIssue){
+      } else if (enumValue == IssueType.ViolationIssue) {
         return 'По нарушениям пользователей';
       }
-    }
-    else if (enumValue is IssueStatus){
-      if (enumValue == IssueStatus.None){
+    } else if (enumValue is IssueStatus) {
+      if (enumValue == IssueStatus.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == IssueStatus.Reported){
+      } else if (enumValue == IssueStatus.Reported) {
         return 'Зарегистрированный';
-      }
-      else if (enumValue == IssueStatus.InProgress){
+      } else if (enumValue == IssueStatus.InProgress) {
         return 'В процессе решения';
-      }
-      else if (enumValue == IssueStatus.Closed){
+      } else if (enumValue == IssueStatus.Closed) {
         return 'Закрытый';
       }
-    }
-    else if (enumValue is UserRole){
-      if (enumValue == UserRole.None){
+    } else if (enumValue is UserRole) {
+      if (enumValue == UserRole.None) {
         return 'Без статуса';
-      }
-      else if (enumValue == UserRole.User){
+      } else if (enumValue == UserRole.User) {
         return 'Пользователь системы';
-      }
-      else if (enumValue == UserRole.Admin){
+      } else if (enumValue == UserRole.Admin) {
         return 'Администрация системы';
       }
     }
@@ -171,146 +129,124 @@ final class EnumAliaser {
     return 'Без статуса';
   }
 
-  GroupType getGroupEnumValue(String naming){
-    if (naming == 'Educational'){
+  GroupType getGroupEnumValue(String naming) {
+    if (naming == 'Educational') {
       return GroupType.Educational;
-    }
-    else if (naming == 'Job'){
+    } else if (naming == 'Job') {
       return GroupType.Job;
-    }
-    else return GroupType.None;
+    } else
+      return GroupType.None;
   }
 
-  EventType getEventTypeEnumValue(String naming){
-    if (naming == 'Personal'){
+  EventType getEventTypeEnumValue(String naming) {
+    if (naming == 'Personal') {
       return EventType.Personal;
-    }
-    else if (naming == 'OneToOne'){
+    } else if (naming == 'OneToOne') {
       return EventType.OneToOne;
-    }
-    else if (naming == 'StandUp'){
+    } else if (naming == 'StandUp') {
       return EventType.StandUp;
-    }
-    else if (naming == 'Meeting'){
+    } else if (naming == 'Meeting') {
       return EventType.Meeting;
-    }
-    else return EventType.None;
+    } else
+      return EventType.None;
   }
 
-  EventStatus getEventStatusEnumValue(String naming){
-    if (naming == 'NotStarted'){
+  EventStatus getEventStatusEnumValue(String naming) {
+    if (naming == 'NotStarted') {
       return EventStatus.NotStarted;
-    }
-    else if (naming == 'WithinReminderOffset'){
+    } else if (naming == 'WithinReminderOffset') {
       return EventStatus.WithinReminderOffset;
-    }
-    else if (naming == 'Live'){
+    } else if (naming == 'Live') {
       return EventStatus.Live;
-    }
-    else if (naming == 'Finished'){
+    } else if (naming == 'Finished') {
       return EventStatus.Finished;
-    }
-    else if (naming == 'Cancelled'){
+    } else if (naming == 'Cancelled') {
       return EventStatus.Cancelled;
-    }
-    else return EventStatus.None;
+    } else
+      return EventStatus.None;
   }
 
-  TaskType getTaskTypeEnumValue(String naming){
-    if (naming == 'AbstractGoal'){
+  TaskType getTaskTypeEnumValue(String naming) {
+    if (naming == 'AbstractGoal') {
       return TaskType.AbstractGoal;
-    }
-    else if (naming == 'MeetingPresense'){
+    } else if (naming == 'MeetingPresense') {
       return TaskType.MeetingPresense;
-    }
-    else if (naming == 'JobComplete'){
+    } else if (naming == 'JobComplete') {
       return TaskType.JobComplete;
-    }
-    else return TaskType.None;
+    } else
+      return TaskType.None;
   }
 
-  TaskCurrentStatus getTaskStatusEnumValue(String naming){
-    if (naming == 'ToDo'){
+  TaskCurrentStatus getTaskStatusEnumValue(String naming) {
+    if (naming == 'ToDo') {
       return TaskCurrentStatus.ToDo;
-    }
-    else if (naming == 'InProgress'){
+    } else if (naming == 'InProgress') {
       return TaskCurrentStatus.InProgress;
-    }
-    else if (naming == 'Review'){
+    } else if (naming == 'Review') {
       return TaskCurrentStatus.Review;
-    }
-    else if (naming == 'Done'){
+    } else if (naming == 'Done') {
       return TaskCurrentStatus.Done;
-    }
-    else return TaskCurrentStatus.None;
+    } else
+      return TaskCurrentStatus.None;
   }
 
-  SnapshotType getSnapshotTypeEnumValue(String naming){
-    if (naming == 'EventsSnapshot'){
+  SnapshotType getSnapshotTypeEnumValue(String naming) {
+    if (naming == 'EventsSnapshot') {
       return SnapshotType.EventsSnapshot;
-    }
-    else if (naming == 'TasksSnapshot'){
+    } else if (naming == 'TasksSnapshot') {
       return SnapshotType.TasksSnapshot;
-    }
-    else if (naming == 'IssuesSnapshot'){
+    } else if (naming == 'IssuesSnapshot') {
       return SnapshotType.IssuesSnapshot;
-    }
-    else return SnapshotType.None;
+    } else
+      return SnapshotType.None;
   }
 
-  AuditType getAuditTypeEnumValue(String naming){
-    if (naming == 'Personal'){
+  AuditType getAuditTypeEnumValue(String naming) {
+    if (naming == 'Personal') {
       return AuditType.Personal;
-    }
-    else if (naming == 'Group'){
+    } else if (naming == 'Group') {
       return AuditType.Group;
-    }
-    else return AuditType.None;
+    } else
+      return AuditType.None;
   }
 
-  DecisionType getDecisionTypeEnumValue(String naming){
-    if (naming == 'Default'){
+  DecisionType getDecisionTypeEnumValue(String naming) {
+    if (naming == 'Default') {
       return DecisionType.Default;
-    }
-    else if (naming == 'Apply'){
+    } else if (naming == 'Apply') {
       return DecisionType.Apply;
-    }
-    else if (naming == 'Deny'){
+    } else if (naming == 'Deny') {
       return DecisionType.Deny;
-    }
-    else return DecisionType.None;
+    } else
+      return DecisionType.None;
   }
 
-  IssueType getIssueTypeEnumValue(String naming){
-    if (naming == 'BagIssue'){
+  IssueType getIssueTypeEnumValue(String naming) {
+    if (naming == 'BagIssue') {
       return IssueType.BagIssue;
-    }
-    else if (naming == 'ViolationIssue'){
+    } else if (naming == 'ViolationIssue') {
       return IssueType.ViolationIssue;
-    }
-    else return IssueType.None;
+    } else
+      return IssueType.None;
   }
 
-  IssueStatus getIssueStatusEnumValue(String naming){
-    if (naming == 'Reported'){
+  IssueStatus getIssueStatusEnumValue(String naming) {
+    if (naming == 'Reported') {
       return IssueStatus.Reported;
-    }
-    else if (naming == 'InProgress'){
+    } else if (naming == 'InProgress') {
       return IssueStatus.InProgress;
-    }
-    else if (naming == 'Closed'){
+    } else if (naming == 'Closed') {
       return IssueStatus.Closed;
-    }
-    else return IssueStatus.None;
+    } else
+      return IssueStatus.None;
   }
 
-  UserRole getUserRoleEnumValue(String naming){
-    if (naming == 'User'){
+  UserRole getUserRoleEnumValue(String naming) {
+    if (naming == 'User') {
       return UserRole.User;
-    }
-    else if (naming == 'Admin'){
+    } else if (naming == 'Admin') {
       return UserRole.Admin;
-    }
-    else return UserRole.None;
+    } else
+      return UserRole.None;
   }
 }

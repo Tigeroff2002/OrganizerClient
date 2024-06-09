@@ -24,15 +24,14 @@ import 'package:todo_calendar_client/shared_pref_cached_data.dart';
 
 import 'package:todo_calendar_client/GlobalEndpoints.dart';
 
-class RegisterPage extends StatefulWidget{
+class RegisterPage extends StatefulWidget {
   @override
-  RegisterPageState createState(){
+  RegisterPageState createState() {
     return new RegisterPageState();
   }
 }
 
 class RegisterPageState extends State<RegisterPage> {
-
   final TextEditingController emailController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -60,15 +59,15 @@ class RegisterPageState extends State<RegisterPage> {
     String email = emailController.text;
     String phoneNumber = phoneNumberController.text;
 
-    FirebaseMessaging.instance.getToken().then((value){
+    FirebaseMessaging.instance.getToken().then((value) {
       setState(() {
         String token = value.toString();
         var model = new UserRegisterModel(
-          email: email,
-          name: name,
-          password: password,
-          phoneNumber: phoneNumber,
-          firebaseToken: token);
+            email: email,
+            name: name,
+            password: password,
+            phoneNumber: phoneNumber,
+            firebaseToken: token);
 
         var requestMap = model.toJson();
 
@@ -78,8 +77,8 @@ class RegisterPageState extends State<RegisterPage> {
 
         var mySharedPreferences = new MySharedPreferences();
 
-        mySharedPreferences.getDataIfNotExpired().then((cachedData){
-          if (cachedData != null){
+        mySharedPreferences.getDataIfNotExpired().then((cachedData) {
+          if (cachedData != null) {
             var json = jsonDecode(cachedData.toString());
             var cacheContent = HostModel.fromJson(json);
 
@@ -89,100 +88,95 @@ class RegisterPageState extends State<RegisterPage> {
 
             var requestString = '/users/register';
 
-            var currentPort = isMobile ? uris.currentMobilePort : uris.currentWebPort;
+            var currentPort =
+                isMobile ? uris.currentMobilePort : uris.currentWebPort;
 
             final url = Uri.parse(currentHost + currentPort + requestString);
 
             final headers = {'Content-Type': 'application/json'};
-            final body = jsonEncode(requestMap);  
+            final body = jsonEncode(requestMap);
 
             try {
-              http.post(url, headers: headers, body : body).then((response) async {
+              http
+                  .post(url, headers: headers, body: body)
+                  .then((response) async {
+                if (response.statusCode == 200) {
+                  var jsonData = jsonDecode(response.body);
 
-              if (response.statusCode == 200)
-              {
-                var jsonData = jsonDecode(response.body);
+                  var responseContent =
+                      PreRegistrationResponse.fromJson(jsonData);
 
-                var responseContent = PreRegistrationResponse.fromJson(jsonData);
+                  var registerCase = responseContent.registrationCase;
 
-                var registerCase = responseContent.registrationCase;
+                  if (registerCase == 'SuchUserExisted') {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Ошибка!'),
+                        content: Text('Регистрация не удалась!'
+                            ' Пользователь с указанной почтой был уже зарегистрирован'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
 
-                if (registerCase == 'SuchUserExisted'){
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Ошибка!'),
-                      content: Text(
-                          'Регистрация не удалась!'
-                              ' Пользователь с указанной почтой был уже зарегистрирован'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
+                    usernameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
+                    phoneNumberController.clear();
 
-                  usernameController.clear();
-                  emailController.clear();
-                  passwordController.clear();
-                  phoneNumberController.clear();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  } else if (registerCase == 'ConfirmationFailed') {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Ошибка'),
+                        content: Text('Проблемы с регистрацией на сервере'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  content: Text(
+                                      'Пробуйте снова произвести регистрацию с подтверждением'),
+                                ),
+                              );
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (registerCase == 'ConfirmationAwaited') {
+                    var hostModelConfirmation = new HostModelConfirmation(
+                        email: email,
+                        userName: name,
+                        password: password,
+                        phone: phoneNumber,
+                        token: token,
+                        currentHost: currentHost);
 
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context)
-                      => LoginPage()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EmailConfirmationPage(
+                                  cachedData: hostModelConfirmation,
+                                )));
+                  }
                 }
-                else if (registerCase == 'ConfirmationFailed'){
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text('Ошибка'),
-                      content: Text('Проблемы с регистрацией на сервере'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                content: Text(
-                                    'Пробуйте снова произвести регистрацию с подтверждением'),
-                              ),
-                            );
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                else if (registerCase == 'ConfirmationAwaited'){
-
-                  var hostModelConfirmation = 
-                    new HostModelConfirmation(
-                      email: email,
-                      userName: name, 
-                      password: password,
-                      phone: phoneNumber, 
-                      token: token, 
-                      currentHost: currentHost);
-
-                  Navigator.pushReplacement(
-                    context,
-                      MaterialPageRoute(builder: (context)
-                        => EmailConfirmationPage(cachedData: hostModelConfirmation,)));
-                }
-            }
-        });
-            } 
-            catch (e){
+              });
+            } catch (e) {
               if (e is TimeoutException) {
                 print("Timeout exception: ${e.toString()}");
-              }
-              else {
+              } else {
                 showDialog<void>(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -191,7 +185,7 @@ class RegisterPageState extends State<RegisterPage> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                            Navigator.pop(context);
+                          Navigator.pop(context);
                         },
                         child: Text('OK'),
                       ),
@@ -200,12 +194,12 @@ class RegisterPageState extends State<RegisterPage> {
                 );
                 print("Unhandled exception: ${e.toString()}");
               }
-            }    
+            }
           }
         });
       });
     });
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -214,16 +208,18 @@ class RegisterPageState extends State<RegisterPage> {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.cyanAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Регистрация нового аккаунта', 
-            style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+          title: Text(
+            'Регистрация нового аккаунта',
+            style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+          ),
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => AuthorizationPage()),);
+                MaterialPageRoute(builder: (context) => AuthorizationPage()),
+              );
             },
           ),
         ),
@@ -237,14 +233,11 @@ class RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Электронная почта: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.deepPurple
-                    ),
+                    labelStyle:
+                        TextStyle(fontSize: 16, color: Colors.deepPurple),
                     errorText: !isEmailValidated
                         ? 'Почта не может быть пустой'
-                        : null
-                ),
+                        : null),
               ),
               SizedBox(height: 16.0),
               TextField(
@@ -252,14 +245,10 @@ class RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Имя пользователя: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.deepPurple
-                    ),
-                    errorText: !isNameValidated
-                        ? 'Имя не может быть пустым'
-                        : null
-                ),
+                    labelStyle:
+                        TextStyle(fontSize: 16, color: Colors.deepPurple),
+                    errorText:
+                        !isNameValidated ? 'Имя не может быть пустым' : null),
               ),
               TextField(
                 controller: passwordController,
@@ -267,14 +256,11 @@ class RegisterPageState extends State<RegisterPage> {
                 obscureText: true,
                 decoration: InputDecoration(
                     labelText: 'Пароль: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.deepPurple
-                    ),
+                    labelStyle:
+                        TextStyle(fontSize: 16, color: Colors.deepPurple),
                     errorText: !isPasswordValidated
                         ? 'Пароль не может быть пустым'
-                        : null
-                ),
+                        : null),
               ),
               SizedBox(height: 30.0),
               TextField(
@@ -282,14 +268,11 @@ class RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(fontSize: 16, color: Colors.deepPurple),
                 decoration: InputDecoration(
                     labelText: 'Номер телефона: ',
-                    labelStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.deepPurple
-                    ),
+                    labelStyle:
+                        TextStyle(fontSize: 16, color: Colors.deepPurple),
                     errorText: !isPhoneValidated
                         ? 'Номер телефона не может быть пустым'
-                        : null
-                ),
+                        : null),
               ),
               SizedBox(height: 30.0),
               ElevatedButton(
@@ -300,30 +283,34 @@ class RegisterPageState extends State<RegisterPage> {
                     isPasswordValidated = !passwordController.text.isEmpty;
                     isPhoneValidated = !phoneNumberController.text.isEmpty;
 
-                    if (isEmailValidated && isPasswordValidated
-                        && isNameValidated && isPhoneValidated){
-                                      showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text('Необходимо подтверждение'),
-                content: Text(
-                  'Перейдите по ссылке, отправленной на ваш адрес электронной почты'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('OK'),
-                  ),
-                ],
-              ),
-            );
+                    if (isEmailValidated &&
+                        isPasswordValidated &&
+                        isNameValidated &&
+                        isPhoneValidated) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Необходимо подтверждение'),
+                          content: Text(
+                              'Перейдите по ссылке, отправленной на ваш адрес электронной почты'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
                       register(context);
                     }
                   });
                 },
-                child: Text('Зарегистрироваться',
-                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),),
+                child: Text(
+                  'Зарегистрироваться',
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                ),
               ),
             ],
           ),

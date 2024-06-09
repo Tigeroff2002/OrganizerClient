@@ -7,7 +7,6 @@ import 'package:todo_calendar_client/models/responses/ShortUserInfoResponse.dart
 import 'package:todo_calendar_client/models/responses/UserInfoWithDecisionResponse.dart';
 
 class EventInfoResponse {
-
   final int eventId;
   final String caption;
   final String description;
@@ -15,6 +14,7 @@ class EventInfoResponse {
   final String duration;
   final String eventType;
   final String eventStatus;
+
   //final ShortUserInfoResponse manager;
   //final GroupInfoResponse group;
   //final List<UserInfoWithDecisionResponse> guests;
@@ -32,7 +32,7 @@ class EventInfoResponse {
     //required this.guests
   });
 
-  factory EventInfoResponse.fromJson(Map <String, dynamic> json) {
+  factory EventInfoResponse.fromJson(Map<String, dynamic> json) {
     return EventInfoResponse(
       eventId: json['event_id'],
       caption: json['caption'],

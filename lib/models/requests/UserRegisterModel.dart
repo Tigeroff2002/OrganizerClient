@@ -1,20 +1,18 @@
 import 'dart:convert';
 
 class UserRegisterModel {
-
   final String email;
   final String name;
   final String password;
   final String phoneNumber;
   final String firebaseToken;
 
-  UserRegisterModel({
-    required this.email,
-    required this.name,
-    required this.password,
-    required this.phoneNumber,
-    required this.firebaseToken
-  });
+  UserRegisterModel(
+      {required this.email,
+      required this.name,
+      required this.password,
+      required this.phoneNumber,
+      required this.firebaseToken});
 
   Map<String, dynamic> toJson() {
     return {

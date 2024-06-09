@@ -6,7 +6,6 @@ import 'package:todo_calendar_client/models/responses/TaskInfoResponse.dart';
 import 'package:todo_calendar_client/models/responses/PersonalSnapshotInfoResponse.dart';
 
 class UserInfoResponse {
-
   final String userName;
   final String userEmail;
   final String userRole;
@@ -19,19 +18,18 @@ class UserInfoResponse {
   final List<dynamic> userSnapshots;
   final List<dynamic> userIssues;
 
-  UserInfoResponse({
-    required this.userName,
-    required this.userEmail,
-    required this.userRole,
-    required this.password,
-    required this.phoneNumber,
-    required this.accountCreationTime,
-    required this.userGroups,
-    required this.userEvents,
-    required this.userTasks,
-    required this.userSnapshots,
-    required this.userIssues
-  });
+  UserInfoResponse(
+      {required this.userName,
+      required this.userEmail,
+      required this.userRole,
+      required this.password,
+      required this.phoneNumber,
+      required this.accountCreationTime,
+      required this.userGroups,
+      required this.userEvents,
+      required this.userTasks,
+      required this.userSnapshots,
+      required this.userIssues});
 
   Map<String, dynamic> toJson() {
     return {
@@ -49,7 +47,7 @@ class UserInfoResponse {
     };
   }
 
-  factory UserInfoResponse.fromJson(Map <String, dynamic> json) {
+  factory UserInfoResponse.fromJson(Map<String, dynamic> json) {
     return UserInfoResponse(
         userName: json['user_name'],
         password: json['password'],
@@ -61,7 +59,6 @@ class UserInfoResponse {
         userTasks: json['user_tasks'],
         userEvents: json['user_events'],
         userSnapshots: json['user_snapshots'],
-        userIssues: json['user_issues']
-    );
+        userIssues: json['user_issues']);
   }
 }

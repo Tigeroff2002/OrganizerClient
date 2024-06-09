@@ -19,23 +19,24 @@ void main() async {
 
   var existedData = await sharedPreferences.getDataIfNotExpired();
 
-  if (existedData == null){
+  if (existedData == null) {
     var currentUri = GlobalEndpoints().mobileUri;
 
     var hostModel = new HostModel(currentHost: currentUri);
 
     var json = hostModel.toJson();
 
-    await sharedPreferences.saveDataWithExpiration(jsonEncode(json),  const Duration(days: 7));
+    await sharedPreferences.saveDataWithExpiration(
+        jsonEncode(json), const Duration(days: 7));
   }
 
   await Firebase.initializeApp(
       options: FirebaseOptions(
-        apiKey: "AIzaSyAwpDtJyT2X9t-6gUpomwK37PPacHM6tFY",
-        appId: "1:715256445207:android:3e76c820f3192f75045f52",
-        messagingSenderId: "715256445207",
-        projectId: "todocalendar-411917",)
-  );
+    apiKey: "AIzaSyAwpDtJyT2X9t-6gUpomwK37PPacHM6tFY",
+    appId: "1:715256445207:android:3e76c820f3192f75045f52",
+    messagingSenderId: "715256445207",
+    projectId: "todocalendar-411917",
+  ));
   runApp(MyApp());
 }
 
@@ -60,5 +61,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

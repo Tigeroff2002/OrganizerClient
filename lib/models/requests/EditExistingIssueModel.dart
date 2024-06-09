@@ -6,27 +6,25 @@ import 'package:todo_calendar_client/models/requests/RequestWithToken.dart';
 import 'dart:convert';
 
 class EditExistingIssueModel extends AddNewIssueModel {
-
   final int issueId;
   final String issueStatus;
 
-  EditExistingIssueModel({
-    required int userId,
-    required String token,
-    required String issueType,
-    required String title,
-    required String description,
-    required String imgLink,
-    required this.issueId,
-    required this.issueStatus
-  })
+  EditExistingIssueModel(
+      {required int userId,
+      required String token,
+      required String issueType,
+      required String title,
+      required String description,
+      required String imgLink,
+      required this.issueId,
+      required this.issueStatus})
       : super(
-        userId: userId,
-        token: token,
-        issueType: issueType,
-        title: title,
-        description: description,
-        imgLink: imgLink);
+            userId: userId,
+            token: token,
+            issueType: issueType,
+            title: title,
+            description: description,
+            imgLink: imgLink);
 
   Map<String, dynamic> toJson() {
     return {
