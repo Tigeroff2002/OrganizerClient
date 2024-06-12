@@ -7,6 +7,7 @@ import 'package:todo_calendar_client/EnumAliaser.dart';
 import 'package:todo_calendar_client/content_widgets/events_list_page.dart';
 import 'package:todo_calendar_client/content_widgets/group_manager_page.dart';
 import 'package:todo_calendar_client/content_widgets/single_content_widgets/SingleGroupPageWidget.dart';
+import 'package:todo_calendar_client/content_widgets/user_info_map.dart';
 import 'package:todo_calendar_client/models/requests/GroupDeleteParticipantRequest.dart';
 import 'package:todo_calendar_client/models/requests/GroupInfoRequest.dart';
 import 'package:todo_calendar_client/models/requests/UserInfoRequestModel.dart';
@@ -282,8 +283,7 @@ class GroupParticipantsPageState extends State<GroupParticipantsPageWidget> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        SingleGroupPageWidget(groupId: groupId)),
+                    builder: (context) => UserInfoMapPage()),
               );
             },
           ),
