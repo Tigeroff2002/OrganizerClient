@@ -68,8 +68,6 @@ class GroupPlaceholderState extends State<GroupPlaceholderWidget> {
     String name = groupNameController.text;
     String groupType = selectedGroupType;
 
-    //var participants = [2, 3];
-
     MySharedPreferences mySharedPreferences = new MySharedPreferences();
 
     var cachedData = await mySharedPreferences.getDataIfNotExpired();
